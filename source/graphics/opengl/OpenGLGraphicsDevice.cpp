@@ -14,7 +14,8 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 {	  
 	if( initialized )
 		return true;
-	
+
+#ifdef _WIN32
 	hdc = GetDC(hWnd); // Get the device context for our window  
   
 	PIXELFORMATDESCRIPTOR pfd; // Create a new PIXELFORMATDESCRIPTOR (PFD)  
@@ -39,6 +40,7 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 
 	if( GLEW_OK != glewInit() )
 		return false;
+#endif
 
 	printf( "running opengl %s\n", glGetString( GL_VERSION ) );
 
@@ -96,7 +98,9 @@ void OpenGLGraphicsDevice::Clear( Color c )
 
 bool OpenGLGraphicsDevice::SwapBackBuffer()
 {
+#ifdef _WIN32	
 	SwapBuffers(hdc);
+#endif
 	return true;
 }
 
