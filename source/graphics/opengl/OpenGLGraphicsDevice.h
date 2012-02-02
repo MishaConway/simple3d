@@ -47,5 +47,7 @@ private:
 	OpenGLGraphicsDeviceStateManager graphics_device_state_manager;
 	OpenGLCapabilities capabilities;
 	OpenGLVertexBuffer* pBoundVertexBuffer;
+#ifdef _WIN32
 	HDC hdc;
+#endif
 };
