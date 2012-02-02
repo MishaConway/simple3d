@@ -230,6 +230,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, s
 	 return SetEffectVariable( variable_name, [&flt](const GLint uniform_location){glUniform1f( uniform_location, flt );});
  }
 
+#ifdef __XNAMATH_H__
  bool OpenGLShaderProgram::SetFloatArray( const std::string& variable_name, XMFLOAT3& float_array )
  {
 	  return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform3fv( uniform_location, 1, (float*) &float_array );});
@@ -239,6 +240,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, s
  {
 	 return SetFloatArray( variable_name, GeoVector( float_array ) );
  }
+#endif
 
  bool OpenGLShaderProgram::SetFloatArray( const std::string& variable_name, GeoVector& float_array )
  {
@@ -250,6 +252,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, s
 	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform1fv( uniform_location, float_array.size(), (float*) &float_array[0]);});
  }
 
+#ifdef __XNAMATH_H__
  bool OpenGLShaderProgram::SetMatrix( const std::string& variable_name, XMMATRIX& matrix )
  {
 	 return SetMatrix( variable_name, GeoMatrix( matrix ) );
@@ -259,6 +262,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, s
  {
 	 return SetMatrix( variable_name, GeoMatrix( matrix ) );
  }
+#endif
 
  bool OpenGLShaderProgram::SetMatrix( const std::string& variable_name, GeoMatrix& matrix )
  {

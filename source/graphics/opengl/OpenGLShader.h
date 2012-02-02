@@ -50,12 +50,16 @@ public:
 public:
 	 bool SetInt( const std::string& variable_name, const int i );
 	 bool SetFloat( const std::string& variable_name, float flt );
+#ifdef __XNAMATH_H__
 	 bool SetFloatArray( const std::string& variable_name, XMFLOAT3& float_array );
 	 bool SetFloatArray( const std::string& variable_name, XMFLOAT4& float_array );
+#endif
 	 bool SetFloatArray( const std::string& variable_name, GeoVector& float_array );
 	 bool SetFloatArray( const std::string& variable_name, std::vector<float>& float_array );
+#ifdef __XNAMATH_H__
 	 bool SetMatrix( const std::string& variable_name, XMMATRIX& matrix );
 	 bool SetMatrix( const std::string& variable_name, XMFLOAT4X4& matrix );
+#endif
 	 bool SetMatrix( const std::string& variable_name, GeoMatrix& matrix );
 	 bool SetTexture( const std::string& variable_name, OpenGLTexture& texture, const GLenum texture_index );
 protected:

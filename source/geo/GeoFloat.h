@@ -4,7 +4,6 @@ struct GeoFloat2
 {
 	GeoFloat2();
 	GeoFloat2( const float x, const float y );
-	GeoFloat2( const unsigned int x, const unsigned int y );
 	float x,y;
 };
 

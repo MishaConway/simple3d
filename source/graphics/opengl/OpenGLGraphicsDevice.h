@@ -11,6 +11,10 @@
 #include "OpenGLRenderTarget.h"
 #include "OpenGLTextRenderer.h"
 
+#ifndef _WIN32
+typedef int HWND;
+#endif
+
 class OpenGLGraphicsDevice : public BaseGraphicsDevice
 {
 public:
