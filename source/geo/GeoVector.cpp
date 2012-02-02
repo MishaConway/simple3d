@@ -37,6 +37,22 @@ GeoVector::GeoVector( const float x, const float y, const float z, const float w
 	this->w = w;
 }
 
+GeoVector::GeoVector( const GeoFloat3& vec )
+{
+	x = vec.x;
+	y = vec.y;
+	z = vec.z;
+	w = 0;
+}
+
+GeoVector::GeoVector( const GeoVector& v, const float w )
+{
+	this->x = v.x;
+	this->y = v.y;
+	this->z = v.z;
+	this->w = w;
+}
+
 #ifdef _WIN32	
 GeoVector::GeoVector( XMVECTOR vec )
 {
@@ -141,6 +157,16 @@ GeoVector GeoVector::operator - ( const GeoVector& vec4 ) const
 	return vecSum;
 }
 
+GeoVector GeoVector::operator * ( const GeoVector& vec4 ) const
+{
+	GeoVector vecProduct;
+	vecProduct.x = x * vec4.x;
+	vecProduct.y = y * vec4.y;
+	vecProduct.z = z * vec4.z;
+	vecProduct.w = w * vec4.w; //unsure about this one
+	return vecProduct;
+}
+
 GeoVector GeoVector::operator * ( float scalar ) const
 {
 	GeoVector vec4;
@@ -211,6 +237,11 @@ float GeoVector::LengthSquared()
 GeoVector GeoVector::Lerp( const GeoVector& vec, const float s )
 {
 	return *this + ( vec - *this )*s;	
+}
+
+GeoFloat3 GeoVector::ToGeoFloat3()
+{
+	return GeoFloat3( x, y, z );
 }
 
 #ifdef _WIN32	

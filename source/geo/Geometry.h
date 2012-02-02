@@ -6,20 +6,19 @@
 #include <vector>
 #include <string>
 #include <math.h>
-#include <tuple> 
 #include "../std/functional.h"
 #include "../std/triple.h"
 
 struct Vertex
 {
-    XMFLOAT3 position;
-	XMFLOAT3 colorUV;
-	XMFLOAT3 normal;
-	XMFLOAT3 tangent;
-	XMFLOAT3 bitangent;
+    GeoFloat3 position;
+	GeoFloat3 colorUV;
+	GeoFloat3 normal;
+	GeoFloat3 tangent;
+	GeoFloat3 bitangent;
 	Vertex();
-	Vertex( XMFLOAT3 position );
-	Vertex( XMFLOAT3 position, XMFLOAT2 uv );
+	Vertex( GeoFloat3 position );
+	Vertex( GeoFloat3 position, GeoFloat2 uv );
 };
 
 
@@ -47,9 +46,9 @@ private:
 class GeoQuad
 {
 public:
-	static GeoQuad XZQuad( XMFLOAT3& a, const float width, const float length );
-	static GeoQuad XYQuad( XMFLOAT3& a, const float width, const float height );
-	static GeoQuad ZYQuad( XMFLOAT3& a, const float length, const float height );
+	static GeoQuad XZQuad( GeoFloat3& a, const float width, const float length );
+	static GeoQuad XYQuad( GeoFloat3& a, const float width, const float height );
+	static GeoQuad ZYQuad( GeoFloat3& a, const float length, const float height );
 	GeoQuad();
 	GeoQuad( const GeoVertex& a, const GeoVertex& b, const GeoVertex& c, const GeoVertex& d );
 	std::pair<GeoTriangle,GeoTriangle> Triangulate();

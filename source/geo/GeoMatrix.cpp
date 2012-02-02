@@ -117,34 +117,75 @@ float  GeoMatrix::operator () ( unsigned int Row, unsigned int Col ) const
 // assignment operators
 GeoMatrix& GeoMatrix::operator *= ( const GeoMatrix& matrix )
 {
-	GeoMatrix matrixProduct; 
+	//GeoMatrix mResult; 
+/*
+    // Cache the invariants in registers
+    float x = _11;
+    float y = _12;
+    float z = _13;
+    float w = _14;
+    // Perform the operation on the first row
+    mResult._11 = (matrix._11*x)+(matrix._21*y)+(matrix._31*z)+(matrix._41*w);
+    mResult._12 = (matrix._12*x)+(matrix._22*y)+(matrix._32*z)+(matrix._42*w);
+    mResult._13 = (matrix._13*x)+(matrix._23*y)+(matrix._33*z)+(matrix._43*w);
+    mResult._14 = (matrix._14*x)+(matrix._24*y)+(matrix._34*z)+(matrix._44*w);
+    // Repeat for all the other rows
+    x = _21;
+    y = _22;
+    z = _23;
+    w = _24;
+    mResult._21 = (matrix._11*x)+(matrix._21*y)+(matrix._31*z)+(matrix._41*w);
+    mResult._22 = (matrix._12*x)+(matrix._22*y)+(matrix._32*z)+(matrix._42*w);
+    mResult._23 = (matrix._13*x)+(matrix._23*y)+(matrix._33*z)+(matrix._43*w);
+    mResult._24 = (matrix._14*x)+(matrix._24*y)+(matrix._34*z)+(matrix._44*w);
+    x = _31;
+    y = _32;
+    z = _33;
+    w = _34;
+    mResult._31 = (matrix._11*x)+(matrix._21*y)+(matrix._31*z)+(matrix._41*w);
+    mResult._32 = (matrix._12*x)+(matrix._22*y)+(matrix._32*z)+(matrix._42*w);
+    mResult._33 = (matrix._13*x)+(matrix._23*y)+(matrix._33*z)+(matrix._43*w);
+    mResult._34 = (matrix._14*x)+(matrix._24*y)+(matrix._34*z)+(matrix._44*w);
+    x = _41;
+    y = _42;
+    z = _43;
+    w = _44;
+    mResult._41 = (matrix._11*x)+(matrix._21*y)+(matrix._31*z)+(matrix._41*w);
+    mResult._42 = (matrix._12*x)+(matrix._22*y)+(matrix._32*z)+(matrix._42*w);
+    mResult._43 = (matrix._13*x)+(matrix._23*y)+(matrix._33*z)+(matrix._43*w);
+    mResult._44 = (matrix._14*x)+(matrix._24*y)+(matrix._34*z)+(matrix._44*w);
+
+	memcpy( this, &mResult, sizeof(mResult ) );
+
+    return mResult;
+	*/
+
+	GeoMatrix m = *this;
 
 	//row one
-	matrixProduct._11 =	_11 * matrix._11 + _12 * matrix._21 + _13 * matrix._31 + _14 * matrix._41;
-	matrixProduct._12 =	_11 * matrix._12 + _12 * matrix._22 + _13 * matrix._32 + _14 * matrix._42;
-	matrixProduct._13 =	_11 * matrix._13 + _12 * matrix._23 + _13 * matrix._33 + _14 * matrix._43;
-	matrixProduct._14 =	_11 * matrix._14 + _12 * matrix._24 + _13 * matrix._34 + _14 * matrix._44;
+	_11 =	m._11 * matrix._11 + m._12 * matrix._21 + m._13 * matrix._31 + m._14 * matrix._41;
+	_12 =	m._11 * matrix._12 + m._12 * matrix._22 + m._13 * matrix._32 + m._14 * matrix._42;
+	_13 =	m._11 * matrix._13 + m._12 * matrix._23 + m._13 * matrix._33 + m._14 * matrix._43;
+	_14 =	m._11 * matrix._14 + m._12 * matrix._24 + m._13 * matrix._34 + m._14 * matrix._44;
 
 	//row two
-	matrixProduct._21 =	_21 * matrix._11 + _22 * matrix._21 + _23 * matrix._31 + _24 * matrix._41;
-	matrixProduct._22 =	_21 * matrix._12 + _22 * matrix._22 + _23 * matrix._32 + _24 * matrix._42;
-	matrixProduct._23 =	_21 * matrix._13 + _22 * matrix._23 + _23 * matrix._33 + _24 * matrix._43;
-	matrixProduct._24 =	_21 * matrix._14 + _22 * matrix._24 + _23 * matrix._34 + _24 * matrix._44;
+	_21 =	m._21 * matrix._11 + m._22 * matrix._21 + m._23 * matrix._31 + m._24 * matrix._41;
+	_22 =	m._21 * matrix._12 + m._22 * matrix._22 + m._23 * matrix._32 + m._24 * matrix._42;
+	_23 =	m._21 * matrix._13 + m._22 * matrix._23 + m._23 * matrix._33 + m._24 * matrix._43;
+	_24 =	m._21 * matrix._14 + m._22 * matrix._24 + m._23 * matrix._34 + m._24 * matrix._44;
 
 	//row three
-	matrixProduct._31 =	_31 * matrix._11 + _32 * matrix._21 + _33 * matrix._31 + _34 * matrix._41;
-	matrixProduct._32 =	_31 * matrix._12 + _32 * matrix._22 + _33 * matrix._32 + _34 * matrix._42;
-	matrixProduct._33 =	_31 * matrix._13 + _32 * matrix._23 + _33 * matrix._33 + _34 * matrix._43;
-	matrixProduct._34 =	_31 * matrix._14 + _32 * matrix._24 + _33 * matrix._34 + _34 * matrix._44;
+	_31 =	m._31 * matrix._11 + m._32 * matrix._21 + m._33 * matrix._31 + m._34 * matrix._41;
+	_32 =	m._31 * matrix._12 + m._32 * matrix._22 + m._33 * matrix._32 + m._34 * matrix._42;
+	_33 =	m._31 * matrix._13 + m._32 * matrix._23 + m._33 * matrix._33 + m._34 * matrix._43;
+	_34 =	m._31 * matrix._14 + m._32 * matrix._24 + m._33 * matrix._34 + m._34 * matrix._44;
 
 	//row four
-	matrixProduct._41 =	_41 * matrix._11 + _42 * matrix._21 + _43 * matrix._31 + _44 * matrix._41;
-	matrixProduct._42 =	_41 * matrix._12 + _42 * matrix._22 + _43 * matrix._32 + _44 * matrix._42;
-	matrixProduct._43 =	_41 * matrix._13 + _42 * matrix._23 + _43 * matrix._33 + _44 * matrix._43;
-	matrixProduct._44 =	_41 * matrix._14 + _42 * matrix._24 + _43 * matrix._34 + _44 * matrix._44;
-
-	*this = matrixProduct;
-
+	_41 =	m._41 * matrix._11 + m._42 * matrix._21 + m._43 * matrix._31 + m._44 * matrix._41;
+	_42 =	m._41 * matrix._12 + m._42 * matrix._22 + m._43 * matrix._32 + m._44 * matrix._42;
+	_43 =	m._41 * matrix._13 + m._42 * matrix._23 + m._43 * matrix._33 + m._44 * matrix._43;
+	_44 =	m._41 * matrix._14 + m._42 * matrix._24 + m._43 * matrix._34 + m._44 * matrix._44;
+													  
 	return *this;
 }
 
@@ -170,7 +211,7 @@ GeoMatrix& GeoMatrix::operator += ( const GeoMatrix& matrix )
 	_43 += matrix._43;
 	_44 += matrix._44;
 
-	return *this;
+	return *this; 
 }
 
 GeoMatrix& GeoMatrix::operator -= ( const GeoMatrix& matrix )
@@ -290,13 +331,28 @@ GeoMatrix GeoMatrix::operator * ( const GeoMatrix& matrix ) const
 }
 
 GeoVector GeoMatrix::operator * ( const GeoVector& vec )
-{
+{	
 	GeoVector transformed_vector;
 	transformed_vector.x = _11 * vec.x + _21 * vec.y + _31 * vec.z + _41;
 	transformed_vector.y = _12 * vec.x + _22 * vec.y + _32 * vec.z + _42;
 	transformed_vector.z = _13 * vec.x + _23 * vec.y + _33 * vec.z + _43;
 	transformed_vector.w = _14 * vec.x + _24 * vec.y + _34 * vec.z + _44;
 	return transformed_vector;
+}
+
+GeoVector GeoMatrix::TransformCoord( const GeoVector& vec )
+{
+	const float norm =_14 * vec.x + _24 * vec.y + _34 * vec.z + _44;
+	GeoVector transformed_vector = ((*this) * vec);
+	transformed_vector.x /= norm;
+	transformed_vector.y /= norm;
+	transformed_vector.z /= norm;
+	return transformed_vector;
+}
+	
+GeoVector GeoMatrix::Transform( const GeoVector& vec )
+{
+	return (*this) * vec;
 }
 
 GeoMatrix GeoMatrix::operator + ( const GeoMatrix& matrix ) const

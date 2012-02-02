@@ -2,6 +2,80 @@
 #include "../geo/GeoFloat.h"
 #include <math.h>
 
+/*
+XMINLINE XMVECTOR XMVector3Project2  
+(  
+    FXMVECTOR V,   
+    FLOAT    ViewportX,   
+    FLOAT    ViewportY,   
+    FLOAT    ViewportWidth,   
+    FLOAT    ViewportHeight,   
+    FLOAT    ViewportMinZ,   
+    FLOAT    ViewportMaxZ,   
+    CXMMATRIX Projection,   
+    CXMMATRIX View,   
+    CXMMATRIX World  
+)  
+{
+
+ 
+    XMMATRIX Transform;  
+    XMVECTOR Scale;  
+    XMVECTOR Offset;  
+    XMVECTOR Result;  
+    FLOAT    HalfViewportWidth = ViewportWidth * 0.5f;  
+    FLOAT    HalfViewportHeight = ViewportHeight * 0.5f;  
+ 
+    Scale = XMVectorSet(HalfViewportWidth,   
+                        -HalfViewportHeight,  
+                        ViewportMaxZ - ViewportMinZ,  
+                        0.0f);  
+ 
+    Offset = XMVectorSet(ViewportX + HalfViewportWidth,  
+                        ViewportY + HalfViewportHeight,  
+                        ViewportMinZ,  
+                        0.0f);  
+ 
+    Transform = XMMatrixMultiply(World, View);  
+    Transform = XMMatrixMultiply(Transform, Projection);  
+ 
+    Result = XMVector3TransformCoord(V, Transform);  
+ 
+    Result = XMVectorMultiplyAdd(Result, Scale, Offset);  
+ 
+    return Result;
+}
+
+XMINLINE XMVECTOR XMVector3Project3  
+(  
+    FXMVECTOR V,   
+    FLOAT    ViewportX,   
+    FLOAT    ViewportY,   
+    FLOAT    ViewportWidth,   
+    FLOAT    ViewportHeight,   
+    FLOAT    ViewportMinZ,   
+    FLOAT    ViewportMaxZ,   
+    CXMMATRIX Projection,   
+    CXMMATRIX View,   
+    CXMMATRIX World  
+)  
+{
+    XMMATRIX Transform;  
+    FLOAT    HalfViewportWidth = ViewportWidth * 0.5f;  
+    FLOAT    HalfViewportHeight = ViewportHeight * 0.5f;  
+ 
+    GeoVector Scale(HalfViewportWidth,   -HalfViewportHeight,  ViewportMaxZ - ViewportMinZ,  0.0f);  
+ 
+    GeoVector Offset(ViewportX + HalfViewportWidth, ViewportY + HalfViewportHeight, ViewportMinZ, 0.0f);  
+ 
+    //Transform = XMMatrixMultiply(World, View);  
+    Transform = XMMatrixMultiply(View, Projection);
+ 
+	return ( (GeoMatrix(Transform) * V ) * Scale + Offset).ToXMVec3(); 
+	//return (GeoVector( XMVector3TransformCoord(V, Transform) ) * Scale + Offset).ToXMVec3();  
+}
+
+*/
 GridTile::GridTile( const std::string label, Texture t )
 {
 	this->label = label;
@@ -136,7 +210,16 @@ GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsign
 			float max_x = 0, max_y = 0, min_x =0,  min_y = 0;
 			for( unsigned int v = 0; v < worldspace_vertices.size(); v++ )
 			{
-				XMStoreFloat3( &worldspace_vertices[v].position, XMVector3Project( XMLoadFloat3(&worldspace_vertices[v].position), 0, 0, (float)viewport_width, (float)viewport_height, 0, 1, camera.GetProjectionTransform().ToXMMATRIX(), camera.GetViewTransform().ToXMMATRIX(), XMMatrixIdentity() ) );  
+			//	XMFLOAT3 x ( worldspace_vertices[v].position.x, worldspace_vertices[v].position.y, worldspace_vertices[v].position.z );
+			//	XMFLOAT3 y = x;
+			//	XMFLOAT3 z = x;
+			//	XMStoreFloat3( &x, XMVector3Project( XMLoadFloat3(&x), 0, 0, (float)viewport_width, (float)viewport_height, 0, 1, camera.GetProjectionTransform().ToXMMATRIX(), camera.GetViewTransform().ToXMMATRIX(), XMMatrixIdentity() ) );  
+			//	XMStoreFloat3( &y, XMVector3Project3( XMLoadFloat3(&y), 0, 0, (float)viewport_width, (float)viewport_height, 0, 1, camera.GetProjectionTransform().ToXMMATRIX(), camera.GetViewTransform().ToXMMATRIX(), XMMatrixIdentity() ) );  
+				worldspace_vertices[v].position = camera.ProjectIntoScreenspace( GeoVector( worldspace_vertices[v].position ) ).ToGeoFloat3(); 
+
+				GeoVector coo = camera.ProjectIntoScreenspace( GeoVector( 0, -2, 0 ) );
+
+				//worldspace_vertices[v].position = GeoVector( x ).ToGeoFloat3();
 
 				if( 0 == v )
 				{
@@ -152,7 +235,7 @@ GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsign
 				}
 			}
 
-			if( !(screenspace_left > max_x || min_x > screenspace_right || screenspace_top > max_y || min_y > screenspace_bottom) )
+			if( !(screenspace_left > max_x || min_x > screenspace_right  || screenspace_top > max_y || min_y > screenspace_bottom ) )
 			{
 				GeoVector worldspace_position = quad->GetWorldspaceCentroid();
 				GeoVector worldspace_normal = (worldspace_position - GetWorldspaceCentroid()).Normalize();

@@ -5,6 +5,8 @@
 #include <xnamath.h>
 #endif
 
+#include "GeoFloat.h"
+
 /* Four component vector */
 struct GeoVector
 {
@@ -16,6 +18,8 @@ struct GeoVector
 	GeoVector( const float x, const float y );
 	GeoVector( const float x, const float y, const float z );
     GeoVector( const float x, const float y, const float z, const float w );
+	GeoVector( const GeoFloat3& f );
+	GeoVector( const GeoVector& v, const float w );
 #ifdef _WIN32
 	GeoVector( XMVECTOR vec );
 	GeoVector( const XMFLOAT3& vec );
@@ -39,6 +43,7 @@ struct GeoVector
     /* BINARY OPERATORS */
     GeoVector operator + ( const GeoVector& ) const;
     GeoVector operator - ( const GeoVector& ) const;
+	GeoVector operator * (const GeoVector& ) const;
     GeoVector operator * ( float ) const;
     GeoVector operator / ( float ) const;
     friend GeoVector operator * ( float, const GeoVector& );
@@ -53,6 +58,8 @@ struct GeoVector
 	float Length();
 	float LengthSquared();
 	GeoVector Lerp( const GeoVector& vec, const float s ); 
+
+	GeoFloat3 ToGeoFloat3();
 
 #ifdef _WIN32	
 	XMVECTOR ToXMVec3();

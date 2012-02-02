@@ -5,12 +5,12 @@ Vertex::Vertex()
 	colorUV.z = 0;
 }
 	
-Vertex::Vertex( XMFLOAT3 position )
+Vertex::Vertex( GeoFloat3 position )
 {
 	this->position = position;
 }
 
-Vertex::Vertex( XMFLOAT3 position, XMFLOAT2 uv )
+Vertex::Vertex( GeoFloat3 position, GeoFloat2 uv )
 {
 	this->position = position;
 	this->colorUV.x = uv.x;
@@ -78,7 +78,7 @@ GeoQuad::GeoQuad()
 {	
 }
 
-GeoQuad GeoQuad::XZQuad( XMFLOAT3& a, const float width, const float length )
+GeoQuad GeoQuad::XZQuad( GeoFloat3& a, const float width, const float length )
 {
 	GeoQuad quad;
 	for( unsigned int i = 0; i < 4; i++ )
@@ -101,11 +101,11 @@ GeoQuad GeoQuad::XZQuad( XMFLOAT3& a, const float width, const float length )
 
 	GeoVector normal = quad.Triangulate().first.ComputeNormal();
 	for( unsigned int i = 0; i < 4; i++ )
-		quad.vertices[i].vertex.normal = normal.ToXMFloat3();
+		quad.vertices[i].vertex.normal = normal.ToGeoFloat3();
 	return quad;
 }
 
-GeoQuad GeoQuad::XYQuad( XMFLOAT3& a, const float width, const float height )
+GeoQuad GeoQuad::XYQuad( GeoFloat3& a, const float width, const float height )
 {
 	GeoQuad quad;
 	for( unsigned int i = 0; i < 4; i++ )
@@ -126,11 +126,11 @@ GeoQuad GeoQuad::XYQuad( XMFLOAT3& a, const float width, const float height )
 
 	GeoVector normal = quad.Triangulate().first.ComputeNormal();
 	for( unsigned int i = 0; i < 4; i++ )
-		quad.vertices[i].vertex.normal = normal.ToXMFloat3();
+		quad.vertices[i].vertex.normal = normal.ToGeoFloat3();
 	return quad;
 }
 
-GeoQuad GeoQuad::ZYQuad( XMFLOAT3& a, const float length, const float height )
+GeoQuad GeoQuad::ZYQuad( GeoFloat3& a, const float length, const float height )
 {
 	GeoQuad quad;
 	for( unsigned int i = 0; i < 4; i++ )
@@ -152,7 +152,7 @@ GeoQuad GeoQuad::ZYQuad( XMFLOAT3& a, const float length, const float height )
 
 	GeoVector normal = quad.Triangulate().first.ComputeNormal();
 	for( unsigned int i = 0; i < 4; i++ )
-		quad.vertices[i].vertex.normal = normal.ToXMFloat3();
+		quad.vertices[i].vertex.normal = normal.ToGeoFloat3();
 	return quad;
 }
 
@@ -498,27 +498,27 @@ GeometryFactory::GeometryFactory( const bool generate_indices )
 Geometry GeometryFactory::GenerateXZUnitSquare()
 {	
 	Geometry xz_quad;
-	xz_quad.quads.push_back( GeoQuad::XZQuad( XMFLOAT3( -0.5f, 0, 0.5f ), 1.0f, -1.0f ) ); 
+	xz_quad.quads.push_back( GeoQuad::XZQuad( GeoFloat3( -0.5f, 0, 0.5f ), 1.0f, -1.0f ) ); 
 	xz_quad.normal = XMFLOAT3( 0, 1, 0 );
-	GeoVector normal =  GeoQuad::XZQuad( XMFLOAT3( -0.5f, 0, 0.5f ), 1.0f, -1.0f ).Triangulate().first.ComputeNormal();
+	GeoVector normal =  GeoQuad::XZQuad( GeoFloat3( -0.5f, 0, 0.5f ), 1.0f, -1.0f ).Triangulate().first.ComputeNormal();
 	return xz_quad;
 }
 
 Geometry GeometryFactory::GenerateYZUnitSquare()
 {
 	Geometry yz_quad;
-	yz_quad.quads.push_back( GeoQuad::ZYQuad( XMFLOAT3( 0, -0.5f, -0.5f  ), 1.0f, 1.0f ) ); 
+	yz_quad.quads.push_back( GeoQuad::ZYQuad( GeoFloat3( 0, -0.5f, -0.5f  ), 1.0f, 1.0f ) ); 
 	yz_quad.normal = XMFLOAT3( 1, 0, 0 );
-	GeoVector normal =  GeoQuad::ZYQuad( XMFLOAT3( 0, -0.5f, -0.5f  ), 1.0f, 1.0f ).Triangulate().first.ComputeNormal();
+	GeoVector normal =  GeoQuad::ZYQuad( GeoFloat3( 0, -0.5f, -0.5f  ), 1.0f, 1.0f ).Triangulate().first.ComputeNormal();
 	return yz_quad;
 }
 	
 Geometry GeometryFactory::GenerateXYUnitSquare()
 {
 	Geometry xy_quad;
-	xy_quad.quads.push_back( GeoQuad::XYQuad( XMFLOAT3( -0.5f, -0.5f, 0 ), 1.0f, 1.0f ) ); 
+	xy_quad.quads.push_back( GeoQuad::XYQuad( GeoFloat3( -0.5f, -0.5f, 0 ), 1.0f, 1.0f ) ); 
 	xy_quad.normal = XMFLOAT3( 0, 0, 1 );
-	GeoVector normal =  GeoQuad::XYQuad( XMFLOAT3( -0.5f, -0.5f, 0 ), 1.0f, 1.0f ).Triangulate().first.ComputeNormal();
+	GeoVector normal =  GeoQuad::XYQuad( GeoFloat3( -0.5f, -0.5f, 0 ), 1.0f, 1.0f ).Triangulate().first.ComputeNormal();
 	return xy_quad;
 }
 	
@@ -581,10 +581,10 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 		else if( left_angle >= 135+90 && left_angle < 360-45 )
 			left_bottom.y = right_bottom.y = -half_inscribed_square_length;
 		
-		GeoVertex left_bottom_vertex( Vertex(XMFLOAT3(left_bottom.x, 0, left_bottom.y)) );
-		GeoVertex right_bottom_vertex( Vertex(XMFLOAT3(right_bottom.x, 0, right_bottom.y)) );
-		GeoVertex left_top_vertex( Vertex(XMFLOAT3(left_top.x, 0, left_top.y)), true );
-		GeoVertex right_top_vertex( Vertex(XMFLOAT3(right_top.x, 0, right_top.y)), true );
+		GeoVertex left_bottom_vertex( Vertex(GeoFloat3(left_bottom.x, 0, left_bottom.y)) );
+		GeoVertex right_bottom_vertex( Vertex(GeoFloat3(right_bottom.x, 0, right_bottom.y)) );
+		GeoVertex left_top_vertex( Vertex(GeoFloat3(left_top.x, 0, left_top.y)), true );
+		GeoVertex right_top_vertex( Vertex(GeoFloat3(right_top.x, 0, right_top.y)), true );
 		
 		bool tri_time = false;
 		if( abs( right_bottom.x - right_top.x ) < 0.01f && abs( right_bottom.y - right_top.y ) < 0.01f )
@@ -616,10 +616,10 @@ Geometry GeometryFactory::GenerateUnitCylinder()
 	{
 		const float left_angle = XMConvertToRadians( i * 360.0f / (float) num_wedges );
 		const float right_angle = XMConvertToRadians( (i+1) * 360.0f / (float) num_wedges );
-		GeoVertex a( Vertex( XMFLOAT3( cos(left_angle), -height / 2.0f, sin(left_angle) ), XMFLOAT2( 50*left_angle / XM_2PI, 0 ) ), true );
-		GeoVertex b( Vertex( XMFLOAT3( cos(right_angle), -height / 2.0f, sin(right_angle) ), XMFLOAT2( 50*right_angle / XM_2PI, 0 ) ), true );
-		GeoVertex c( Vertex( XMFLOAT3( cos(right_angle), height / 2.0f, sin(right_angle) ), XMFLOAT2( 50*right_angle / XM_2PI, 1 ) ), true );
-		GeoVertex d( Vertex( XMFLOAT3( cos(left_angle), height / 2.0f, sin(left_angle) ), XMFLOAT2( 50*left_angle / XM_2PI, 1 ) ), true );
+		GeoVertex a( Vertex( GeoFloat3( cos(left_angle), -height / 2.0f, sin(left_angle) ), GeoFloat2( 50*left_angle / XM_2PI, 0 ) ), true );
+		GeoVertex b( Vertex( GeoFloat3( cos(right_angle), -height / 2.0f, sin(right_angle) ), GeoFloat2( 50*right_angle / XM_2PI, 0 ) ), true );
+		GeoVertex c( Vertex( GeoFloat3( cos(right_angle), height / 2.0f, sin(right_angle) ), GeoFloat2( 50*right_angle / XM_2PI, 1 ) ), true );
+		GeoVertex d( Vertex( GeoFloat3( cos(left_angle), height / 2.0f, sin(left_angle) ), GeoFloat2( 50*left_angle / XM_2PI, 1 ) ), true );
 		cylinder.quads.push_back( GeoQuad( d, c, b, a ) );
 	}
 	return cylinder;
@@ -636,13 +636,13 @@ Geometry GeometryFactory::GenerateUnitSphere()
 	const float num_iterations = 4;
 	unsigned int i,it;
 	float a;
-	std::vector<XMFLOAT3> p;
-	p.push_back( XMFLOAT3( 0.0,0.0,1.0 ) );
-	p.push_back( XMFLOAT3( 0.0,0.0,-1.0 ) );
-	p.push_back( XMFLOAT3( -1.0,-1.0,0.0 ) );
-	p.push_back( XMFLOAT3( 1.0,-1.0,0.0 ) );
-	p.push_back( XMFLOAT3( 1.0,1.0,0.0 ) );
-	p.push_back( XMFLOAT3( -1.0,1.0,0.0 ) );
+	std::vector<GeoFloat3> p;
+	p.push_back( GeoFloat3( 0.0,0.0,1.0 ) );
+	p.push_back( GeoFloat3( 0.0,0.0,-1.0 ) );
+	p.push_back( GeoFloat3( -1.0,-1.0,0.0 ) );
+	p.push_back( GeoFloat3( 1.0,-1.0,0.0 ) );
+	p.push_back( GeoFloat3( 1.0,1.0,0.0 ) );
+	p.push_back( GeoFloat3( -1.0,1.0,0.0 ) );
 
 	unsigned int nt = 0,ntold;
 
@@ -653,9 +653,9 @@ Geometry GeometryFactory::GenerateUnitSphere()
 		p[i].y *= a;
 	}
 
-	std::vector<std::vector<XMFLOAT3>> f;
+	std::vector<std::vector<GeoFloat3>> f;
 
-	std::vector<XMFLOAT3> face;
+	std::vector<GeoFloat3> face;
 	face.push_back( p[0] );
 	face.push_back( p[3] );
 	face.push_back( p[4] );
@@ -712,7 +712,7 @@ Geometry GeometryFactory::GenerateUnitSphere()
 	for (it = 0; it < num_iterations; it++) {
 		ntold = nt;
 		for (i = 0; i < ntold; i++) {
-			XMFLOAT3 pa, pb, pc;
+			GeoFloat3 pa, pb, pc;
 			pa.x = (f[i][0].x + f[i][1].x) / 2.0f;
 			pa.y = (f[i][0].y + f[i][1].y) / 2.0f;
 			pa.z = (f[i][0].z + f[i][1].z) / 2.0f;
@@ -723,9 +723,9 @@ Geometry GeometryFactory::GenerateUnitSphere()
 			pc.y = (f[i][2].y + f[i][0].y) / 2.0f;
 			pc.z = (f[i][2].z + f[i][0].z) / 2.0f;
 
-			XMStoreFloat3( &pa, XMVector3Normalize( XMLoadFloat3( &pa ) ) );
-			XMStoreFloat3( &pb, XMVector3Normalize( XMLoadFloat3( &pb ) ) );
-			XMStoreFloat3( &pc, XMVector3Normalize( XMLoadFloat3( &pc ) ) );
+			pa = GeoVector( pa ).Normalize().ToGeoFloat3();
+			pb = GeoVector( pb ).Normalize().ToGeoFloat3();
+			pc = GeoVector( pc ).Normalize().ToGeoFloat3();
 
 			face.clear();
 			face.push_back( f[i][0] );

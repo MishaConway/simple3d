@@ -87,4 +87,7 @@ struct GeoMatrix
 
 	/* ROTATION CONSTRUCTORS */
 	static GeoMatrix RotationYRH( const float angle );
+
+	GeoVector TransformCoord( const GeoVector& vec );
+	GeoVector Transform( const GeoVector& vec );
 };

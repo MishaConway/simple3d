@@ -135,3 +135,12 @@ GeoVector Camera::GetEyeDirectionNormalized()
 {
 	return GetEyeDirection().Normalize();
 }
+
+GeoVector Camera::ProjectIntoScreenspace( const GeoVector& worldspace_vertex )
+{
+    const float    HalfViewportWidth = width * 0.5f;  
+    const float    HalfViewportHeight = height * 0.5f;  
+    GeoVector Scale(HalfViewportWidth,   -HalfViewportHeight,  1,  0.0f);  
+    GeoVector Offset(HalfViewportWidth, HalfViewportHeight, 0, 0.0f);  
+	return ( view_transform * projection_transform ).TransformCoord( GeoVector(worldspace_vertex, 1 )) * Scale + Offset;
+}

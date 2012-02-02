@@ -22,6 +22,7 @@ public:
 	GeoVector GetFocusPosition();
 	GeoVector GetEyeDirection();
 	GeoVector GetEyeDirectionNormalized();
+	GeoVector ProjectIntoScreenspace( const GeoVector& worldspace_vertex );
 private:
 	GeoMatrix projection_transform;
 	unsigned int width;

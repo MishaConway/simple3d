@@ -142,10 +142,14 @@ std::vector<Vertex> RenderableObject::GetWorldspaceVertices()
 	for( unsigned int i = 0; i < objectspace_vertices.size(); i++ )
 	{
 		Vertex worldspace_vertex = objectspace_vertices[i];
-		worldspace_vertex.position = (world_transform * GeoVector( worldspace_vertex.position )).ToXMFloat3();
+		XMFLOAT3 cool = XMFLOAT3( worldspace_vertex.position.x, worldspace_vertex.position.y, worldspace_vertex.position.z );
+		worldspace_vertex.position = (world_transform * GeoVector( worldspace_vertex.position, 1 )).ToGeoFloat3();
+
+		//XMStoreFloat3( &cool, XMVector3Transform( XMLoadFloat3(&cool), world_transform.ToXMMATRIX() ) );
+		
+	//	worldspace_vertex.position = GeoVector( cool ).ToGeoFloat3();
+	//	printf( "what....\n" );
 		worldspace_vertices.push_back( worldspace_vertex );
-		//XMStoreFloat3( &worldspace_vertex.position, XMVector3Transform( XMLoadFloat3(&objectspace_vertices[i].position), world_transform.ToXMMATRIX() ) );
-		//worldspace_vertices.push_back( worldspace_vertex );
 	}
 	return worldspace_vertices;
 }
