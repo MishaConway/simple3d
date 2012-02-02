@@ -8,6 +8,10 @@
 #endif
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || TARGET_OS_IPAD || TARGET_OS_IPAD_SIMULATOR
-#include <OpenGLES/ES1/gl.h>
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#define glMapBuffer glMapBufferOES
+#define glUnmapBuffer glUnmapBufferOES
+#define GL_WRITE_ONLY GL_WRITE_ONLY_OES
 #endif
 

@@ -49,10 +49,10 @@ OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& shader_
 			const char* c_str = source.c_str();
 			const GLint length = source.length();
 			glShaderSource( shader_id, 1, &c_str, &length );  
-			glCompileShaderARB(shader_id);	
+			glCompileShader(shader_id);	
 	
 			GLint compiled;
-			glGetObjectParameterivARB(shader_id, GL_COMPILE_STATUS, &compiled);
+			glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compiled);
 			if (compiled)
 				valid = true;
 			else
@@ -63,7 +63,11 @@ OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& shader_
 				if (blen > 1)
 				{
 					GLchar* compiler_log = new GLchar[blen];
+					#ifdef GL_ES_VERSION_2_0
+					glGetShaderInfoLogARB(shader_id, blen, &slen, compiler_log);
+					#else
 					glGetInfoLogARB(shader_id, blen, &slen, compiler_log);
+					#endif
 					printf( "error compiling %s: %s\n", name.c_str(), compiler_log );
 					delete [] compiler_log;
 				}
@@ -143,6 +147,12 @@ OpenGLShaderProgram::OpenGLShaderProgram( const std::string& name, OpenGLVertexS
 			{
 				GLchar* link_log = new GLchar[blen];
 				glGetInfoLogARB(program_id, blen, &slen, link_log);
+				#ifdef GL_ES_VERSION_2_0
+				glGetProgramInfoLogARB(program_id, blen, &slen, link_log);
+				#else
+				glGetInfoLogARB(program_id, blen, &slen, link_log);
+				#endif
+
 				printf( "error linking program: %s\n", link_log );
 				delete [] link_log;
 			}

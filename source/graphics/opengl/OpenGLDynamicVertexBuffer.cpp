@@ -3,12 +3,12 @@
 OpenGLDynamicVertexBuffer::OpenGLDynamicVertexBuffer(){}
 OpenGLDynamicVertexBuffer::OpenGLDynamicVertexBuffer( const std::vector<Vertex>& vertices )
 {	
-	InitializeVertexBuffer( vertices, GL_DYNAMIC_DRAW_ARB );
+	InitializeVertexBuffer( vertices, GL_DYNAMIC_DRAW );
 }
 
 OpenGLDynamicVertexBuffer::OpenGLDynamicVertexBuffer( const unsigned int num_vertices )
 {
-	InitializeVertexBuffer( num_vertices, GL_DYNAMIC_DRAW_ARB );		
+	InitializeVertexBuffer( num_vertices, GL_DYNAMIC_DRAW );		
 }
 
 bool OpenGLDynamicVertexBuffer::SetVertices( const std::vector<Vertex>& vertices )

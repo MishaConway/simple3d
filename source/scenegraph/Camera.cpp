@@ -8,7 +8,7 @@ Camera::Camera( const unsigned int width, const unsigned int height, const float
 	this->fovy = fovy;
 	this->near_z = near_z;
 	this->far_z = far_z;
-	projection_transform = GeoMatrix::MatrixPerspectiveFovRH( XMConvertToRadians(fovy),(float)width / (float)height, near_z, far_z );
+	projection_transform = GeoMatrix::MatrixPerspectiveFovRH( GeoConvertToRadians(fovy),(float)width / (float)height, near_z, far_z );
 
 	current_eye_position = eye_position;
 	current_focus_position = focus_position;
@@ -143,4 +143,9 @@ GeoVector Camera::ProjectIntoScreenspace( const GeoVector& worldspace_vertex )
     GeoVector Scale(HalfViewportWidth,   -HalfViewportHeight,  1,  0.0f);  
     GeoVector Offset(HalfViewportWidth, HalfViewportHeight, 0, 0.0f);  
 	return ( view_transform * projection_transform ).TransformCoord( GeoVector(worldspace_vertex, 1 )) * Scale + Offset;
+}
+
+GeoFloat2 Camera::ScreenspaceToClipspace( const GeoFloat2& screenspace_vertex )
+{
+	return GeoFloat2( screenspace_vertex.x / (width * 0.5f) - 1.0f, 1.0f- screenspace_vertex.y /(height*0.5f) );
 }

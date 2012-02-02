@@ -5,6 +5,12 @@
 #include "../BaseRenderTarget.h"
 #include <vector>
 
+#ifdef GL_ES_VERSION_2_0
+#define DEFAULT_DEPTH_BUFFER_FORMAT GL_DEPTH_COMPONENT16
+#else
+#define DEFAULT_DEPTH_BUFFER_FORMAT GL_DEPTH_COMPONENT24
+#endif
+
 
 //class Effect;
 class OpenGLRenderTarget : public BaseRenderTarget

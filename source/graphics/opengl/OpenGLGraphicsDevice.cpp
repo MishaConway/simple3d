@@ -41,6 +41,14 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 
 	if( GLEW_OK != glewInit() )
 		return false;
+
+	glGenFramebuffers = glGenFramebuffersEXT;
+	glBindFramebuffer = glBindFramebufferEXT;
+	glGenRenderbuffers = glGenRenderbuffersEXT;
+	glBindRenderbuffer = glBindRenderbufferEXT;
+	glRenderbufferStorage = glRenderbufferStorageEXT;
+	glFramebufferRenderbuffer = glFramebufferRenderbufferEXT;
+	glCheckFramebufferStatus = glCheckFramebufferStatusEXT;
 #endif
 
 	printf( "running opengl %s\n", glGetString( GL_VERSION ) );
@@ -117,12 +125,12 @@ void OpenGLGraphicsDevice::SetVertexBuffer( OpenGLDynamicVertexBuffer& vertexBuf
 
 void OpenGLGraphicsDevice::SetDefaultRenderTarget()
 {
-	glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
 void OpenGLGraphicsDevice::SetRenderTarget( OpenGLRenderTarget& render_target )
 {
-	glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, render_target.fbo_id );
+	glBindFramebuffer( GL_FRAMEBUFFER, render_target.fbo_id );
 }
 
 void OpenGLGraphicsDevice::SetRenderTarget( OpenGLRenderTarget& render_target, const Color& clear_color )

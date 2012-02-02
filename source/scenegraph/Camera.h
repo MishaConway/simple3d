@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../geo/GeoMatrix.h"
+#include "../geo/GeoQuaternion.h"
 
 class Camera
 {
@@ -22,6 +23,9 @@ public:
 	GeoVector GetFocusPosition();
 	GeoVector GetEyeDirection();
 	GeoVector GetEyeDirectionNormalized();
+
+	GeoFloat2 ScreenspaceToClipspace( const GeoFloat2& screensapce_vertex );
+
 	GeoVector ProjectIntoScreenspace( const GeoVector& worldspace_vertex );
 private:
 	GeoMatrix projection_transform;

@@ -232,10 +232,10 @@ void OpenGLTexture::Setup( const unsigned int width, const unsigned int height, 
 	}
 
 	//Upload the textel buffer using Pixel Buffer Objects
-	glBindBufferARB( GL_PIXEL_UNPACK_BUFFER_ARB, pbo_id );
-	glBufferDataARB( GL_PIXEL_UNPACK_BUFFER_ARB, width*height*bpp, 0, GL_STREAM_DRAW );
+	glBindBuffer( GL_PIXEL_UNPACK_BUFFER, pbo_id );
+	glBufferData( GL_PIXEL_UNPACK_BUFFER, width*height*bpp, 0, GL_STREAM_DRAW );
 	glTexImage2D( GL_TEXTURE_2D, 0, internal_format, width, height, 0, external_format, component_type, (const GLubyte*) 0 );
-	glBindBufferARB( GL_PIXEL_UNPACK_BUFFER_ARB, 0 );
+	glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
 
 	valid = true;
 }
@@ -264,18 +264,18 @@ void* OpenGLTexture::Map( unsigned int* pPitch )
 	const unsigned int buffer_size = width*height*bpp;
 	if( pGraphicsDevice->GetCapabilities().SupportsPixelBufferObject() )
 	{
-		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, pbo_id );
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo_id );
 
 		//we can quickly invalidate the data stored on the GPU by nulling it
 		//before mapping the buffer to the client side. This allows the driver to avoid stalls due to 
 		//attempting to maintain a copy of the old textel buffer.
-		glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB, buffer_size, (const GLubyte*) 0, GL_DYNAMIC_DRAW);
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, buffer_size, (const GLubyte*) 0, GL_DYNAMIC_DRAW);
 
 		//Map our Pixel Buffer Object into client side memory
-		pMappedData = glMapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, GL_WRITE_ONLY);
+		pMappedData = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
 
 		//Unbind our Pixel Buffer Object
-		glBindBufferARB( GL_PIXEL_UNPACK_BUFFER_ARB, 0 );
+		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
 	}
 	else
 		pMappedData = new unsigned char[buffer_size];
@@ -291,12 +291,12 @@ void OpenGLTexture::Unmap()
 	glBindTexture( GL_TEXTURE_2D, texture_id  ); 
 	if( pGraphicsDevice->GetCapabilities().SupportsPixelBufferObject() )
 	{
-		glBindBufferARB( GL_PIXEL_UNPACK_BUFFER_ARB, pbo_id ); 			
-		glUnmapBufferARB( GL_PIXEL_UNPACK_BUFFER_ARB );
+		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, pbo_id ); 			
+		glUnmapBuffer( GL_PIXEL_UNPACK_BUFFER );
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, external_format, component_type, 0 );
 
 		//Unbind our Pixel Buffer Object
-		glBindBufferARB( GL_PIXEL_UNPACK_BUFFER_ARB, 0 );
+		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
 	}
 	else
 	{
@@ -327,7 +327,7 @@ bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_onl
 	GLint compressed_size = 0;
 	GLint compressed_format = 0;
 	glBindTexture( GL_TEXTURE_2D, texture_id  );
-	glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED_ARB, &is_compressed );
+	glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED, &is_compressed );
 	if( is_compressed )
 	{
 		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED_IMAGE_SIZE, &compressed_size );

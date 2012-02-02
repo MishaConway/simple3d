@@ -15,27 +15,27 @@ OpenGLRenderTarget::OpenGLRenderTarget( const unsigned int width, const unsigned
 	tex.SetTiling( 1, -1 );
 
 	//generate and bind an opengl frame buffer object for this texture
-	glGenFramebuffersEXT( 1, &fbo_id );
-	glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, fbo_id );
+	glGenFramebuffers( 1, &fbo_id );
+	glBindFramebuffer( GL_FRAMEBUFFER, fbo_id );
 
 	//attach the texture object to this framebuffer object
-	glFramebufferTexture2DEXT( GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, tex.GetOpenGLTextureId(), 0 );
+	glFramebufferTexture2DEXT( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex.GetOpenGLTextureId(), 0 );
 
-	glGenRenderbuffersEXT(1, &depth_buffer_id);
-	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depth_buffer_id);
-	glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, width, height);
+	glGenRenderbuffers(1, &depth_buffer_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, depth_buffer_id);
+	glRenderbufferStorage(GL_RENDERBUFFER, DEFAULT_DEPTH_BUFFER_FORMAT, width, height);
 	
 	//-------------------------
 	//Attach depth buffer to FBO
-	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depth_buffer_id);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_buffer_id);
 
-	GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT); 
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER); 
 	switch (status) 
 	{	
-		case GL_FRAMEBUFFER_COMPLETE_EXT: 
+		case GL_FRAMEBUFFER_COMPLETE: 
 			printf("framebuffer complete\n"); 
 			break;
-		case GL_FRAMEBUFFER_UNSUPPORTED_EXT: 
+		case GL_FRAMEBUFFER_UNSUPPORTED: 
 			printf("framebuffer unsupported\n"); 
 			break;
 		default: 
@@ -44,7 +44,7 @@ OpenGLRenderTarget::OpenGLRenderTarget( const unsigned int width, const unsigned
 	} 
 
 	//now that a framebuffer object has been created and attached to this texture, we can unbind it
-	glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
 void OpenGLRenderTarget::Free()
