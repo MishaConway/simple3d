@@ -65,7 +65,7 @@ void* BaseTexture::Map()
 	return Map( nullptr );
 }
 
-bool BaseTexture::SetData( std::function<void(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha)> write_pixel )
+bool BaseTexture::SetData( portable_function<void(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha)> write_pixel )
 {
 	unsigned int pitch;
 	unsigned char* pMappedData = (unsigned char*) Map( &pitch );	

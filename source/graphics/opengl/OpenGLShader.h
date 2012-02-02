@@ -63,7 +63,7 @@ public:
 	 bool SetMatrix( const std::string& variable_name, GeoMatrix& matrix );
 	 bool SetTexture( const std::string& variable_name, OpenGLTexture& texture, const GLenum texture_index );
 protected:
-	bool SetEffectVariable( const std::string& variable_name, std::function<void(const GLint uniform_location)> f );
+	bool SetEffectVariable( const std::string& variable_name, portable_function<void(const GLint uniform_location)> f );
 protected:
 	static OpenGLShaderProgram current_program;
 	GLuint program_id;

@@ -75,7 +75,7 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 
 }
  
- bool OpenGLEffect::RenderTechnique( const std::string& technique_name, std::function<void()> f )
+ bool OpenGLEffect::RenderTechnique( const std::string& technique_name, portable_function<void()> f )
  {
 	 shader_programs[technique_name].Enable();
 	 unsigned int mmm = matrix_uniforms.size();

@@ -200,7 +200,7 @@ std::vector<OpenGLShaderProgram> OpenGLShaderProgram::GetInvalidShaderPrograms()
 	return invalid_shaders_programs;
 }
 
-bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, std::function<void(const GLint uniform_location)> f )
+bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, portable_function<void(const GLint uniform_location)> f )
 {
 	if( UsingUniform( variable_name ) )
 	{

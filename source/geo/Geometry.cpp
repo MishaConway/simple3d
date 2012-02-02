@@ -333,7 +333,7 @@ Geometry Geometry::Translate( const float translation_x, const float translation
 	});
 }
 
-std::vector<GeoVertex> Geometry::SelectVertices( std::function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex )
+std::vector<GeoVertex> Geometry::SelectVertices( portable_function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex )
 {
 	bool select = false;
 	std::vector<GeoVertex> selected_vertices;
@@ -400,7 +400,7 @@ std::vector<GeoVertex> Geometry::SelectVertices( std::function<void(const GeoVer
 	return selected_vertices;
 }
 
-Geometry Geometry::ProcessVertices( std::function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex )
+Geometry Geometry::ProcessVertices( portable_function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex )
 {
 	Geometry g = *this;
 	

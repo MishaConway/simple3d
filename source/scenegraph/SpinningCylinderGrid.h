@@ -37,7 +37,7 @@ public:
 	virtual GeoVector GetWorldspaceCentroid();
 
 private:
-	void IterateGridTiles( std::function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile );
+	void IterateGridTiles( portable_function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile );
 	void TransformQuad( const unsigned int row, const float angle, const float radius_offset, const float scale_factor );
 private:
 	bool render_front_faces;

@@ -306,7 +306,7 @@ bool SpinningCylinderGrid::Render()
 	return true;	
 }
 
-void SpinningCylinderGrid::IterateGridTiles( std::function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile )
+void SpinningCylinderGrid::IterateGridTiles( portable_function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile )
 {
 	for( unsigned int row = 0; row < grid_tiles.size(); row++ )
 	for( unsigned int j = 0; j < num_tiles_per_circumference && j < grid_tiles[row].size(); j++ )
