@@ -89,7 +89,7 @@ public:
 	std::vector<Vertex> GetVertices();
 	
 
-	std::pair<std::vector<Vertex>, std::vector<unsigned int>> GetVerticesAndIndices();
+	std::pair<std::vector<Vertex>, std::vector<unsigned int>  > GetVerticesAndIndices();
 
 private:
 	std::vector<GeoVertex> vertices;

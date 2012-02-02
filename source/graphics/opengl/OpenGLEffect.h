@@ -39,7 +39,7 @@ private:
 	std::map< std::string, int > int_uniforms;
 	std::map< std::string, float > float_uniforms;
 	std::map< std::string, OpenGLTexture> texture_uniforms;
-	std::map< std::string, std::vector<float>> float_array_uniforms;
+	std::map< std::string, std::vector<float>  > float_array_uniforms;
 
   static OpenGLEffect current_effect;
 };
