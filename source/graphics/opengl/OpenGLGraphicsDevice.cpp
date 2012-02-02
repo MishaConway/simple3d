@@ -1,4 +1,5 @@
 #include "OpenGLGraphicsDevice.h"
+#include "../../std/nullptr.h"
 
 
 OpenGLGraphicsDevice::OpenGLGraphicsDevice()

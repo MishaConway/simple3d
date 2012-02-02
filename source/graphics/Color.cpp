@@ -1,5 +1,6 @@
 #include "Color.h"
 #include <algorithm>
+#include <math.h>
 
 Color::Color()
 {

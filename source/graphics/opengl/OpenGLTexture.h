@@ -17,6 +17,7 @@ namespace OpenGLTextureUsage
 	};
 }
 
+class OpenGLGraphicsDevice;
 class OpenGLTexture : public BaseTexture
 {
 friend class OpenGLGraphicsDevice;

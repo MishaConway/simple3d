@@ -1,4 +1,5 @@
 #include "BaseRenderTarget.h"
+#include <math.h>
 
 std::vector<float> BaseRenderTarget::ComputeGaussianKernel( const int Size, const float StandardDeviation )
 {	

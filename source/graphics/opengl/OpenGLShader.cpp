@@ -1,6 +1,7 @@
 #include "OpenGLShader.h"
 #include "../../geo/Geometry.h"
 #include <algorithm>
+#include "../../std/nullptr.h"
 
 std::map<std::string, OpenGLShader> OpenGLShader::shaders;
 OpenGLShaderProgram OpenGLShaderProgram::current_program;
@@ -19,7 +20,7 @@ std::string OpenGLShader::GetName()
 std::vector<OpenGLShader> OpenGLShader::GetValidShaders()
 {
 	std::vector<OpenGLShader> valid_shaders;
-	for( auto it = shaders.begin(); it != shaders.end();  it++ )
+	for( std::map<std::string, OpenGLShader>::iterator it = shaders.begin(); it != shaders.end();  it++ )
 		if( it->second.IsValid() )
 			valid_shaders.push_back( it->second );
 	return valid_shaders;
@@ -185,7 +186,7 @@ OpenGLShaderProgram OpenGLShaderProgram::GetCurrentProgram()
 std::vector<OpenGLShaderProgram> OpenGLShaderProgram::GetValidShaderPrograms()
 {
 	std::vector<OpenGLShaderProgram> valid_shaders_programs;
-	for( auto it = shader_programs.begin(); it != shader_programs.end();  it++ )
+	for( std::map<std::string, OpenGLShaderProgram>::iterator it = shader_programs.begin(); it != shader_programs.end();  it++ )
 		if( it->second.IsValid() )
 			valid_shaders_programs.push_back( it->second );
 	return valid_shaders_programs;
@@ -194,7 +195,7 @@ std::vector<OpenGLShaderProgram> OpenGLShaderProgram::GetValidShaderPrograms()
 std::vector<OpenGLShaderProgram> OpenGLShaderProgram::GetInvalidShaderPrograms()
 {
 	std::vector<OpenGLShaderProgram> invalid_shaders_programs;
-	for( auto it = shader_programs.begin(); it != shader_programs.end();  it++ )
+	for( std::map<std::string, OpenGLShaderProgram>::iterator it = shader_programs.begin(); it != shader_programs.end();  it++ )
 		if( !it->second.IsValid() )
 			invalid_shaders_programs.push_back( it->second );
 	return invalid_shaders_programs;
