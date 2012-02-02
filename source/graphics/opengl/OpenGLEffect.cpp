@@ -124,6 +124,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
 	 //return SetEffectVariable( variable_name, [&flt](const GLint uniform_location){glUniform1f( uniform_location, flt );});
  }
 
+#ifdef __XNAMATH_H__
  bool OpenGLEffect::SetFloatArray( const std::string& variable_name, XMFLOAT3& float_array )
  {
 	 std::vector<float> f;
@@ -147,6 +148,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
 	 
 	 //return SetFloatArray( variable_name, GeoVector( float_array ) );
  }
+#endif 
 
  bool OpenGLEffect::SetFloatArray( const std::string& variable_name, GeoVector& float_array )
  {
@@ -167,6 +169,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
 	return true;
  }
 
+#ifdef __XNAMATH_H__
  bool OpenGLEffect::SetMatrix( const std::string& variable_name, XMMATRIX& matrix )
  {	 
 	 return SetMatrix( variable_name, GeoMatrix( matrix ) );
@@ -176,6 +179,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
  {
 	 return SetMatrix( variable_name, GeoMatrix( matrix ) );
  }
+#endif
 
  bool OpenGLEffect::SetMatrix( const std::string& variable_name, GeoMatrix& matrix )
  {
