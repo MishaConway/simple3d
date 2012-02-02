@@ -77,7 +77,7 @@ public:
 
 	Geometry ExtrudePerimeter( const float distance );
 
-	Geometry ProcessVertices( std::function<void(GeoVertex* pVertex, const XMFLOAT3& normal)> process_vertex );
+	Geometry ProcessVertices( std::function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex );
 
 	std::vector<GeoVertex> SelectVertices( std::function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex );
 
@@ -97,7 +97,7 @@ private:
 	std::vector<GeoQuad> quads;
 	std::vector<Geometry> geometries;
 	std::vector<unsigned int> indices;
-	XMFLOAT3 normal;
+	GeoFloat3 normal;
 	std::string label;
 };
 

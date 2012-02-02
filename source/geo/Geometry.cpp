@@ -303,7 +303,7 @@ Geometry Geometry::UniformScale( const float scale_factor )
 
 Geometry Geometry::Scale( const float scale_x, const float scale_y, const float scale_z )
 {
-	return (*this).ProcessVertices( [&scale_x, &scale_y, &scale_z](GeoVertex* vertex, const XMFLOAT3& normal){ 
+	return (*this).ProcessVertices( [&scale_x, &scale_y, &scale_z](GeoVertex* vertex, const GeoFloat3& normal){ 
 		vertex->vertex.position.x *= scale_x;
 		vertex->vertex.position.y *= scale_y;
 		vertex->vertex.position.z *= scale_z;
@@ -319,14 +319,14 @@ Geometry Geometry::Label( const std::string label )
 
 Geometry Geometry::SetTextureIndex( const unsigned int texture_index )
 {
-	return (*this).ProcessVertices( [&texture_index](GeoVertex* vertex, const XMFLOAT3& normal){ 
+	return (*this).ProcessVertices( [&texture_index](GeoVertex* vertex, const GeoFloat3& normal){ 
 		vertex->vertex.colorUV.z = (float) texture_index;
 	});	
 }
 
 Geometry Geometry::Translate( const float translation_x, const float translation_y, const float translation_z )
 {
-	return (*this).ProcessVertices( [&translation_x, &translation_y, &translation_z](GeoVertex* vertex, const XMFLOAT3& normal){ 
+	return (*this).ProcessVertices( [&translation_x, &translation_y, &translation_z](GeoVertex* vertex, const GeoFloat3& normal){ 
 		vertex->vertex.position.x *= translation_x;
 		vertex->vertex.position.y *= translation_y;
 		vertex->vertex.position.z *= translation_z;
@@ -400,7 +400,7 @@ std::vector<GeoVertex> Geometry::SelectVertices( std::function<void(const GeoVer
 	return selected_vertices;
 }
 
-Geometry Geometry::ProcessVertices( std::function<void(GeoVertex* pVertex, const XMFLOAT3& normal)> process_vertex )
+Geometry Geometry::ProcessVertices( std::function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex )
 {
 	Geometry g = *this;
 	
@@ -438,7 +438,7 @@ Geometry Geometry::ProcessVertices( std::function<void(GeoVertex* pVertex, const
 
 Geometry Geometry::TranslateAlongNormal( const float distance )
 {
-	return (*this).ProcessVertices( [&distance](GeoVertex* vertex, const XMFLOAT3& normal){ 
+	return (*this).ProcessVertices( [&distance](GeoVertex* vertex, const GeoFloat3& normal){ 
 		vertex->vertex.position.x += normal.x * distance;
 		vertex->vertex.position.y += normal.y * distance;
 		vertex->vertex.position.z += normal.z * distance;
@@ -477,7 +477,7 @@ Geometry Geometry::ReverseWinding( const bool invert_normal )
 
 Geometry Geometry::InvertXZ()
 {
-	return (*this).ProcessVertices( [](GeoVertex* vertex, const XMFLOAT3& normal){ 
+	return (*this).ProcessVertices( [](GeoVertex* vertex, const GeoFloat3& normal){ 
 		const float temp = vertex->vertex.position.x;
 		vertex->vertex.position.x = vertex->vertex.position.z;
 		vertex->vertex.position.z = temp;
@@ -499,7 +499,7 @@ Geometry GeometryFactory::GenerateXZUnitSquare()
 {	
 	Geometry xz_quad;
 	xz_quad.quads.push_back( GeoQuad::XZQuad( GeoFloat3( -0.5f, 0, 0.5f ), 1.0f, -1.0f ) ); 
-	xz_quad.normal = XMFLOAT3( 0, 1, 0 );
+	xz_quad.normal = GeoFloat3( 0, 1, 0 );
 	GeoVector normal =  GeoQuad::XZQuad( GeoFloat3( -0.5f, 0, 0.5f ), 1.0f, -1.0f ).Triangulate().first.ComputeNormal();
 	return xz_quad;
 }
@@ -508,7 +508,7 @@ Geometry GeometryFactory::GenerateYZUnitSquare()
 {
 	Geometry yz_quad;
 	yz_quad.quads.push_back( GeoQuad::ZYQuad( GeoFloat3( 0, -0.5f, -0.5f  ), 1.0f, 1.0f ) ); 
-	yz_quad.normal = XMFLOAT3( 1, 0, 0 );
+	yz_quad.normal = GeoFloat3( 1, 0, 0 );
 	GeoVector normal =  GeoQuad::ZYQuad( GeoFloat3( 0, -0.5f, -0.5f  ), 1.0f, 1.0f ).Triangulate().first.ComputeNormal();
 	return yz_quad;
 }
@@ -517,7 +517,7 @@ Geometry GeometryFactory::GenerateXYUnitSquare()
 {
 	Geometry xy_quad;
 	xy_quad.quads.push_back( GeoQuad::XYQuad( GeoFloat3( -0.5f, -0.5f, 0 ), 1.0f, 1.0f ) ); 
-	xy_quad.normal = XMFLOAT3( 0, 0, 1 );
+	xy_quad.normal = GeoFloat3( 0, 0, 1 );
 	GeoVector normal =  GeoQuad::XYQuad( GeoFloat3( -0.5f, -0.5f, 0 ), 1.0f, 1.0f ).Triangulate().first.ComputeNormal();
 	return xy_quad;
 }
@@ -533,7 +533,7 @@ Geometry GeometryFactory::GenerateUnitCube()
 Geometry GeometryFactory::GenerateUnitXZCircle()
 {
 	Geometry xz_circle;
-	xz_circle.normal = XMFLOAT3( 0, 1, 0 );
+	xz_circle.normal = GeoFloat3( 0, 1, 0 );
 	
 	const float radius = 1.0f;
 	const float inscribed_square_length = radius * sqrtf( 2.0f );
@@ -567,11 +567,11 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 		}
 		last_right_angle = right_angle;
 
-		const XMFLOAT2 left_top( radius * cos( XMConvertToRadians(left_angle)), radius  * sin( XMConvertToRadians(left_angle) ) );
-		const XMFLOAT2 right_top( radius  * cos( XMConvertToRadians(right_angle)), radius  * sin( XMConvertToRadians(right_angle) ) );
+		const GeoFloat2 left_top( radius * cos( XMConvertToRadians(left_angle)), radius  * sin( XMConvertToRadians(left_angle) ) );
+		const GeoFloat2 right_top( radius  * cos( XMConvertToRadians(right_angle)), radius  * sin( XMConvertToRadians(right_angle) ) );
 
-		XMFLOAT2 left_bottom = left_top;
-		XMFLOAT2 right_bottom = right_top;
+		GeoFloat2 left_bottom = left_top;
+		GeoFloat2 right_bottom = right_top;
 		if( left_angle >= -45 && left_angle < 45  )
 			left_bottom.x = right_bottom.x = half_inscribed_square_length;
 		else if( left_angle >= 45 && left_angle < 135 )
@@ -597,7 +597,7 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 	}
 	
 	xz_circle = xz_circle + GenerateXZUnitSquare().UniformScale( sqrtf(2) );	
-	xz_circle = xz_circle.ProcessVertices( [this, &radius](GeoVertex* vertex, const XMFLOAT3& normal){ 
+	xz_circle = xz_circle.ProcessVertices( [this, &radius](GeoVertex* vertex, const GeoFloat3& normal){ 
 		vertex->vertex.colorUV.x = (vertex->vertex.position.x) / (2*radius );
 		vertex->vertex.colorUV.y = (-vertex->vertex.position.z) / (2*radius );
 	});	
@@ -611,7 +611,7 @@ Geometry GeometryFactory::GenerateUnitCylinder()
 	const unsigned int num_wedges = 260;
 	
 	Geometry cylinder;
-	cylinder.normal = XMFLOAT3( 0, 1, 0 );
+	cylinder.normal = GeoFloat3( 0, 1, 0 );
 	for( unsigned int i = 0; i < num_wedges; i++ )
 	{
 		const float left_angle = XMConvertToRadians( i * 360.0f / (float) num_wedges );
