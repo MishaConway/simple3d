@@ -1,4 +1,5 @@
 #include "GeoVector.h"
+#include <math.h>
 
 //constructors
 GeoVector::GeoVector() 

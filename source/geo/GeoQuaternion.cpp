@@ -1,4 +1,5 @@
 #include "GeoQuaternion.h"
+#include <math.h>
 
 GeoQuaternion::GeoQuaternion()
 {

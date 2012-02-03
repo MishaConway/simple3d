@@ -168,7 +168,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
  }
 #endif 
 
- bool OpenGLEffect::SetFloatArray( const std::string& variable_name, GeoVector& float_array )
+ bool OpenGLEffect::SetFloatArray( const std::string& variable_name, GeoVector float_array )
  {
 	 std::vector<float> f;
 	 f.push_back( float_array.x );
@@ -181,7 +181,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
 	 // return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform4fv( uniform_location, 1, (float*) &float_array );});
  }
 
- bool OpenGLEffect::SetFloatArray( const std::string& variable_name, std::vector<float>& float_array )
+ bool OpenGLEffect::SetFloatArray( const std::string& variable_name, std::vector<float> float_array )
  {
 	float_array_uniforms[variable_name] = float_array;
 	return true;
@@ -199,7 +199,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
  }
 #endif
 
- bool OpenGLEffect::SetMatrix( const std::string& variable_name, GeoMatrix& matrix )
+ bool OpenGLEffect::SetMatrix( const std::string& variable_name, GeoMatrix matrix )
  {
 	matrix_uniforms[variable_name] = matrix;
 	return true;
@@ -207,7 +207,7 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
 	 //return SetEffectVariable( variable_name, [&matrix](const GLint uniform_location){glUniformMatrix4fv( uniform_location, 1, GL_FALSE, (float*) &matrix );});
  }
 
- bool OpenGLEffect::SetTexture( const std::string& variable_name, OpenGLTexture& texture )
+ bool OpenGLEffect::SetTexture( const std::string& variable_name, OpenGLTexture texture )
  {
 	SetFloat( variable_name + "_horizontal_offset", texture.GetHorizontalOffset() );
 	SetFloat( variable_name + "_vertical_offset", texture.GetVerticalOffset() );

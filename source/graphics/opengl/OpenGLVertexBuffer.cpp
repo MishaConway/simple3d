@@ -3,7 +3,7 @@
 OpenGLVertexBuffer::OpenGLVertexBuffer(){}
 OpenGLVertexBuffer::OpenGLVertexBuffer( const std::vector<Vertex>& vertices )
 {		
-	InitializeVertexBuffer( vertices, GL_STATIC_DRAW_ARB );
+	InitializeVertexBuffer( vertices, GL_STATIC_DRAW );
 }
 
 void OpenGLVertexBuffer::InitializeVertexBuffer( const std::vector<Vertex>& vertices, GLenum usage )
@@ -13,13 +13,13 @@ void OpenGLVertexBuffer::InitializeVertexBuffer( const std::vector<Vertex>& vert
 	void* pInitialData = nullptr;
 	if( !vertices.empty() )
 		pInitialData = (void*) &vertices[0]; 
-	buffer = OpenGLBuffer( pInitialData, num_vertices * sizeof(Vertex), GL_ARRAY_BUFFER_ARB, usage );  
+	buffer = OpenGLBuffer( pInitialData, num_vertices * sizeof(Vertex), GL_ARRAY_BUFFER, usage );  
 }
 
 void OpenGLVertexBuffer::InitializeVertexBuffer( const unsigned int num_vertices, GLenum usage )
 {
 	this->num_vertices = num_vertices;
-	buffer = OpenGLBuffer( nullptr, num_vertices * sizeof(Vertex), GL_ARRAY_BUFFER_ARB, usage );  
+	buffer = OpenGLBuffer( nullptr, num_vertices * sizeof(Vertex), GL_ARRAY_BUFFER, usage );  
 }
 
 bool OpenGLVertexBuffer::IsValid()

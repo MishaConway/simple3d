@@ -81,9 +81,14 @@ bool Sprite::Render()
 		e.SetMatrix( "WorldTransform", GetWorldTransform() );
 		pGraphicsDevice->SetVertexBuffer( GetVertexBuffer() );
 		pGraphicsDevice->GetStateManager().SetSpriteRendering( blend_type );
-		e.RenderTechnique( GetTechnique(), [this](){ 
-			pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
-		});
+
+		#ifdef _WIN32				
+		e.RenderTechnique( GetTechnique(), [this](){ pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );});
+		#else
+		e.SetTechnique( GetTechnique() );
+		pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
+		e.UnsetTechnique();
+		#endif
 	}
 	return true;	
 }

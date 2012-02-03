@@ -49,7 +49,7 @@ std::string Directory::GetWorkingDirectory()
 	working_directory += "\\";
 #else
      if( getcwd( (char*) buffer, 1024 ) != 0 )
-		workingDir = std::string( (char*) buffer );
+		working_directory = std::string( (char*) buffer );
 #endif
 	return working_directory;	
 }
@@ -96,7 +96,7 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 	if( directory == 0 )
 		return files;
 
-	std::string fext = "." + ext;
+	std::string fext = ".";
            
 	struct dirent* directoryEntry;
 	while ( directoryEntry = readdir (directory) )
@@ -133,7 +133,12 @@ bool File::Exists( const std::string& path )
 
 std::string File::ReadAllText( const std::string& path )
 {
+#ifdef _WIN32	
 	return std::string((std::istreambuf_iterator<char>(std::ifstream( path.c_str() ))), std::istreambuf_iterator<char>());
+#else
+	//figure out how to do this...
+	return "";
+#endif
 }
 
 

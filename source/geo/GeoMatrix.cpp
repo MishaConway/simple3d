@@ -1,4 +1,5 @@
 #include "GeoMatrix.h"
+#include <math.h>
 
 /* OGLXMATRIX IMPLEMENTATION */
 GeoMatrix::GeoMatrix() {}

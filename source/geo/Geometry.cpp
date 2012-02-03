@@ -1,4 +1,6 @@
 #include "Geometry.h"
+#include <algorithm>
+
 
 Vertex::Vertex()
 {
@@ -78,7 +80,7 @@ GeoQuad::GeoQuad()
 {	
 }
 
-GeoQuad GeoQuad::XZQuad( GeoFloat3& a, const float width, const float length )
+GeoQuad GeoQuad::XZQuad( GeoFloat3 a, const float width, const float length )
 {
 	GeoQuad quad;
 	for( unsigned int i = 0; i < 4; i++ )
@@ -105,7 +107,7 @@ GeoQuad GeoQuad::XZQuad( GeoFloat3& a, const float width, const float length )
 	return quad;
 }
 
-GeoQuad GeoQuad::XYQuad( GeoFloat3& a, const float width, const float height )
+GeoQuad GeoQuad::XYQuad( GeoFloat3 a, const float width, const float height )
 {
 	GeoQuad quad;
 	for( unsigned int i = 0; i < 4; i++ )
@@ -130,7 +132,7 @@ GeoQuad GeoQuad::XYQuad( GeoFloat3& a, const float width, const float height )
 	return quad;
 }
 
-GeoQuad GeoQuad::ZYQuad( GeoFloat3& a, const float length, const float height )
+GeoQuad GeoQuad::ZYQuad( GeoFloat3 a, const float length, const float height )
 {
 	GeoQuad quad;
 	for( unsigned int i = 0; i < 4; i++ )
@@ -223,15 +225,15 @@ std::vector<Vertex> Geometry::GetVertices()
 			aggregated_vertices.push_back( vertices[i].vertex );
 		for( unsigned int i = 0; i < triangles.size(); i++ )
 		{
-			auto verts = triangles[i].GetVertices();
+			std::triple<GeoVertex, GeoVertex, GeoVertex> verts = triangles[i].GetVertices();
 			aggregated_vertices.push_back( verts.first.vertex );
 			aggregated_vertices.push_back( verts.second.vertex );
 			aggregated_vertices.push_back( verts.third.vertex );
 		}
 		for( unsigned int i = 0; i < quads.size(); i++ )
 		{
-			auto triangles = quads[i].Triangulate();
-			auto verts = triangles.first.GetVertices();
+			std::pair<GeoTriangle, GeoTriangle> triangles = quads[i].Triangulate();
+			std::triple<GeoVertex, GeoVertex, GeoVertex> verts = triangles.first.GetVertices();
 			aggregated_vertices.push_back( verts.first.vertex );
 			aggregated_vertices.push_back( verts.second.vertex);
 			aggregated_vertices.push_back( verts.third.vertex );
@@ -455,7 +457,7 @@ Geometry Geometry::ProcessVertices( void (*process_vertex)(GeoVertex* pVertex, c
 		//process all triangles
 		for( unsigned int i = 0; i < g.triangles.size(); i++ )
 		{
-			auto verts = g.triangles[i].GetVertices();
+			std::triple<GeoVertex, GeoVertex, GeoVertex> verts = g.triangles[i].GetVertices();
 			process_vertex( &verts.first, g.normal );
 			process_vertex( &verts.second, g.normal );
 			process_vertex( &verts.third, g.normal );
@@ -465,7 +467,7 @@ Geometry Geometry::ProcessVertices( void (*process_vertex)(GeoVertex* pVertex, c
 		//process all quads
 		for( unsigned int i = 0; i < g.quads.size(); i++ )
 		{
-			auto verts = g.quads[i].GetVertices();
+			std::vector<GeoVertex> verts = g.quads[i].GetVertices();
 			process_vertex( &verts[0], g.normal );
 			process_vertex( &verts[1], g.normal );
 			process_vertex( &verts[2], g.normal );
@@ -482,7 +484,8 @@ Geometry Geometry::ProcessVertices( void (*process_vertex)(GeoVertex* pVertex, c
 	return g;
 }
 
-Geometry Geometry::ProcessVertices( portable_function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex )
+#ifdef _WIN32	
+Geometry Geometry::ProcessVertices( std::function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex )
 {
 	Geometry g = *this;
 	
@@ -491,7 +494,7 @@ Geometry Geometry::ProcessVertices( portable_function<void(GeoVertex* pVertex, c
 		//process all triangles
 		for( unsigned int i = 0; i < g.triangles.size(); i++ )
 		{
-			auto verts = g.triangles[i].GetVertices();
+			std::triple<GeoVertex, GeoVertex, GeoVertex> verts = g.triangles[i].GetVertices();
 			process_vertex( &verts.first, g.normal );
 			process_vertex( &verts.second, g.normal );
 			process_vertex( &verts.third, g.normal );
@@ -501,7 +504,7 @@ Geometry Geometry::ProcessVertices( portable_function<void(GeoVertex* pVertex, c
 		//process all quads
 		for( unsigned int i = 0; i < g.quads.size(); i++ )
 		{
-			auto verts = g.quads[i].GetVertices();
+			std::vector<GeoVertex> verts = g.quads[i].GetVertices();
 			process_vertex( &verts[0], g.normal );
 			process_vertex( &verts[1], g.normal );
 			process_vertex( &verts[2], g.normal );
@@ -517,6 +520,7 @@ Geometry Geometry::ProcessVertices( portable_function<void(GeoVertex* pVertex, c
 		g.geometries[i] = g.geometries[i].ProcessVertices( process_vertex );
 	return g;
 }
+#endif
 
 #ifndef _WIN32	
 float translate_along_normal_lamda_distance;
@@ -629,6 +633,14 @@ Geometry GeometryFactory::GenerateUnitCube()
 	return unit_cube;
 }
 
+#ifndef _WIN32	
+float generate_unit_xz_circle_lambda_radius;
+void GenerateUnitXZCircleLambda(GeoVertex* pVertex, const GeoFloat3& normal )
+{
+	pVertex->vertex.colorUV.x = (pVertex->vertex.position.x) / (2*generate_unit_xz_circle_lambda_radius );
+	pVertex->vertex.colorUV.y = (-pVertex->vertex.position.z) / (2*generate_unit_xz_circle_lambda_radius );
+}
+#endif
 Geometry GeometryFactory::GenerateUnitXZCircle()
 {
 	Geometry xz_circle;
@@ -642,7 +654,7 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 	float last_right_angle = 0;
 	for( unsigned int i = 0; i < num_wedges; i++ )
 	{
-		const float left_angle = min( -45 + angle_per_wedge * (float) i, last_right_angle );
+		const float left_angle = std::min( -45 + angle_per_wedge * (float) i, last_right_angle );
 		float right_angle = -45 + angle_per_wedge * (float) (i+1);
 		if( left_angle >= -45 && left_angle < 45 )
 		{
@@ -666,8 +678,8 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 		}
 		last_right_angle = right_angle;
 
-		const GeoFloat2 left_top( radius * cos( XMConvertToRadians(left_angle)), radius  * sin( XMConvertToRadians(left_angle) ) );
-		const GeoFloat2 right_top( radius  * cos( XMConvertToRadians(right_angle)), radius  * sin( XMConvertToRadians(right_angle) ) );
+		const GeoFloat2 left_top( radius * cos( GeoConvertToRadians(left_angle)), radius  * sin( GeoConvertToRadians(left_angle) ) );
+		const GeoFloat2 right_top( radius  * cos( GeoConvertToRadians(right_angle)), radius  * sin( GeoConvertToRadians(right_angle) ) );
 
 		GeoFloat2 left_bottom = left_top;
 		GeoFloat2 right_bottom = right_top;
@@ -696,10 +708,16 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 	}
 	
 	xz_circle = xz_circle + GenerateXZUnitSquare().UniformScale( sqrtf(2) );	
+	
+	#ifndef _WIN32	
+	generate_unit_xz_circle_lambda_radius = radius;
+	xz_circle = xz_circle.ProcessVertices( GenerateUnitXZCircleLambda );
+	#else	
 	xz_circle = xz_circle.ProcessVertices( [this, &radius](GeoVertex* vertex, const GeoFloat3& normal){ 
 		vertex->vertex.colorUV.x = (vertex->vertex.position.x) / (2*radius );
 		vertex->vertex.colorUV.y = (-vertex->vertex.position.z) / (2*radius );
 	});	
+	#endif
 	return xz_circle;
 }
 
@@ -713,12 +731,12 @@ Geometry GeometryFactory::GenerateUnitCylinder()
 	cylinder.normal = GeoFloat3( 0, 1, 0 );
 	for( unsigned int i = 0; i < num_wedges; i++ )
 	{
-		const float left_angle = XMConvertToRadians( i * 360.0f / (float) num_wedges );
-		const float right_angle = XMConvertToRadians( (i+1) * 360.0f / (float) num_wedges );
-		GeoVertex a( Vertex( GeoFloat3( cos(left_angle), -height / 2.0f, sin(left_angle) ), GeoFloat2( 50*left_angle / XM_2PI, 0 ) ), true );
-		GeoVertex b( Vertex( GeoFloat3( cos(right_angle), -height / 2.0f, sin(right_angle) ), GeoFloat2( 50*right_angle / XM_2PI, 0 ) ), true );
-		GeoVertex c( Vertex( GeoFloat3( cos(right_angle), height / 2.0f, sin(right_angle) ), GeoFloat2( 50*right_angle / XM_2PI, 1 ) ), true );
-		GeoVertex d( Vertex( GeoFloat3( cos(left_angle), height / 2.0f, sin(left_angle) ), GeoFloat2( 50*left_angle / XM_2PI, 1 ) ), true );
+		const float left_angle = GeoConvertToRadians( i * 360.0f / (float) num_wedges );
+		const float right_angle = GeoConvertToRadians( (i+1) * 360.0f / (float) num_wedges );
+		GeoVertex a( Vertex( GeoFloat3( cos(left_angle), -height / 2.0f, sin(left_angle) ), GeoFloat2( 50*left_angle / GEO_2PI, 0 ) ), true );
+		GeoVertex b( Vertex( GeoFloat3( cos(right_angle), -height / 2.0f, sin(right_angle) ), GeoFloat2( 50*right_angle / GEO_2PI, 0 ) ), true );
+		GeoVertex c( Vertex( GeoFloat3( cos(right_angle), height / 2.0f, sin(right_angle) ), GeoFloat2( 50*right_angle / GEO_2PI, 1 ) ), true );
+		GeoVertex d( Vertex( GeoFloat3( cos(left_angle), height / 2.0f, sin(left_angle) ), GeoFloat2( 50*left_angle / GEO_2PI, 1 ) ), true );
 		cylinder.quads.push_back( GeoQuad( d, c, b, a ) );
 	}
 	return cylinder;
@@ -752,7 +770,7 @@ Geometry GeometryFactory::GenerateUnitSphere()
 		p[i].y *= a;
 	}
 
-	std::vector<std::vector<GeoFloat3>> f;
+	std::vector< std::vector<GeoFloat3> > f;
 
 	std::vector<GeoFloat3> face;
 	face.push_back( p[0] );

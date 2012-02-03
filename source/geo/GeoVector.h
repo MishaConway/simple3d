@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef _WIN32
+#define NOMINMAX
 #include <d3d11.h>
 #include <xnamath.h>
 #endif

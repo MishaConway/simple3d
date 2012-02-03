@@ -4,6 +4,9 @@
 
 Nebula::Nebula()
 {	
+//nebula functionality currently only implemented for windows
+//TODO: port for non windows functionality
+#ifdef _WIN32	
 	const unsigned int num_quads = 12;
 	
 
@@ -30,7 +33,7 @@ Nebula::Nebula()
 		quad.SetTechnique( "AdditiveParticle" );
 		quads.push_back( quad );
 	}
-
+#endif
 }
 
 bool Nebula::Render()

@@ -13,6 +13,15 @@ private:
 	Texture texture;
 };
 
+struct TransformedGridTile
+{
+	GridTile* pGridTile;
+	unsigned int row; 
+	float angle;
+	std::vector<Vertex>  worldspace_vertices;
+	GeoVector worldspace_centroid;
+};
+
 class SpinningCylinderGrid : public RenderableObject
 {
 public:
@@ -33,11 +42,9 @@ public:
 	GeoVector GetWorldspacePositionOfSelectedTile();
 	GeoVector GetWorldspaceNormalOfSelectedTile();
 	float GetRadius();
-
 	virtual GeoVector GetWorldspaceCentroid();
-
 private:
-	void IterateGridTiles( portable_function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile );
+	std::vector<TransformedGridTile> GetTransformedGridTiles();
 	void TransformQuad( const unsigned int row, const float angle, const float radius_offset, const float scale_factor );
 private:
 	bool render_front_faces;
@@ -49,7 +56,7 @@ private:
 
 
 
-	std::vector<std::vector<GridTile>> grid_tiles;
+	std::vector<  std::vector<GridTile>  > grid_tiles;
 	GridTile* pSelectedTile; 
 	GeoVector worldspace_position_of_selected_tile;
 	GeoVector worldspace_normal_of_selected_tile;

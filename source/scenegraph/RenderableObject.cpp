@@ -106,9 +106,13 @@ bool RenderableObject::Render()
 		}
 		else
 		{		
-			e.RenderTechnique( GetTechnique(), [this](){ 
-				pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
-			});
+			#ifdef _WIN32				
+			e.RenderTechnique( GetTechnique(), [this](){ pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );});
+			#else
+			e.SetTechnique( GetTechnique() );
+			pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
+			e.UnsetTechnique();
+			#endif
 		}
 	}
 	return true;
@@ -146,13 +150,7 @@ std::vector<Vertex> RenderableObject::GetWorldspaceVertices()
 	for( unsigned int i = 0; i < objectspace_vertices.size(); i++ )
 	{
 		Vertex worldspace_vertex = objectspace_vertices[i];
-		XMFLOAT3 cool = XMFLOAT3( worldspace_vertex.position.x, worldspace_vertex.position.y, worldspace_vertex.position.z );
 		worldspace_vertex.position = (world_transform * GeoVector( worldspace_vertex.position, 1 )).ToGeoFloat3();
-
-		//XMStoreFloat3( &cool, XMVector3Transform( XMLoadFloat3(&cool), world_transform.ToXMMATRIX() ) );
-		
-	//	worldspace_vertex.position = GeoVector( cool ).ToGeoFloat3();
-	//	printf( "what....\n" );
 		worldspace_vertices.push_back( worldspace_vertex );
 	}
 	return worldspace_vertices;

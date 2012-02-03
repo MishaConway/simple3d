@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef _WIN32	
+#define NOMINMAX
 #include <windows.h>
 
 /// Create a Timer, which will immediately begin counting
