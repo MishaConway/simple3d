@@ -119,7 +119,7 @@ bool BaseTexture::ClearColor( Color color, const bool preserve_alpha )
 				*(float*)(pMappedData + row*pitch + i*bpp + sizeof(float)) = green;
 				*(float*)(pMappedData + row*pitch + i*bpp + sizeof(float)*2) = blue;
 				if( !preserve_alpha )
-					*(float*)(pMappedData + row*pitch + i*bpp + sizeof(float)*3) ) = alpha;
+					*(float*)(pMappedData + row*pitch + i*bpp + sizeof(float)*3) = alpha;
 			}
 			else
 			{

@@ -77,13 +77,16 @@ public:
 
 //	Geometry ExtrudePerimeter( const float distance );
 
-	Geometry ProcessVertices( portable_function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex );
+	Geometry ProcessVertices( void (*process_vertex)(GeoVertex* pVertex, const GeoFloat3& normal) );  
+#ifdef _WIN32	
+	Geometry ProcessVertices( std::function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex );
+#endif
 
 //	std::vector<GeoVertex> SelectVertices( portable_function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex );
 
 	Geometry Label( const std::string label );
 
-	Geometry InvertXZ();
+	//Geometry InvertXZ();
 
 	Geometry ReverseWinding( const bool invert_normal = true );
 	std::vector<Vertex> GetVertices();
