@@ -19,7 +19,7 @@ OpenGLRenderTarget::OpenGLRenderTarget( const unsigned int width, const unsigned
 	glBindFramebuffer( GL_FRAMEBUFFER, fbo_id );
 
 	//attach the texture object to this framebuffer object
-	glFramebufferTexture2DEXT( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex.GetOpenGLTextureId(), 0 );
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex.GetOpenGLTextureId(), 0 );
 
 	glGenRenderbuffers(1, &depth_buffer_id);
 	glBindRenderbuffer(GL_RENDERBUFFER, depth_buffer_id);

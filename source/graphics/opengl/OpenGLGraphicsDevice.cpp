@@ -49,6 +49,7 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 	glRenderbufferStorage = glRenderbufferStorageEXT;
 	glFramebufferRenderbuffer = glFramebufferRenderbufferEXT;
 	glCheckFramebufferStatus = glCheckFramebufferStatusEXT;
+	glFramebufferTexture2D = glFramebufferTexture2DEXT;
 #endif
 
 	printf( "running opengl %s\n", glGetString( GL_VERSION ) );

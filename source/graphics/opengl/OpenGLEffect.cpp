@@ -110,6 +110,7 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 	glActiveTexture( GL_TEXTURE0 ); 
  }
  
+ #ifdef _WIN32	
  bool OpenGLEffect::RenderTechnique( const std::string& technique_name, portable_function<void()> f )
  {
 	 SetTechnique( technique_name );
@@ -117,6 +118,7 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 	 UnsetTechnique();
 	return true;
  }
+#endif
 
  void OpenGLEffect::Enable()
  {

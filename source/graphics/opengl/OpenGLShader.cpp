@@ -64,7 +64,7 @@ OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& shader_
 				{
 					GLchar* compiler_log = new GLchar[blen];
 					#ifdef GL_ES_VERSION_2_0
-					glGetShaderInfoLogARB(shader_id, blen, &slen, compiler_log);
+					glGetShaderInfoLog(shader_id, blen, &slen, compiler_log);
 					#else
 					glGetInfoLogARB(shader_id, blen, &slen, compiler_log);
 					#endif
@@ -146,9 +146,8 @@ OpenGLShaderProgram::OpenGLShaderProgram( const std::string& name, OpenGLVertexS
 			if (blen > 1)
 			{
 				GLchar* link_log = new GLchar[blen];
-				glGetInfoLogARB(program_id, blen, &slen, link_log);
 				#ifdef GL_ES_VERSION_2_0
-				glGetProgramInfoLogARB(program_id, blen, &slen, link_log);
+				glGetProgramInfoLog(program_id, blen, &slen, link_log);
 				#else
 				glGetInfoLogARB(program_id, blen, &slen, link_log);
 				#endif
@@ -284,7 +283,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
 #ifdef _WIN32		 
 	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform1fv( uniform_location, float_array.size(), (float*) &float_array[0]);});
 #else
-	glUniform4fv( GetUniformLocation(variable_name), float_array.size(), (float*) &float_array[0]  );
+	glUniform1fv( GetUniformLocation(variable_name), float_array.size(), (float*) &float_array[0]  );
 	return true;
 #endif
  }
@@ -306,7 +305,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
 #ifdef _WIN32		 
 	 return SetEffectVariable( variable_name, [&matrix](const GLint uniform_location){glUniformMatrix4fv( uniform_location, 1, GL_FALSE, (float*) &matrix );});
 #else
-	glUniform4fv( GetUniformLocation(variable_name), 1, GL_FALSE, (float*) &matrix  );
+	glUniformMatrix4fv( GetUniformLocation(variable_name), 1, GL_FALSE, (float*) &matrix  );
 	return true;
 #endif
  }
@@ -320,7 +319,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
 #ifdef _WIN32
 	 return SetEffectVariable( variable_name, [&texture, &texture_index](const GLint uniform_location){glUniform1i( uniform_location, texture_index );});
 #else
-	glUniformMatrix1i( GetUniformLocation(variable_name), texture_index );
+	glUniform1i( GetUniformLocation(variable_name), texture_index );
 	return true;
 #endif
  }

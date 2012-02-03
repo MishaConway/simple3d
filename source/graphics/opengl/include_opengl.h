@@ -9,7 +9,7 @@
 
 //find a better way to do this
 #if defined(__APPLE__) || defined(__APPLE_CC__)
-#define TARGET_IOS_1
+#define TARGET_IOS 1
 #endif
 
 #if TARGET_IOS || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR || TARGET_OS_IPAD || TARGET_OS_IPAD_SIMULATOR
