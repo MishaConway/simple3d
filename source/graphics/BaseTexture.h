@@ -25,7 +25,9 @@ public:
 	virtual float GetVerticalOffset();
 	virtual bool IsFloatTexture() = 0;
 
-	virtual bool SetData( portable_function<void(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha)> write_pixel );
+#ifdef _WIN32	
+	virtual bool SetData( std::function<void(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha)> write_pixel );
+#endif
 	virtual bool ClearColor( Color color, const bool preserve_alpha = false );
 protected:
 	void* Map();

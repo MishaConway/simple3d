@@ -26,8 +26,10 @@
 	#include <GL/gl.h>
 #elif defined(__APPLE__) || defined(__APPLE_CC__)
 	/*	I can't test this Apple stuff!	*/
-	#include <OpenGL/gl.h>
-	#include <Carbon/Carbon.h>
+	//#include <OpenGL/gl.h>
+	//#include <Carbon/Carbon.h>
+	#include <OpenGLES/ES2/gl.h>
+	#include <OpenGLES/ES2/glext.h>
 	#define APIENTRY
 #else
 	#include <GL/gl.h>
@@ -1347,7 +1349,11 @@ unsigned int
 		} else
 		{
 			/*	unsigned int clamp_mode = SOIL_CLAMP_TO_EDGE;	*/
+			#ifdef GL_ES_VERSION_2_0
+			unsigned int clamp_mode = GL_CLAMP_TO_EDGE;
+			#else
 			unsigned int clamp_mode = GL_CLAMP;
+			#endif
 			glTexParameteri( opengl_texture_type, GL_TEXTURE_WRAP_S, clamp_mode );
 			glTexParameteri( opengl_texture_type, GL_TEXTURE_WRAP_T, clamp_mode );
 			if( opengl_texture_type == SOIL_TEXTURE_CUBE_MAP )
@@ -1814,7 +1820,11 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 		} else
 		{
 			/*	unsigned int clamp_mode = SOIL_CLAMP_TO_EDGE;	*/
+			#ifdef GL_ES_VERSION_2_0
+			unsigned int clamp_mode = GL_CLAMP_TO_EDGE;
+			#else
 			unsigned int clamp_mode = GL_CLAMP;
+			#endif
 			glTexParameteri( opengl_texture_type, GL_TEXTURE_WRAP_S, clamp_mode );
 			glTexParameteri( opengl_texture_type, GL_TEXTURE_WRAP_T, clamp_mode );
 			glTexParameteri( opengl_texture_type, SOIL_TEXTURE_WRAP_R, clamp_mode );

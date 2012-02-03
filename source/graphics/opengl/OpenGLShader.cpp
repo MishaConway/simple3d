@@ -211,7 +211,7 @@ std::vector<OpenGLShaderProgram> OpenGLShaderProgram::GetInvalidShaderPrograms()
 	return invalid_shaders_programs;
 }
 
-bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, portable_function<void(const GLint uniform_location)> f )
+GLint OpenGLShaderProgram::GetUniformLocation( const std::string& variable_name )
 {
 	if( UsingUniform( variable_name ) )
 	{
@@ -220,25 +220,41 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
 		{
 			printf( "error with %s program getting uniform location for %s\n", GetName().c_str(), variable_name.c_str() );
 			printf( "oh no\n" );	
-			return false;
 		}
-		else
-		{
-			f( uniform_location );
-			return true;
-		}
+		return uniform_location;
 	}
+
+	return -1;
+}
+
+#ifdef _WIN32	
+bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, portable_function<void(const GLint uniform_location)> f )
+{
+	GLint uniform_location = GetUniformLocation( variable_name );
+	if( -1 != uniform_location )
+		f( uniform_location );
 	return true;
 }
+#endif
 
  bool OpenGLShaderProgram::SetInt( const std::string& variable_name, const int i )
  {
+#ifdef _WIN32	
 	 return SetEffectVariable( variable_name, [&i](const GLint uniform_location){glUniform1i( uniform_location, i );});
+#else
+	glUniform1i( GetUniformLocation(variable_name), i );
+	return true;
+#endif
  }
 
  bool OpenGLShaderProgram::SetFloat( const std::string& variable_name, float flt )
  {
+#ifdef _WIN32		 
 	 return SetEffectVariable( variable_name, [&flt](const GLint uniform_location){glUniform1f( uniform_location, flt );});
+#else
+	glUniform1f( GetUniformLocation(variable_name), flt );
+	return true;
+#endif
  }
 
 #ifdef __XNAMATH_H__
@@ -255,12 +271,22 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
 
  bool OpenGLShaderProgram::SetFloatArray( const std::string& variable_name, GeoVector& float_array )
  {
+#ifdef _WIN32		 
 	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform4fv( uniform_location, 1, (float*) &float_array );});
+#else
+	glUniform4fv( GetUniformLocation(variable_name), 1, (float*) &float_array  );
+	return true;
+#endif
  }
 
  bool OpenGLShaderProgram::SetFloatArray( const std::string& variable_name, std::vector<float>& float_array )
  {
+#ifdef _WIN32		 
 	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform1fv( uniform_location, float_array.size(), (float*) &float_array[0]);});
+#else
+	glUniform4fv( GetUniformLocation(variable_name), float_array.size(), (float*) &float_array[0]  );
+	return true;
+#endif
  }
 
 #ifdef __XNAMATH_H__
@@ -277,16 +303,24 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
 
  bool OpenGLShaderProgram::SetMatrix( const std::string& variable_name, GeoMatrix& matrix )
  {
+#ifdef _WIN32		 
 	 return SetEffectVariable( variable_name, [&matrix](const GLint uniform_location){glUniformMatrix4fv( uniform_location, 1, GL_FALSE, (float*) &matrix );});
+#else
+	glUniform4fv( GetUniformLocation(variable_name), 1, GL_FALSE, (float*) &matrix  );
+	return true;
+#endif
  }
 
  bool OpenGLShaderProgram::SetTexture( const std::string& variable_name, OpenGLTexture& texture, const GLenum texture_index )
  {
-	 return SetEffectVariable( variable_name, [&texture, &texture_index](const GLint uniform_location){
-		 glUniform1i( uniform_location, texture_index );
-		 glActiveTexture( GL_TEXTURE0 + texture_index );
-		 glEnable( GL_TEXTURE_2D );
-		 glBindTexture( GL_TEXTURE_2D, texture.GetOpenGLTextureId() );
-		 glActiveTexture( GL_TEXTURE0 ); 
-	 });
+	  glActiveTexture( GL_TEXTURE0 + texture_index );
+	  glEnable( GL_TEXTURE_2D );
+	  glBindTexture( GL_TEXTURE_2D, texture.GetOpenGLTextureId() );
+	  glActiveTexture( GL_TEXTURE0 ); 
+#ifdef _WIN32
+	 return SetEffectVariable( variable_name, [&texture, &texture_index](const GLint uniform_location){glUniform1i( uniform_location, texture_index );});
+#else
+	glUniformMatrix1i( GetUniformLocation(variable_name), texture_index );
+	return true;
+#endif
  }

@@ -10,7 +10,7 @@ OpenGLBuffer::OpenGLBuffer( void* pData, const unsigned int data_size, GLenum bu
 	//Set the usage of our vertex buffer object (is is dynamically frequently updated buffer or fairly static once created)
 	vbo_buffer_type = buffer_type;
 	vbo_usage = usage;
-	vbo_access = GL_WRITE_ONLY_ARB;
+	vbo_access = GL_WRITE_ONLY;
 	this->data_size = data_size;
 	
 

@@ -250,7 +250,7 @@ std::vector<Vertex> Geometry::GetVertices()
 	}
 	return aggregated_vertices;
 }
-
+/*
 Geometry Geometry::ExtrudePerimeter( const float distance )
 {
 	Geometry g = *this;
@@ -295,6 +295,7 @@ Geometry Geometry::ExtrudePerimeter( const float distance )
 	
 	return g;
 }
+*/
 
 Geometry Geometry::UniformScale( const float scale_factor )
 {
@@ -332,7 +333,7 @@ Geometry Geometry::Translate( const float translation_x, const float translation
 		vertex->vertex.position.z *= translation_z;
 	});
 }
-
+/*
 std::vector<GeoVertex> Geometry::SelectVertices( portable_function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex )
 {
 	bool select = false;
@@ -399,6 +400,7 @@ std::vector<GeoVertex> Geometry::SelectVertices( portable_function<void(const Ge
 	}
 	return selected_vertices;
 }
+*/
 
 Geometry Geometry::ProcessVertices( portable_function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex )
 {

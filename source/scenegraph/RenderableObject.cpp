@@ -96,9 +96,13 @@ bool RenderableObject::Render()
 			
 		if( enforced_global_technique.empty() && planar_reflector )
 		{
-			e.RenderTechnique( "PlanarReflection", [this](){ 
-				pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
-			});
+#ifdef _WIN32				
+			e.RenderTechnique( "PlanarReflection", [this](){ pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() ); });
+#else
+			e.SetTechnique( "PlanarReflection" );
+			pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
+			e.UnsetTechnique();
+#endif
 		}
 		else
 		{		

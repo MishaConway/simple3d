@@ -14,8 +14,15 @@ class OpenGLEffect : public BaseEffect
 public:
  OpenGLEffect();
  OpenGLEffect( const std::string& effect_path );
+#ifdef _WIN32	
  bool RenderTechnique( const std::string& technique_name, portable_function<void()> f );
+private:
+#endif
 
+ void SetTechnique( const std::string& technique_name );
+ void UnsetTechnique();
+
+public:
  void Enable();
  static OpenGLEffect& GetCurrentEffect();
 

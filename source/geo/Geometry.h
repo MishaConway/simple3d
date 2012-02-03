@@ -75,11 +75,11 @@ public:
 
 	Geometry SetTextureIndex( const unsigned int texture_index );
 
-	Geometry ExtrudePerimeter( const float distance );
+//	Geometry ExtrudePerimeter( const float distance );
 
 	Geometry ProcessVertices( portable_function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex );
 
-	std::vector<GeoVertex> SelectVertices( portable_function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex );
+//	std::vector<GeoVertex> SelectVertices( portable_function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex );
 
 	Geometry Label( const std::string label );
 

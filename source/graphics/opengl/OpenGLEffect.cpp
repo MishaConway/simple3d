@@ -1,8 +1,10 @@
 #include "OpenGLEffect.h"
 #include "../../system/FileIO.h"
 #include "../../string/string_utils.h"
+#ifdef _WIN32
 #include <regex>
-#include <sstream>
+#endif
+
 
 OpenGLEffect OpenGLEffect::current_effect;
 
@@ -30,6 +32,8 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 
 	//std::tr1::smatch result; 
 	//const std::tr1::regex pattern("technique");
+	
+#ifdef _WIN32
 	const std::tr1::regex pattern("technique(.)([^}]+)");
 
 	const std::tr1::sregex_token_iterator end;
@@ -52,6 +56,9 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 			
 		shader_programs[technique_name] = OpenGLShaderProgram( technique_name, OpenGLVertexShader( effect_directory + technique_body_parts[0] + ".vert", vertex_shader_includes ), OpenGLFragmentShader( effect_directory + technique_body_parts[1] + ".frag", fragment_shader_includes) ) ;
     }
+#else
+	//TODO: implement equivalent logic for systems that don't support regex....
+#endif
 
 	std::vector<OpenGLShader> valid_shaders = OpenGLShader::GetValidShaders();
 	for( unsigned int i = 0; i < valid_shaders.size(); i++ )
@@ -74,29 +81,40 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 	printf( "enable program enable.\n" );
 
 }
- 
- bool OpenGLEffect::RenderTechnique( const std::string& technique_name, portable_function<void()> f )
+
+ void OpenGLEffect::SetTechnique( const std::string& technique_name )
  {
 	 shader_programs[technique_name].Enable();
 	 unsigned int mmm = matrix_uniforms.size();
-	 for( auto it = matrix_uniforms.begin(); it != matrix_uniforms.end();  it++ )
+	 for( std::map<std::string, GeoMatrix>::iterator it = matrix_uniforms.begin(); it != matrix_uniforms.end();  it++ )
 		 shader_programs[technique_name].SetMatrix( it->first, it->second );
-	 for( auto it = float_uniforms.begin(); it != float_uniforms.end();  it++ )
+	 for( std::map<std::string, float>::iterator it = float_uniforms.begin(); it != float_uniforms.end();  it++ )
 		 shader_programs[technique_name].SetFloat( it->first, it->second );
-	 for( auto it = int_uniforms.begin(); it != int_uniforms.end();  it++ )
+	 for( std::map<std::string, int>::iterator it = int_uniforms.begin(); it != int_uniforms.end();  it++ )
 		 shader_programs[technique_name].SetInt( it->first, it->second );
-	 for( auto it = float_array_uniforms.begin(); it != float_array_uniforms.end();  it++ )
+	 for( std::map<std::string, std::vector<float> >::iterator it = float_array_uniforms.begin(); it != float_array_uniforms.end();  it++ )
 		 shader_programs[technique_name].SetFloatArray( it->first, it->second );
 	 unsigned int i = 0;
-	 for( auto it = texture_uniforms.begin(); it != texture_uniforms.end();  it++, i++ )
+	 for( std::map<std::string, OpenGLTexture>::iterator it = texture_uniforms.begin(); it != texture_uniforms.end();  it++, i++ )
 		 shader_programs[technique_name].SetTexture( it->first, it->second, i );
-	 f(); 
-	for( auto it = texture_uniforms.begin(); it != texture_uniforms.end();  it++, i++ )
+ }
+
+ void OpenGLEffect::UnsetTechnique()
+ {
+	unsigned int i = 0;
+	 for( std::map<std::string, OpenGLTexture>::iterator it = texture_uniforms.begin(); it != texture_uniforms.end();  it++, i++ )
 	{
 		glActiveTexture( GL_TEXTURE0 + i ); 
 		glBindTexture( GL_TEXTURE_2D, 0 );
 	}
 	glActiveTexture( GL_TEXTURE0 ); 
+ }
+ 
+ bool OpenGLEffect::RenderTechnique( const std::string& technique_name, portable_function<void()> f )
+ {
+	 SetTechnique( technique_name );
+	 f(); 
+	 UnsetTechnique();
 	return true;
  }
 
@@ -114,14 +132,12 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
  {
 	 int_uniforms[variable_name] = i;
 	 return true;
-	 //return SetEffectVariable( variable_name, [&i](const GLint uniform_location){glUniform1i( uniform_location, i );});
  }
 
  bool OpenGLEffect::SetFloat( const std::string& variable_name, float flt )
  {
 	 float_uniforms[variable_name] = flt;
 	 return true;
-	 //return SetEffectVariable( variable_name, [&flt](const GLint uniform_location){glUniform1f( uniform_location, flt );});
  }
 
 #ifdef __XNAMATH_H__

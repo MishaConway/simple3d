@@ -66,7 +66,8 @@ void* BaseTexture::Map()
 	return Map( nullptr );
 }
 
-bool BaseTexture::SetData( portable_function<void(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha)> write_pixel )
+#ifdef _WIN32	
+bool BaseTexture::SetData( std::function<void(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha)> write_pixel )
 {
 	unsigned int pitch;
 	unsigned char* pMappedData = (unsigned char*) Map( &pitch );	
@@ -91,6 +92,7 @@ bool BaseTexture::SetData( portable_function<void(const unsigned int x, const un
 	Unmap();
 	return true;
 }
+#endif
 
 bool BaseTexture::ClearColor( Color color, const bool preserve_alpha )
 {
@@ -98,6 +100,7 @@ bool BaseTexture::ClearColor( Color color, const bool preserve_alpha )
 	float green = color.GetNormalizedGreen();
 	float blue = color.GetNormalizedBlue();
 	float alpha = color.GetNormalizedAlpha();
+#ifdef _WIN32	
 	return SetData( [this, &red, &green, &blue, &alpha, &preserve_alpha](const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){ 
 		*pRed = red;
 		*pGreen = green;
@@ -105,4 +108,28 @@ bool BaseTexture::ClearColor( Color color, const bool preserve_alpha )
 		if( !preserve_alpha )
 			*pAlpha = alpha; 
 	});
+#else
+	unsigned int pitch;
+	unsigned char* pMappedData = (unsigned char*) Map( &pitch );	
+	for( unsigned int row = 0; row < GetHeight(); row++ )
+		for( unsigned int i = 0; i < GetWidth(); i++ )
+			if( IsFloatTexture() )
+			{
+				*(float*)(pMappedData + row*pitch + i*bpp) = red;
+				*(float*)(pMappedData + row*pitch + i*bpp + sizeof(float)) = green;
+				*(float*)(pMappedData + row*pitch + i*bpp + sizeof(float)*2) = blue;
+				if( !preserve_alpha )
+					*(float*)(pMappedData + row*pitch + i*bpp + sizeof(float)*3) ) = alpha;
+			}
+			else
+			{
+				*(pMappedData + row*pitch + i*bpp)     = (unsigned char)(red * 255.0f);
+				*(pMappedData + row*pitch + i*bpp + 1) = (unsigned char)(green * 255.0f);
+				*(pMappedData + row*pitch + i*bpp + 2) = (unsigned char)(blue * 255.0f);
+				if( !preserve_alpha )
+					*(pMappedData + row*pitch + i*bpp + 3) = (unsigned char)(alpha * 255.0f);
+			}
+	Unmap();
+	return true;
+#endif
 }
