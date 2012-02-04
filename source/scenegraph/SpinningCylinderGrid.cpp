@@ -1,6 +1,7 @@
 #include "SpinningCylinderGrid.h"
 #include "../geo/GeoFloat.h"
 #include <math.h>
+#include <algorithm>
 #include "../std/nullptr.h"
 
 #ifdef _WIN32

@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef _WIN32
+#define NOMINMAX
 #include <Windows.h>
 #include "glew/glew.h"
 #pragma comment(lib, "glew32.lib")  
