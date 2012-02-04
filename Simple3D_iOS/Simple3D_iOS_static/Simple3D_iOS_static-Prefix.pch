@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'Simple3D_iOS_static' target in the 'Simple3D_iOS_static' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
