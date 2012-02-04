@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "OpenGLGraphicsDevice.h"
 #include "../../scenegraph/Sprite.h"
+#include "../../std/nullptr.h"
 
 OpenGLGraphicsDevice* OpenGLTexture::pGraphicsDevice = nullptr;
 
@@ -23,10 +24,9 @@ OpenGLTexture::OpenGLTexture( const std::string& image_filename )
 		printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
 	}
 	glEnable(GL_TEXTURE_2D);
-	//store the dimensions of this texture
+
 	glBindTexture( GL_TEXTURE_2D, texture_id  ); 
 
-	glTexParameterf(GL_TEXTURE_2D,GL_GENERATE_MIPMAP, GL_TRUE);
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 	glTexParameteri(GL_TEXTURE_2D,  GL_TEXTURE_MAG_FILTER,  GL_LINEAR);
 
@@ -35,6 +35,8 @@ OpenGLTexture::OpenGLTexture( const std::string& image_filename )
 
 	//glGenerateMipmap( GL_TEXTURE_2D );
 	//glGenerateMipmapEXT( GL_TEXTURE_2D );
+	//opengl ES provides no functionality for getting width or height...
+#ifndef GL_ES_VERSION_2_0
 	int w, h;
 	glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,	&w  );
 	glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT,	&h );
@@ -76,6 +78,7 @@ OpenGLTexture::OpenGLTexture( const std::string& image_filename )
 		//HACK: component type is hard coded
 		//(*ppTexture)->componentType = GL_UNSIGNED_BYTE;
 	//glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, (GLint*) &((*ppTexture)->format ) );
+#endif
 
 		valid = true;
 }
@@ -190,30 +193,35 @@ bool OpenGLTexture::IsFloatTexture()
 
 void OpenGLTexture::Setup( const unsigned int width, const unsigned int height, const OpenGLTextureUsage::OPENGL_TEXTURE_USAGE usage  )
 {
-	internal_format = GL_RGBA32F;
-	//internal_format = GL_RGBA;
-	//internal_format = GL_RGBA8;
 	external_format = GL_RGBA;
 	component_type = GL_FLOAT;
 
-	if( GL_RGBA32F_ARB == internal_format )
+	if( GL_FLOAT == component_type )
 	{
-		component_type = GL_FLOAT;
+		#ifdef GL_ES_VERSION_2_0
+		internal_format = external_format;
+		#else	
+		internal_format = GL_RGBA32F;
+		#endif
 		bpp = sizeof(float)*4;
 	}
 	else
 	{
-		component_type = GL_UNSIGNED_BYTE;
+		internal_format = GL_RGBA;
 		bpp = 4;
 	}
-	
+		
 	this->width = width;
 	this->height = height;	
 	format = GL_RGBA;
 	
 	glEnable( GL_TEXTURE_2D );
 	glGenTextures(1, &texture_id );
-	glGenBuffers( 1, &pbo_id  );
+
+#ifndef GL_ES_VERSION_2_0
+	if( pGraphicsDevice->GetCapabilities().SupportsPixelBufferObject() )
+		glGenBuffers( 1, &pbo_id  );
+#endif
 
 	//bind our created opengl texture object so we may define its parameters
 	glBindTexture( GL_TEXTURE_2D, texture_id  );	
@@ -232,10 +240,19 @@ void OpenGLTexture::Setup( const unsigned int width, const unsigned int height, 
 	}
 
 	//Upload the textel buffer using Pixel Buffer Objects
-	glBindBuffer( GL_PIXEL_UNPACK_BUFFER, pbo_id );
-	glBufferData( GL_PIXEL_UNPACK_BUFFER, width*height*bpp, 0, GL_STREAM_DRAW );
-	glTexImage2D( GL_TEXTURE_2D, 0, internal_format, width, height, 0, external_format, component_type, (const GLubyte*) 0 );
-	glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
+	if( pGraphicsDevice->GetCapabilities().SupportsPixelBufferObject() )
+	{
+		#ifndef GL_ES_VERSION_2_0
+		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, pbo_id );
+		glBufferData( GL_PIXEL_UNPACK_BUFFER, width*height*bpp, 0, GL_STREAM_DRAW );
+		glTexImage2D( GL_TEXTURE_2D, 0, internal_format, width, height, 0, external_format, component_type, (const GLubyte*) 0 );
+		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
+		#endif
+	}
+	else
+	{
+		glTexImage2D( GL_TEXTURE_2D, 0, internal_format, width, height, 0, external_format, component_type, (const GLubyte*) 0 );
+	}
 
 	valid = true;
 }
@@ -264,6 +281,7 @@ void* OpenGLTexture::Map( unsigned int* pPitch )
 	const unsigned int buffer_size = width*height*bpp;
 	if( pGraphicsDevice->GetCapabilities().SupportsPixelBufferObject() )
 	{
+#ifndef GL_ES_VERSION_2_0		
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo_id );
 
 		//we can quickly invalidate the data stored on the GPU by nulling it
@@ -276,6 +294,7 @@ void* OpenGLTexture::Map( unsigned int* pPitch )
 
 		//Unbind our Pixel Buffer Object
 		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
+#endif
 	}
 	else
 		pMappedData = new unsigned char[buffer_size];
@@ -291,12 +310,14 @@ void OpenGLTexture::Unmap()
 	glBindTexture( GL_TEXTURE_2D, texture_id  ); 
 	if( pGraphicsDevice->GetCapabilities().SupportsPixelBufferObject() )
 	{
+#ifndef GL_ES_VERSION_2_0			
 		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, pbo_id ); 			
 		glUnmapBuffer( GL_PIXEL_UNPACK_BUFFER );
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, external_format, component_type, 0 );
 
 		//Unbind our Pixel Buffer Object
 		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
+#endif
 	}
 	else
 	{
@@ -323,6 +344,10 @@ bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_onl
 	else
 		return false;
 
+#ifdef GL_ES_VERSION_2_0
+	//opengl es does not provide glGetTexImage
+	//a possible alternative to implement later is to render to a frame buffer object and call glReadPixels
+#else
 	GLint is_compressed = GL_FALSE;
 	GLint compressed_size = 0;
 	GLint compressed_format = 0;
@@ -343,6 +368,7 @@ bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_onl
 			printf( "SOIL_save_image failed!\n" );
 		delete [] pixels;
 	}
+#endif
 	
 	return true;
 }
