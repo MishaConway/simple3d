@@ -1,6 +1,7 @@
 #include "FileIO.h"
 
 #include <algorithm>
+#include <sstream>
 #if defined(_MSC_VER)
 #define WIN32_LEAN_AND_MEAN
 #define NOSOUND
@@ -133,12 +134,10 @@ bool File::Exists( const std::string& path )
 
 std::string File::ReadAllText( const std::string& path )
 {
-#ifdef _WIN32	
-	return std::string((std::istreambuf_iterator<char>(std::ifstream( path.c_str() ))), std::istreambuf_iterator<char>());
-#else
-	//figure out how to do this...
-	return "";
-#endif
+	std::ifstream t(path.c_str());
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+	return buffer.str();
 }
 
 
