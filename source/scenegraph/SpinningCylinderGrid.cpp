@@ -149,10 +149,10 @@ GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsign
 				}
 				else
 				{
-					max_x = max( max_x,  transformed_grid_tiles[i].worldspace_vertices[v].position.x );
-					min_x = min( min_x,  transformed_grid_tiles[i].worldspace_vertices[v].position.x );
-					max_y = max( max_y,  transformed_grid_tiles[i].worldspace_vertices[v].position.y );
-					min_y = min( min_y,  transformed_grid_tiles[i].worldspace_vertices[v].position.y );
+					max_x = std::max( max_x,  transformed_grid_tiles[i].worldspace_vertices[v].position.x );
+					min_x = std::min( min_x,  transformed_grid_tiles[i].worldspace_vertices[v].position.x );
+					max_y = std::max( max_y,  transformed_grid_tiles[i].worldspace_vertices[v].position.y );
+					min_y = std::min( min_y,  transformed_grid_tiles[i].worldspace_vertices[v].position.y );
 				}
 			}
 

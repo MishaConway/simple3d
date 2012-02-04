@@ -1,4 +1,5 @@
 #include "OpenGLVertexBuffer.h"
+#include "../../std/nullptr.h"
 
 OpenGLVertexBuffer::OpenGLVertexBuffer(){}
 OpenGLVertexBuffer::OpenGLVertexBuffer( const std::vector<Vertex>& vertices )

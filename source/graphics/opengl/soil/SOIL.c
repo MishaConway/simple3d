@@ -1986,6 +1986,8 @@ int query_DXT_capability( void )
 						);
 			#elif defined(__APPLE__) || defined(__APPLE_CC__)
 				/*	I can't test this Apple stuff!	*/
+               has_DXT_capability = SOIL_CAPABILITY_NONE;
+            /*
 				CFBundleRef bundle;
 				CFURLRef bundleURL =
 					CFURLCreateWithFileSystemPath(
@@ -2007,7 +2009,7 @@ int query_DXT_capability( void )
 						);
 				CFRelease( bundleURL );
 				CFRelease( extensionName );
-				CFRelease( bundle );
+				CFRelease( bundle ); */
 			#else
 				ext_addr = (P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC)
 						glXGetProcAddressARB

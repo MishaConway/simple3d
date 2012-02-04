@@ -1,6 +1,8 @@
 #include "Nebula.h"
 #include "../system/FileIO.h"
+#ifdef _WIN32	
 #include <random>
+#endif
 
 Nebula::Nebula()
 {	
