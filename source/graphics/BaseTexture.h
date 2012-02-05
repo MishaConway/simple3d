@@ -28,6 +28,12 @@ public:
 #ifdef _WIN32	
 	virtual bool SetData( std::function<void(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha)> write_pixel );
 #endif
+    
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    virtual bool SetData( void(^write_pixel)(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha) );
+#endif
+    
+    
 	virtual bool ClearColor( Color color, const bool preserve_alpha = false );
 protected:
 	void* Map();
