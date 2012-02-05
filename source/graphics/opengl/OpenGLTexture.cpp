@@ -195,6 +195,7 @@ void OpenGLTexture::Setup( const unsigned int width, const unsigned int height, 
 {
 	external_format = GL_RGBA;
 	component_type = GL_FLOAT;
+    
 
 	if( GL_FLOAT == component_type )
 	{
@@ -228,7 +229,11 @@ void OpenGLTexture::Setup( const unsigned int width, const unsigned int height, 
 	
 	if( OpenGLTextureUsage::render_target == usage  )
 	{
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        #ifdef GL_ES_VERSION_2_0
+        internal_format = external_format = GL_RGBA;
+        component_type = GL_UNSIGNED_BYTE;
+        #endif
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 	else

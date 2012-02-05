@@ -53,9 +53,13 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 #endif
 
 	printf( "running opengl %s\n", glGetString( GL_VERSION ) );
+    
+    printf( "got toa  here....\n" );
 
 	capabilities = OpenGLCapabilities( this );
 	//capabilities.ForceDisablePixelBufferObject();
+    
+    glGetIntegerv( GL_FRAMEBUFFER_BINDING, &default_fbo_id );
 		
 	OpenGLRenderTarget::pGraphicsDevice = this;
 	OpenGLTexture::pGraphicsDevice = this;
@@ -126,7 +130,7 @@ void OpenGLGraphicsDevice::SetVertexBuffer( OpenGLDynamicVertexBuffer& vertexBuf
 
 void OpenGLGraphicsDevice::SetDefaultRenderTarget()
 {
-	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+	glBindFramebuffer( GL_FRAMEBUFFER, default_fbo_id );
 }
 
 void OpenGLGraphicsDevice::SetRenderTarget( OpenGLRenderTarget& render_target )

@@ -15,7 +15,7 @@ public:
 	static std::vector<OpenGLShader> GetValidShaders();
 	std::string GetName();
 protected:
-	OpenGLShader( GLenum shader_type, const std::string& shader_path, const std::vector<std::string>& include_paths );
+	OpenGLShader( GLenum shader_type, const std::string& name, const std::string& source );
 protected:
 	GLuint shader_id;
 	std::string name;
@@ -25,13 +25,13 @@ protected:
 class OpenGLVertexShader : public OpenGLShader
 {
 public:
-	OpenGLVertexShader( const std::string& shader_path, const std::vector<std::string>& include_paths  );
+    OpenGLVertexShader( std::string name, std::string source );
 };
 
 class OpenGLFragmentShader : public OpenGLShader
 {
 public:
-	OpenGLFragmentShader( const std::string& shader_path, const std::vector<std::string>& include_paths  );
+    OpenGLFragmentShader( std::string name, std::string source );
 };
 
 class OpenGLShaderProgram : public IValidatable

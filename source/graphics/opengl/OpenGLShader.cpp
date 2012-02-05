@@ -26,25 +26,21 @@ std::vector<OpenGLShader> OpenGLShader::GetValidShaders()
 	return valid_shaders;
 }
 
-OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& shader_path, const std::vector<std::string>& include_paths  )
+OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& name, const std::string& source )
 {
 	valid = false;
 
-	name = shader_path;
+	this->name = name;
 
-	if( shaders.count( shader_path ) )
+	if( shaders.count( name ) )
 	{
-		shader_id = shaders[shader_path].GetOpenGLShaderId();
-		valid = shaders[shader_path].IsValid();
+		shader_id = shaders[name].GetOpenGLShaderId();
+		valid = shaders[name].IsValid();
 	}
 	else
 	{
-		std::string source = File::ReadAllText( shader_path );
 		if( !source.empty() )
-		{
-			for( int i = (int)include_paths.size() - 1; i >= 0; i-- )
-				source = File::ReadAllText( include_paths[i] ) + "\n" + source;
-				
+		{				
 			shader_id = glCreateShader( shader_type );
 			const char* c_str = source.c_str();
 			const GLint length = source.length();
@@ -73,7 +69,7 @@ OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& shader_
 				}
 			}
 
-			shaders[shader_path] = *this;
+			shaders[name] = *this;
 		}
 	}
 }
@@ -83,8 +79,15 @@ GLuint OpenGLShader::GetOpenGLShaderId()
 	return shader_id;
 }
 
-OpenGLVertexShader::OpenGLVertexShader( const std::string& shader_path, const std::vector<std::string>& include_paths  ) : OpenGLShader( GL_VERTEX_SHADER, shader_path, include_paths ){}
-OpenGLFragmentShader::OpenGLFragmentShader( const std::string& shader_path, const std::vector<std::string>& include_paths  ) : OpenGLShader( GL_FRAGMENT_SHADER, shader_path, include_paths ){}
+
+OpenGLVertexShader::OpenGLVertexShader( std::string name, std::string source  ) : OpenGLShader( GL_VERTEX_SHADER, name, source )
+{
+    printf( "vertex hader source is %s\n", source.c_str() );
+
+}
+
+
+OpenGLFragmentShader::OpenGLFragmentShader( std::string name, std::string source ) : OpenGLShader( GL_FRAGMENT_SHADER, name, source ){}
 
 OpenGLShaderProgram::OpenGLShaderProgram()
 {

@@ -4,14 +4,19 @@
 Scene::Scene(){}
 Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z )
 {		
-	graphics_device.Initialize( hWnd, width, height, true );
+	printf( "before inii\n" );
+    graphics_device.Initialize( hWnd, width, height, true );
+    printf( "after init..\n" );
 	Object::BindGraphicsDevice( &graphics_device );
 	SetBackgroundColor( Color::Black() );
 
-	render_target = RenderTarget( width, height );
+	printf( "before render atrges..\n" );
+    render_target = RenderTarget( width, height );
 
 	downsample_render_target = RenderTarget( 512, 512 );
 	downsample_render_target2 = RenderTarget( 512, 512 );
+    
+    printf( "after render tagrets ..\n" );
 
 	Effect( graphics_device.GetRendererType() == "D3D11" ? "shaders/hlsl/shaders.fx" : "shaders/glsl/techniques.fx" );
 
@@ -101,11 +106,7 @@ void Scene::SetDefaults()
 	graphics_device.GetStateManager().SetDefaults();
 	graphics_device.SetDefaultRenderTarget();
 	graphics_device.SetViewport( camera.GetWidth(), camera.GetHeight() );
-	//graphics_device.Clear( 1, 153.f/255.0f, 0 );
-	//graphics_device.Clear( 0.1f, 0.1f, 0.1f );
-	//graphics_device.Clear( 192.0f / 255.0f, 192.0f / 255.0f, 192.0f / 255.0f );
 	graphics_device.Clear( background_color );
-	//graphics_device.Clear( 1, 1, 1 );
 
 	//render_target.GetTexture().SaveToFile( "lalala.png", true );	
 	ConfigureCameraShaderValues();
@@ -113,18 +114,20 @@ void Scene::SetDefaults()
 
 bool Scene::Render()
 {
-	PreRender();
+	//PreRender();
 	SetDefaults();
 	RenderScene();
-	if( perform_prerendering )
-		Sprite( downsample_render_target.GetTexture(), GeoFloat2( -1, -1), GeoFloat2( 2, 2 ), BlendType::ADDITIVE ).Render();
-	RenderSprites();
+	//if( perform_prerendering )
+	//	Sprite( downsample_render_target.GetTexture(), GeoFloat2( -1, -1), GeoFloat2( 2, 2 ), BlendType::ADDITIVE ).Render();
+	//RenderSprites();
 	return true;
 }
 
 void Scene::Draw()
 {
 	Render();
+    //glClearColor(1.0f, 0, 0, 1);
+    //glClear( GL_COLOR_BUFFER_BIT );
 	graphics_device.SwapBackBuffer();
 }
 
