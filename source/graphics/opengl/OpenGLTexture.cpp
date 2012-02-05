@@ -6,23 +6,48 @@
 
 OpenGLGraphicsDevice* OpenGLTexture::pGraphicsDevice = nullptr;
 
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+unsigned char* (^OpenGLTexture::load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);
+#endif
+
 OpenGLTexture::OpenGLTexture()
 {
 	valid = false;
 }
 
 ///// consid
+
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+void OpenGLTexture::SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) )
+{
+    load_texture_file_block = load_texture_file;
+}
+#endif
+
+
 OpenGLTexture::OpenGLTexture( const std::string& image_filename )
 {
 	SetTiling( 1, 1 );
 	SetOffsets( 0, 0 );
 	glEnable(GL_TEXTURE_2D);
+    
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    unsigned char* data = load_texture_file_block( image_filename.c_str(), &width, &height );
+    Setup( width, height, OpenGLTextureUsage::shader_resource );
+    SetData( ^(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){
+        *pRed = (float)data[width*4*y + x*4] / 255.0f;
+        *pGreen = (float)data[width*4*y + x*4 + 1] / 255.0f;
+        *pBlue = (float)data[width*4*y + x*4 + 2] / 255.0f;
+        *pAlpha = (float)data[width*4*y + x*4 + 3] / 255.0f;
+    });
+#else    
 	texture_id = SOIL_load_OGL_texture( image_filename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,  SOIL_FLAG_MIPMAPS );
 	if( !texture_id )
 	{
 		printf( "soil failed to load %s\n", image_filename.c_str() );
 		printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
 	}
+#endif
 	glEnable(GL_TEXTURE_2D);
 
 	glBindTexture( GL_TEXTURE_2D, texture_id  ); 

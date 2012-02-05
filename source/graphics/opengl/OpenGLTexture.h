@@ -27,6 +27,12 @@ public:
 	OpenGLTexture( const unsigned int width, const unsigned int height, const Color& color );
 	OpenGLTexture( const unsigned int width, const unsigned int height,  const OpenGLTextureUsage::OPENGL_TEXTURE_USAGE usage );
 	OpenGLTexture( const std::string& image_filename );
+    
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    static void SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) );
+#endif
+    
+    
 	OpenGLTexture( OpenGLTexture a, OpenGLTexture b );
 	OpenGLTexture( OpenGLTexture a, OpenGLTexture b, OpenGLTexture c );
 	OpenGLTexture( std::vector<OpenGLTexture> textures );
@@ -51,4 +57,5 @@ private:
 	GLenum component_type;
 	void* pMappedData;
 	static OpenGLGraphicsDevice* pGraphicsDevice;
+    static unsigned char* (^load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);
 };
