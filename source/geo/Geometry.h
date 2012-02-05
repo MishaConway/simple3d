@@ -78,9 +78,12 @@ public:
 
 //	Geometry ExtrudePerimeter( const float distance );
 
-	Geometry ProcessVertices( void (*process_vertex)(GeoVertex* pVertex, const GeoFloat3& normal) );  
 #ifdef _WIN32	
 	Geometry ProcessVertices( std::function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex );
+#endif
+    
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    Geometry ProcessVertices( void(^process_vertex)(GeoVertex* pVertex, const GeoFloat3& normal) );
 #endif
 
 //	std::vector<GeoVertex> SelectVertices( portable_function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex );

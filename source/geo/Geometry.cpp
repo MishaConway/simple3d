@@ -304,29 +304,19 @@ Geometry Geometry::UniformScale( const float scale_factor )
 	return Scale( scale_factor, scale_factor, scale_factor ); 
 }
 
-#ifndef _WIN32	
-float scale_lambda_scale_x, scale_lambda_scale_y, scale_lambda_scale_z;
-void ScaleLamda(GeoVertex* pVertex, const GeoFloat3& normal )
-{
-	pVertex->vertex.position.x *= scale_lambda_scale_x;
-	pVertex->vertex.position.y *= scale_lambda_scale_y;
-	pVertex->vertex.position.z *= scale_lambda_scale_z;
-}
-#endif
+
 Geometry Geometry::Scale( const float scale_x, const float scale_y, const float scale_z )
 {
-#ifndef _WIN32		
-	scale_lambda_scale_x = scale_x;
-	scale_lambda_scale_y = scale_y;
-	scale_lambda_scale_z = scale_z;
-	return (*this).ProcessVertices( ScaleLamda );
-#else	
+#ifdef _WIN32		
 	return (*this).ProcessVertices( [&scale_x, &scale_y, &scale_z](GeoVertex* vertex, const GeoFloat3& normal){ 
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    return (*this).ProcessVertices( ^(GeoVertex* vertex, const GeoFloat3& normal){
+#endif
 		vertex->vertex.position.x *= scale_x;
 		vertex->vertex.position.y *= scale_y;
 		vertex->vertex.position.z *= scale_z;
 	});
-#endif
 }
 
 Geometry Geometry::Label( const std::string label )
@@ -336,48 +326,30 @@ Geometry Geometry::Label( const std::string label )
 	return g;
 }
 
-#ifndef _WIN32	
-unsigned int set_texture_index_lamdba_texture_index;
-void SetTextureIndexLamda(GeoVertex* pVertex, const GeoFloat3& normal )
-{
-	pVertex->vertex.colorUV.z = (float)set_texture_index_lamdba_texture_index;
-}
-#endif
 Geometry Geometry::SetTextureIndex( const unsigned int texture_index )
 {
-#ifndef _WIN32		
-	set_texture_index_lamdba_texture_index = texture_index;
-	return (*this).ProcessVertices( SetTextureIndexLamda );
-#else	
+#ifdef _WIN32		
 	return (*this).ProcessVertices( [&texture_index](GeoVertex* vertex, const GeoFloat3& normal){ 
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+        return (*this).ProcessVertices( ^(GeoVertex* vertex, const GeoFloat3& normal){
+#endif
 		vertex->vertex.colorUV.z = (float) texture_index;
 	});	
-#endif
 }
 
-#ifndef _WIN32	
-float translate_lambda_translate_x, translate_lambda_translate_y, translate_lambda_translate_z;
-void TranslateLambda(GeoVertex* pVertex, const GeoFloat3& normal )
-{
-	pVertex->vertex.position.x += translate_lambda_translate_x;
-	pVertex->vertex.position.y += translate_lambda_translate_y;
-	pVertex->vertex.position.z += translate_lambda_translate_z;
-}
-#endif
 Geometry Geometry::Translate( const float translation_x, const float translation_y, const float translation_z )
 {
-#ifndef _WIN32		
-	translate_lambda_translate_x = translation_x;
-	translate_lambda_translate_y = translation_y;
-	translate_lambda_translate_z = translation_z;
-	return (*this).ProcessVertices( TranslateLambda );
-#else
+#ifdef _WIN32		
 	return (*this).ProcessVertices( [&translation_x, &translation_y, &translation_z](GeoVertex* vertex, const GeoFloat3& normal){ 
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    return (*this).ProcessVertices( ^(GeoVertex* vertex, const GeoFloat3& normal){
+#endif
 		vertex->vertex.position.x += translation_x;
 		vertex->vertex.position.y += translation_y;
 		vertex->vertex.position.z += translation_z;
 	});
-#endif
 }
 /*
 std::vector<GeoVertex> Geometry::SelectVertices( portable_function<void(const GeoVertex& pVertex, bool* pSelect)> select_vertex )
@@ -448,44 +420,13 @@ std::vector<GeoVertex> Geometry::SelectVertices( portable_function<void(const Ge
 }
 */
 
-Geometry Geometry::ProcessVertices( void (*process_vertex)(GeoVertex* pVertex, const GeoFloat3& normal) )
-{
-	Geometry g = *this;
-	
-	if( g.geometries.empty() )
-	{
-		//process all triangles
-		for( unsigned int i = 0; i < g.triangles.size(); i++ )
-		{
-			std::triple<GeoVertex, GeoVertex, GeoVertex> verts = g.triangles[i].GetVertices();
-			process_vertex( &verts.first, g.normal );
-			process_vertex( &verts.second, g.normal );
-			process_vertex( &verts.third, g.normal );
-			g.triangles[i] = GeoTriangle( verts );
-		}
-
-		//process all quads
-		for( unsigned int i = 0; i < g.quads.size(); i++ )
-		{
-			std::vector<GeoVertex> verts = g.quads[i].GetVertices();
-			process_vertex( &verts[0], g.normal );
-			process_vertex( &verts[1], g.normal );
-			process_vertex( &verts[2], g.normal );
-			process_vertex( &verts[3], g.normal );
-			g.quads[i] = GeoQuad( verts[0], verts[1], verts[2], verts[3] );
-		}
-		
-		for( unsigned int i = 0; i < g.vertices.size(); i++ )
-			process_vertex( &g.vertices[i], g.normal );
-	}
-	else
-	for( unsigned int i = 0; i < geometries.size(); i++ )
-		g.geometries[i] = g.geometries[i].ProcessVertices( process_vertex );
-	return g;
-}
 
 #ifdef _WIN32	
 Geometry Geometry::ProcessVertices( std::function<void(GeoVertex* pVertex, const GeoFloat3& normal)> process_vertex )
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+Geometry Geometry::ProcessVertices( void(^process_vertex)(GeoVertex* pVertex, const GeoFloat3& normal) )
+#endif
 {
 	Geometry g = *this;
 	
@@ -520,30 +461,22 @@ Geometry Geometry::ProcessVertices( std::function<void(GeoVertex* pVertex, const
 		g.geometries[i] = g.geometries[i].ProcessVertices( process_vertex );
 	return g;
 }
-#endif
 
-#ifndef _WIN32	
-float translate_along_normal_lamda_distance;
-void TranslateAlongNormalLamda(GeoVertex* pVertex, const GeoFloat3& normal )
-{
-	pVertex->vertex.position.x += normal.x * translate_along_normal_lamda_distance;
-	pVertex->vertex.position.y += normal.y * translate_along_normal_lamda_distance;
-	pVertex->vertex.position.z += normal.z * translate_along_normal_lamda_distance;
-}
-#endif
+
+
 
 Geometry Geometry::TranslateAlongNormal( const float distance )
 {
-#ifndef _WIN32		
-	translate_along_normal_lamda_distance = distance;
-	return (*this).ProcessVertices( TranslateAlongNormalLamda );
-#else
-	return (*this).ProcessVertices( [&distance](GeoVertex* vertex, const GeoFloat3& normal){ 
+#ifdef _WIN32		
+	return (*this).ProcessVertices( [&distance](GeoVertex* vertex, const GeoFloat3& normal){
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    return (*this).ProcessVertices( ^(GeoVertex* vertex, const GeoFloat3& normal){
+#endif
 		vertex->vertex.position.x += normal.x * distance;
 		vertex->vertex.position.y += normal.y * distance;
 		vertex->vertex.position.z += normal.z * distance;
 	});
-#endif
 }
 
 Geometry Geometry::ReverseWinding( const bool invert_normal )
@@ -633,14 +566,6 @@ Geometry GeometryFactory::GenerateUnitCube()
 	return unit_cube;
 }
 
-#ifndef _WIN32	
-float generate_unit_xz_circle_lambda_radius;
-void GenerateUnitXZCircleLambda(GeoVertex* pVertex, const GeoFloat3& normal )
-{
-	pVertex->vertex.colorUV.x = (pVertex->vertex.position.x) / (2*generate_unit_xz_circle_lambda_radius );
-	pVertex->vertex.colorUV.y = (-pVertex->vertex.position.z) / (2*generate_unit_xz_circle_lambda_radius );
-}
-#endif
 Geometry GeometryFactory::GenerateUnitXZCircle()
 {
 	Geometry xz_circle;
@@ -709,15 +634,15 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 	
 	xz_circle = xz_circle + GenerateXZUnitSquare().UniformScale( sqrtf(2) );	
 	
-	#ifndef _WIN32	
-	generate_unit_xz_circle_lambda_radius = radius;
-	xz_circle = xz_circle.ProcessVertices( GenerateUnitXZCircleLambda );
-	#else	
+	#ifdef _WIN32	
 	xz_circle = xz_circle.ProcessVertices( [this, &radius](GeoVertex* vertex, const GeoFloat3& normal){ 
+    #endif
+    #if defined(__APPLE__) || defined(__APPLE_CC__)  
+    xz_circle = xz_circle.ProcessVertices( ^(GeoVertex* vertex, const GeoFloat3& normal){
+    #endif
 		vertex->vertex.colorUV.x = (vertex->vertex.position.x) / (2*radius );
 		vertex->vertex.colorUV.y = (-vertex->vertex.position.z) / (2*radius );
 	});	
-	#endif
 	return xz_circle;
 }
 
