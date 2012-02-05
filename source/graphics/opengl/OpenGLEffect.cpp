@@ -82,9 +82,15 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 
 }
 
+void OpenGLEffect::AddTechnique( OpenGLShaderProgram program )
+{
+    shader_programs[program.GetName()] = program;
+}
+
  void OpenGLEffect::SetTechnique( const std::string& technique_name )
  {
-	 shader_programs[technique_name].Enable();
+	 printf( "techniqname is %s\n", technique_name.c_str() );
+     shader_programs[technique_name].Enable();
 	 unsigned int mmm = matrix_uniforms.size();
 	 for( std::map<std::string, GeoMatrix>::iterator it = matrix_uniforms.begin(); it != matrix_uniforms.end();  it++ )
 		 shader_programs[technique_name].SetMatrix( it->first, it->second );

@@ -23,6 +23,7 @@ private:
  void UnsetTechnique();
 
 public:
+ void AddTechnique( OpenGLShaderProgram program );
  void Enable();
  static OpenGLEffect& GetCurrentEffect();
 
