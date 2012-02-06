@@ -15,7 +15,7 @@ public:
 	static std::vector<OpenGLShader> GetValidShaders();
 	std::string GetName();
 protected:
-	OpenGLShader( GLenum shader_type, const std::string& name, const std::string& source );
+	OpenGLShader( GLenum shader_type, const std::string& name, std::string source );
 protected:
 	GLuint shader_id;
 	std::string name;

@@ -26,7 +26,7 @@ std::vector<OpenGLShader> OpenGLShader::GetValidShaders()
 	return valid_shaders;
 }
 
-OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& name, const std::string& source )
+OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& name, std::string source )
 {
 	valid = false;
 

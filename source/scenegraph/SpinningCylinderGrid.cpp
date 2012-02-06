@@ -132,13 +132,15 @@ void SpinningCylinderGrid::DeSelect()
 	pSelectedTile = nullptr;
 }
 
-GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsigned int screenspace_left, const unsigned int screenspace_right, const unsigned int screenspace_top, const unsigned int screenspace_bottom, const unsigned int viewport_width, const unsigned int viewport_height, Camera camera )
+GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsigned int screenspace_left, const unsigned int screenspace_right, const unsigned int screenspace_top, const unsigned int screenspace_bottom, const unsigned int viewport_width, const unsigned int viewport_height, Camera _camera )
 {	
 	pSelectedTile = nullptr;
-	#ifdef _WIN32	
+	#ifdef _WIN32
+	Camera camera = _camera;
 	IterateGridTiles( [this, &screenspace_left, &screenspace_right, &screenspace_top, &screenspace_bottom, &viewport_width, &viewport_height, &camera](GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop)
 	#endif
 	#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    __block Camera camera = _camera;
 	IterateGridTiles( ^(GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop) 	
 	#endif	
 	{ 
@@ -148,8 +150,6 @@ GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsign
 			for( unsigned int v = 0; v < worldspace_vertices.size(); v++ )
 			{
 				worldspace_vertices[v].position = camera.ProjectIntoScreenspace( GeoVector( worldspace_vertices[v].position ) ).ToGeoFloat3(); 
-
-				GeoVector coo = camera.ProjectIntoScreenspace( GeoVector( 0, -2, 0 ) );
 
 				//worldspace_vertices[v].position = GeoVector( x ).ToGeoFloat3();
 
@@ -171,8 +171,6 @@ GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsign
 			{
 				GeoVector worldspace_position = quad->GetWorldspaceCentroid();
 				GeoVector worldspace_normal = (worldspace_position - GetWorldspaceCentroid()).Normalize();
-				//const float dot = XMVectorGetX(XMVector3Dot( worldspace_normal, -camera.GetEyeDirectionNormalized() ));
-				const float dot = worldspace_normal.Dot( -camera.GetEyeDirectionNormalized() );
 				const GeoVector eye_dir = -camera.GetEyeDirectionNormalized();
 				//need to make sure tile is front facing with respect to the camera
 				if( worldspace_normal.Dot( -camera.GetEyeDirectionNormalized() ) > 0.7f )
@@ -196,12 +194,14 @@ bool SpinningCylinderGrid::Render()
 		pGraphicsDevice->GetStateManager().SetDefaultBackFaceRendering();
 	pGraphicsDevice->GetStateManager().Lock();
 	
-	unsigned int row_of_selected_tile;
-	float angle_of_selected_tile;
 	#ifdef _WIN32	
+    unsigned int row_of_selected_tile;
+	float angle_of_selected_tile;
 	IterateGridTiles( [this, &row_of_selected_tile, &angle_of_selected_tile](GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop){ 
 	#endif
-	#if defined(__APPLE__) || defined(__APPLE_CC__)  
+	#if defined(__APPLE__) || defined(__APPLE_CC__) 
+    __block unsigned int row_of_selected_tile;
+    __block float angle_of_selected_tile;
 	IterateGridTiles( ^(GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop){ 	
 	#endif
 		if( render_front_faces  )
@@ -247,7 +247,7 @@ bool SpinningCylinderGrid::Render()
 void SpinningCylinderGrid::IterateGridTiles( std::function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile )
 #endif
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
-void SpinningCylinderGrid::IterateGridTiles( void(^process_grid_tile)(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop) );
+void SpinningCylinderGrid::IterateGridTiles( void(^process_grid_tile)(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop) )
 #endif
 {
 	for( unsigned int row = 0; row < grid_tiles.size(); row++ )

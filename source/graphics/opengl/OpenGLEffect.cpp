@@ -15,7 +15,8 @@ OpenGLEffect::OpenGLEffect()
 
 std::string OpenGLEffect::EvaluateIncludeDirectives( std::string root_dir, std::string source )
 {
-	const std::tr1::regex pattern("#include([^\n]+)");
+#ifdef _WIN32	
+    const std::tr1::regex pattern("#include([^\n]+)");
 	const std::tr1::sregex_token_iterator end;
 	
 	std::vector<std::string> include_directive_matches;
@@ -32,6 +33,7 @@ std::string OpenGLEffect::EvaluateIncludeDirectives( std::string root_dir, std::
 		else
 			source = StringReplace( source, include_directive_matches[i], File::ReadAllText( include_file ) );
 	}
+#endif
 
 //	printf( "final source is %s\n", source.c_str() );
 	return source;
