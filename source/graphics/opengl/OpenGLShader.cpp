@@ -231,32 +231,37 @@ GLint OpenGLShaderProgram::GetUniformLocation( const std::string& variable_name 
 
 #ifdef _WIN32	
 bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, portable_function<void(const GLint uniform_location)> f )
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, void(^f)(const GLint uniform_location) )
+#endif
 {
 	GLint uniform_location = GetUniformLocation( variable_name );
 	if( -1 != uniform_location )
 		f( uniform_location );
 	return true;
 }
-#endif
 
  bool OpenGLShaderProgram::SetInt( const std::string& variable_name, const int i )
  {
 #ifdef _WIN32	
-	 return SetEffectVariable( variable_name, [&i](const GLint uniform_location){glUniform1i( uniform_location, i );});
-#else
-	glUniform1i( GetUniformLocation(variable_name), i );
-	return true;
+	 return SetEffectVariable( variable_name, [&i](const GLint uniform_location){
 #endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+      return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
+#endif
+     glUniform1i( uniform_location, i );});
  }
 
  bool OpenGLShaderProgram::SetFloat( const std::string& variable_name, float flt )
  {
 #ifdef _WIN32		 
-	 return SetEffectVariable( variable_name, [&flt](const GLint uniform_location){glUniform1f( uniform_location, flt );});
-#else
-	glUniform1f( GetUniformLocation(variable_name), flt );
-	return true;
+	 return SetEffectVariable( variable_name, [&flt](const GLint uniform_location){
 #endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+     return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
+#endif
+    glUniform1f( uniform_location, flt );});
  }
 
 #ifdef __XNAMATH_H__
@@ -274,21 +279,23 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
  bool OpenGLShaderProgram::SetFloatArray( const std::string& variable_name, GeoVector& float_array )
  {
 #ifdef _WIN32		 
-	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform4fv( uniform_location, 1, (float*) &float_array );});
-#else
-	glUniform4fv( GetUniformLocation(variable_name), 1, (float*) &float_array  );
-	return true;
+	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){
 #endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
+#endif
+    glUniform4fv( uniform_location, 1, (float*) &float_array );});
  }
 
  bool OpenGLShaderProgram::SetFloatArray( const std::string& variable_name, std::vector<float>& float_array )
  {
 #ifdef _WIN32		 
-	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform1fv( uniform_location, float_array.size(), (float*) &float_array[0]);});
-#else
-	glUniform1fv( GetUniformLocation(variable_name), float_array.size(), (float*) &float_array[0]  );
-	return true;
+	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){
 #endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+     return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
+#endif
+    glUniform1fv( uniform_location, float_array.size(), (float*) &float_array[0]);});
  }
 
 #ifdef __XNAMATH_H__
@@ -306,11 +313,12 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
  bool OpenGLShaderProgram::SetMatrix( const std::string& variable_name, GeoMatrix& matrix )
  {
 #ifdef _WIN32		 
-	 return SetEffectVariable( variable_name, [&matrix](const GLint uniform_location){glUniformMatrix4fv( uniform_location, 1, GL_FALSE, (float*) &matrix );});
-#else
-	glUniformMatrix4fv( GetUniformLocation(variable_name), 1, GL_FALSE, (float*) &matrix  );
-	return true;
+	 return SetEffectVariable( variable_name, [&matrix](const GLint uniform_location){
 #endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+     return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
+#endif
+     glUniformMatrix4fv( uniform_location, 1, GL_FALSE, (float*) &matrix );});
  }
 
  bool OpenGLShaderProgram::SetTexture( const std::string& variable_name, OpenGLTexture& texture, const GLenum texture_index )
@@ -320,9 +328,10 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, p
 	  glBindTexture( GL_TEXTURE_2D, texture.GetOpenGLTextureId() );
 	  glActiveTexture( GL_TEXTURE0 ); 
 #ifdef _WIN32
-	 return SetEffectVariable( variable_name, [&texture, &texture_index](const GLint uniform_location){glUniform1i( uniform_location, texture_index );});
-#else
-	glUniform1i( GetUniformLocation(variable_name), texture_index );
-	return true;
+	 return SetEffectVariable( variable_name, [&texture, &texture_index](const GLint uniform_location){
 #endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+     return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
+#endif
+      glUniform1i( uniform_location, texture_index );});
  }

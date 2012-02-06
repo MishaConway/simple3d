@@ -64,8 +64,11 @@ public:
 	 bool SetTexture( const std::string& variable_name, OpenGLTexture& texture, const GLenum texture_index );
 protected:
 #ifdef _WIN32	
-	bool SetEffectVariable( const std::string& variable_name, portable_function<void(const GLint uniform_location)> f );
+	bool SetEffectVariable( const std::string& variable_name, std::function<void(const GLint uniform_location)> f );
 #endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+    bool SetEffectVariable( const std::string& variable_name, void(^f)(const GLint uniform_location) );
+#endif    
 	GLint GetUniformLocation( const std::string& variable_name );
 protected:
 	static OpenGLShaderProgram current_program;
