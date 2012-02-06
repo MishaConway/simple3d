@@ -13,15 +13,6 @@ private:
 	Texture texture;
 };
 
-struct TransformedGridTile
-{
-	GridTile* pGridTile;
-	unsigned int row; 
-	float angle;
-	std::vector<Vertex>  worldspace_vertices;
-	GeoVector worldspace_centroid;
-};
-
 class SpinningCylinderGrid : public RenderableObject
 {
 public:
@@ -35,6 +26,7 @@ public:
 	void AddTile( const GridTile& grid_tile );
 
 	GridTile* PickTileFromScreenSpaceCoordinates( const unsigned int screenspace_left, const unsigned int screenspace_right, const unsigned int screenspace_top, const unsigned int screenspace_bottom, const unsigned int viewport_width, const unsigned int viewport_height, Camera camera );
+	
 	void DeSelect();
 
 	bool IsSelected();
@@ -42,9 +34,16 @@ public:
 	GeoVector GetWorldspacePositionOfSelectedTile();
 	GeoVector GetWorldspaceNormalOfSelectedTile();
 	float GetRadius();
+
 	virtual GeoVector GetWorldspaceCentroid();
+
 private:
-	std::vector<TransformedGridTile> GetTransformedGridTiles();
+	#ifdef _WIN32	
+	void IterateGridTiles( std::function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile );
+	#endif
+	#if defined(__APPLE__) || defined(__APPLE_CC__)  
+	void IterateGridTiles( void(^process_grid_tile)(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop) );
+	#endif
 	void TransformQuad( const unsigned int row, const float angle, const float radius_offset, const float scale_factor );
 private:
 	bool render_front_faces;
@@ -56,7 +55,7 @@ private:
 
 
 
-	std::vector<  std::vector<GridTile>  > grid_tiles;
+	std::vector< std::vector<GridTile> > grid_tiles;
 	GridTile* pSelectedTile; 
 	GeoVector worldspace_position_of_selected_tile;
 	GeoVector worldspace_normal_of_selected_tile;

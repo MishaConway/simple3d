@@ -63,3 +63,36 @@ std::string Trim( const std::string& str )
 	trimmer >> s;
 	return s;
 }
+
+std::string StripString( std::string str, std::string charsToStrip )
+{
+	std::string newStr;
+	for( int i = 0; i < (int)str.size(); i++ )
+	{
+		bool foundToken = false;
+		for( int j = 0; j < (int)charsToStrip.size(); j++ )
+			if( str[i] == charsToStrip[j] )
+			{
+				foundToken = true;
+				break;
+			}
+
+		if( !foundToken )
+			newStr += str[i];
+	}
+
+	return newStr;
+}
+
+std::string StringReplace( std::string result, 
+  const std::string& replaceWhat, 
+  const std::string& replaceWithWhat)
+{
+  while(1)
+  {
+    const int pos = result.find(replaceWhat);
+    if (pos==-1) break;
+    result.replace(pos,replaceWhat.size(),replaceWithWhat);
+  }
+  return result;
+}

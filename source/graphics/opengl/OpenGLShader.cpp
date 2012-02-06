@@ -42,6 +42,11 @@ OpenGLShader::OpenGLShader( const GLenum shader_type, const std::string& name, c
 		if( !source.empty() )
 		{				
 			shader_id = glCreateShader( shader_type );
+
+			#ifdef GL_ES_VERSION_2_0
+			source = "precision highp float;\n" + source;
+			#endif
+
 			const char* c_str = source.c_str();
 			const GLint length = source.length();
 			glShaderSource( shader_id, 1, &c_str, &length );  

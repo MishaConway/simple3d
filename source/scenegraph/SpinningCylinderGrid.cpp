@@ -1,7 +1,7 @@
 #include "SpinningCylinderGrid.h"
 #include "../geo/GeoFloat.h"
-#include <math.h>
 #include <algorithm>
+#include <math.h>
 #include "../std/nullptr.h"
 
 #ifdef _WIN32
@@ -135,44 +135,56 @@ void SpinningCylinderGrid::DeSelect()
 GridTile* SpinningCylinderGrid::PickTileFromScreenSpaceCoordinates( const unsigned int screenspace_left, const unsigned int screenspace_right, const unsigned int screenspace_top, const unsigned int screenspace_bottom, const unsigned int viewport_width, const unsigned int viewport_height, Camera camera )
 {	
 	pSelectedTile = nullptr;
-
-	std::vector<TransformedGridTile> transformed_grid_tiles = GetTransformedGridTiles();
-	for( unsigned int i = 0; i < transformed_grid_tiles.size(); i++ )
+	#ifdef _WIN32	
+	IterateGridTiles( [this, &screenspace_left, &screenspace_right, &screenspace_top, &screenspace_bottom, &viewport_width, &viewport_height, &camera](GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop)
+	#endif
+	#if defined(__APPLE__) || defined(__APPLE_CC__)  
+	IterateGridTiles( ^(GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop) 	
+	#endif	
 	{ 
+		{
+			std::vector<Vertex> worldspace_vertices = quad->GetWorldspaceVertices();
 			float max_x = 0, max_y = 0, min_x =0,  min_y = 0;
-			for( unsigned int v = 0; v < transformed_grid_tiles[i].worldspace_vertices.size(); v++ )
-			{ 
-				transformed_grid_tiles[i].worldspace_vertices[v].position = camera.ProjectIntoScreenspace( GeoVector( transformed_grid_tiles[i].worldspace_vertices[v].position ) ).ToGeoFloat3(); 
+			for( unsigned int v = 0; v < worldspace_vertices.size(); v++ )
+			{
+				worldspace_vertices[v].position = camera.ProjectIntoScreenspace( GeoVector( worldspace_vertices[v].position ) ).ToGeoFloat3(); 
+
+				GeoVector coo = camera.ProjectIntoScreenspace( GeoVector( 0, -2, 0 ) );
+
+				//worldspace_vertices[v].position = GeoVector( x ).ToGeoFloat3();
+
 				if( 0 == v )
 				{
-					max_x = min_x = transformed_grid_tiles[i].worldspace_vertices[v].position.x;
-					max_y = min_y = transformed_grid_tiles[i].worldspace_vertices[v].position.y;
+					max_x = min_x = worldspace_vertices[v].position.x;
+					max_y = min_y = worldspace_vertices[v].position.y;
 				}
 				else
 				{
-					max_x = std::max( max_x,  transformed_grid_tiles[i].worldspace_vertices[v].position.x );
-					min_x = std::min( min_x,  transformed_grid_tiles[i].worldspace_vertices[v].position.x );
-					max_y = std::max( max_y,  transformed_grid_tiles[i].worldspace_vertices[v].position.y );
-					min_y = std::min( min_y,  transformed_grid_tiles[i].worldspace_vertices[v].position.y );
+					max_x = std::max( max_x,  worldspace_vertices[v].position.x );
+					min_x = std::min( min_x,  worldspace_vertices[v].position.x );
+					max_y = std::max( max_y,  worldspace_vertices[v].position.y );
+					min_y = std::min( min_y,  worldspace_vertices[v].position.y );
 				}
 			}
 
 			if( !(screenspace_left > max_x || min_x > screenspace_right  || screenspace_top > max_y || min_y > screenspace_bottom ) )
 			{
-				GeoVector worldspace_position = transformed_grid_tiles[i].worldspace_centroid;
+				GeoVector worldspace_position = quad->GetWorldspaceCentroid();
 				GeoVector worldspace_normal = (worldspace_position - GetWorldspaceCentroid()).Normalize();
+				//const float dot = XMVectorGetX(XMVector3Dot( worldspace_normal, -camera.GetEyeDirectionNormalized() ));
 				const float dot = worldspace_normal.Dot( -camera.GetEyeDirectionNormalized() );
 				const GeoVector eye_dir = -camera.GetEyeDirectionNormalized();
 				//need to make sure tile is front facing with respect to the camera
 				if( worldspace_normal.Dot( -camera.GetEyeDirectionNormalized() ) > 0.7f )
 				{
-					pSelectedTile = transformed_grid_tiles[i].pGridTile;
+					pSelectedTile = pGridTile;
 					worldspace_position_of_selected_tile = worldspace_position;
 					worldspace_normal_of_selected_tile = worldspace_normal;
-					return pSelectedTile;
+					*pStop = true;	
 				}				
 			}	
 		}
+	});
 	return pSelectedTile;
 }
 
@@ -186,35 +198,34 @@ bool SpinningCylinderGrid::Render()
 	
 	unsigned int row_of_selected_tile;
 	float angle_of_selected_tile;
-
-	std::vector<TransformedGridTile> transformed_grid_tiles = GetTransformedGridTiles();
-	for( unsigned int i = 0; i < transformed_grid_tiles.size(); i++ )
-	{
-		TransformQuad( transformed_grid_tiles[i].row, transformed_grid_tiles[i].angle, 0, 1 );
-		
+	#ifdef _WIN32	
+	IterateGridTiles( [this, &row_of_selected_tile, &angle_of_selected_tile](GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop){ 
+	#endif
+	#if defined(__APPLE__) || defined(__APPLE_CC__)  
+	IterateGridTiles( ^(GridTile* pGridTile, const unsigned int row, const float angle, bool* pStop){ 	
+	#endif
 		if( render_front_faces  )
 		{
-			if( pSelectedTile == transformed_grid_tiles[i].pGridTile )
+			if( pSelectedTile == pGridTile )
 			{
-				row_of_selected_tile = transformed_grid_tiles[i].row;
-				angle_of_selected_tile = transformed_grid_tiles[i].angle;
+				row_of_selected_tile = row;
+				angle_of_selected_tile = angle;
 			//	quad->SetTexture( tile_backside_texture );
 			}
 			//else
-				quad->SetTexture( transformed_grid_tiles[i].pGridTile->GetTexture() );
+				quad->SetTexture( pGridTile->GetTexture() );
 		}
 		else
 		{
-			if( pSelectedTile == transformed_grid_tiles[i].pGridTile )
-				quad->SetTexture( transformed_grid_tiles[i].pGridTile->GetTexture() );
+			if( pSelectedTile == pGridTile )
+				quad->SetTexture( pGridTile->GetTexture() );
 			else
-				quad->SetTexture( transformed_grid_tiles[i].pGridTile->GetTexture() );
+				quad->SetTexture( pGridTile->GetTexture() );
 
 		}
 		//if( pSelectedTile != pGridTile )
 			quad->Render();	
-	}
-
+	});
 	pGraphicsDevice->GetStateManager().Unlock();
 
 	if( render_front_faces && pSelectedTile )
@@ -232,24 +243,23 @@ bool SpinningCylinderGrid::Render()
 	return true;	
 }
 
-std::vector<TransformedGridTile> SpinningCylinderGrid::GetTransformedGridTiles()
+#ifdef _WIN32	
+void SpinningCylinderGrid::IterateGridTiles( std::function<void(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop)> process_grid_tile )
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+void SpinningCylinderGrid::IterateGridTiles( void(^process_grid_tile)(GridTile* pGridTile, const unsigned int row, const float angle, bool* stop) );
+#endif
 {
-	std::vector<TransformedGridTile> transformed_grid_tiles;
 	for( unsigned int row = 0; row < grid_tiles.size(); row++ )
 	for( unsigned int j = 0; j < num_tiles_per_circumference && j < grid_tiles[row].size(); j++ )
 	{			
 		const float angle = (float) j * degrees_per_tile + degrees_scrolled;
 		TransformQuad( row, angle, 0, 1 );
 		bool stop = false;
-		TransformedGridTile t;
-		t.angle = angle;
-		t.row = row;
-		t.pGridTile = &grid_tiles[row][j];
-		t.worldspace_vertices = quad->GetWorldspaceVertices();
-		t.worldspace_centroid = quad->GetWorldspaceCentroid();
-		transformed_grid_tiles.push_back( t );	
+		process_grid_tile( &grid_tiles[row][j], row, angle, &stop );
+		if( stop )
+			return;
 	}
-	return transformed_grid_tiles;
 }
 
 void SpinningCylinderGrid::TransformQuad( const unsigned int row, const float angle, const float radius_offset, const float scale_factor )

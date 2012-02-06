@@ -57,5 +57,7 @@ private:
 	GLenum component_type;
 	void* pMappedData;
 	static OpenGLGraphicsDevice* pGraphicsDevice;
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
     static unsigned char* (^load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);
+#endif
 };

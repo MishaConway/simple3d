@@ -114,12 +114,12 @@ void Scene::SetDefaults()
 
 bool Scene::Render()
 {
-	//PreRender();
+	PreRender();
 	SetDefaults();
 	RenderScene();
-	//if( perform_prerendering )
-	//	Sprite( downsample_render_target.GetTexture(), GeoFloat2( -1, -1), GeoFloat2( 2, 2 ), BlendType::ADDITIVE ).Render();
-	//RenderSprites();
+	if( perform_prerendering )
+		Sprite( downsample_render_target.GetTexture(), GeoFloat2( -1, -1), GeoFloat2( 2, 2 ), BlendType::ADDITIVE ).Render();
+	RenderSprites();
 	return true;
 }
 

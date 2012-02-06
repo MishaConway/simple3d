@@ -19,6 +19,8 @@ public:
 private:
 #endif
 
+ std::string EvaluateIncludeDirectives( std::string root_dir, std::string source );
+
  void SetTechnique( const std::string& technique_name );
  void UnsetTechnique();
 

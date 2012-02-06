@@ -12,26 +12,37 @@ OpenGLEffect::OpenGLEffect()
 {
 	valid = false;
 }
+
+std::string OpenGLEffect::EvaluateIncludeDirectives( std::string root_dir, std::string source )
+{
+	const std::tr1::regex pattern("#include([^\n]+)");
+	const std::tr1::sregex_token_iterator end;
+	
+	std::vector<std::string> include_directive_matches;
+	for (std::tr1::sregex_token_iterator i(source.begin(), source.end(), pattern); i != end; ++i)
+		include_directive_matches.push_back( (*i).str() );
+
+	for( unsigned int i = 0; i < include_directive_matches.size(); i++ )
+	{
+		std::string include_file = StripString( include_directive_matches[i], "\"" );
+		include_file = root_dir + ExplodeString( include_file, " \t" ).back();
+		std::string include_source = File::ReadAllText( include_file );
+		if( include_source.empty() )
+			printf( "could not find include source for %s\n", include_file.c_str() );
+		else
+			source = StringReplace( source, include_directive_matches[i], File::ReadAllText( include_file ) );
+	}
+
+//	printf( "final source is %s\n", source.c_str() );
+	return source;
+}
  
 OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 {
 	std::vector<std::string> effect_path_parts = ExplodeString( effect_path, "/\\");
 	effect_path_parts.pop_back();
-	const std::string effect_directory = ImplodeVector( effect_path_parts, "/" ) + "/";
-
-	std::vector<std::string> vertex_shader_includes = Directory::GetFiles(effect_directory + "includes/vertex_shader_includes" );
-	std::vector<std::string> fragment_shader_includes = Directory::GetFiles(effect_directory + "includes/fragment_shader_includes" );
-	std::vector<std::string> cross_shader_includes = Directory::GetFiles(effect_directory + "includes/cross_shader_includes" );
-	vertex_shader_includes.insert(vertex_shader_includes.begin(), cross_shader_includes.begin(), cross_shader_includes.end());
-	fragment_shader_includes.insert(fragment_shader_includes.begin(), cross_shader_includes.begin(), cross_shader_includes.end());
-
-	
+	const std::string effect_directory = ImplodeVector( effect_path_parts, "/" ) + "/";	
 	std::string source = File::ReadAllText( effect_path );
-
-	//auto text_iter = source.cbegin();
-
-	//std::tr1::smatch result; 
-	//const std::tr1::regex pattern("technique");
 	
 #ifdef _WIN32
 	const std::tr1::regex pattern("technique(.)([^}]+)");
@@ -53,8 +64,16 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 		technique_body = std::regex_replace( technique_body, std::regex("[\\{\\}[:blank:]]"), std::string("") );
 
 		std::vector<std::string> technique_body_parts = ExplodeString( technique_body, "," );
+
+		const std::string vertex_shader_path = effect_directory + technique_body_parts[0] + ".vert";
+		const std::string pixel_shader_path =  effect_directory + technique_body_parts[1] + ".frag";
+
+		std::string vertex_shader_source = EvaluateIncludeDirectives(effect_directory, File::ReadAllText( vertex_shader_path ));
+		std::string pixel_shader_source = EvaluateIncludeDirectives(effect_directory, File::ReadAllText( pixel_shader_path ));
+
+
 			
-		shader_programs[technique_name] = OpenGLShaderProgram( technique_name, OpenGLVertexShader( effect_directory + technique_body_parts[0] + ".vert", vertex_shader_includes ), OpenGLFragmentShader( effect_directory + technique_body_parts[1] + ".frag", fragment_shader_includes) ) ;
+		shader_programs[technique_name] = OpenGLShaderProgram( technique_name, OpenGLVertexShader( effect_directory + technique_body_parts[0] + ".vert", vertex_shader_source ), OpenGLFragmentShader( effect_directory + technique_body_parts[1] + ".frag", pixel_shader_source) ) ;
     }
 #else
 	//TODO: implement equivalent logic for systems that don't support regex....
@@ -89,7 +108,6 @@ void OpenGLEffect::AddTechnique( OpenGLShaderProgram program )
 
  void OpenGLEffect::SetTechnique( const std::string& technique_name )
  {
-	 printf( "techniqname is %s\n", technique_name.c_str() );
      shader_programs[technique_name].Enable();
 	 unsigned int mmm = matrix_uniforms.size();
 	 for( std::map<std::string, GeoMatrix>::iterator it = matrix_uniforms.begin(); it != matrix_uniforms.end();  it++ )

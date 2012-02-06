@@ -60,6 +60,7 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 	//capabilities.ForceDisablePixelBufferObject();
     
     glGetIntegerv( GL_FRAMEBUFFER_BINDING, &default_fbo_id );
+
 		
 	OpenGLRenderTarget::pGraphicsDevice = this;
 	OpenGLTexture::pGraphicsDevice = this;

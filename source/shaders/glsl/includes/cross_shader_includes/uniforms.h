@@ -1,5 +1,3 @@
-precision highp float; 
-
 uniform mat4 WorldTransform;
 uniform mat4 ViewTransform;
 uniform mat4 ProjectionTransform;
