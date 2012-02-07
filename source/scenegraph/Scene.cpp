@@ -8,6 +8,7 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
     graphics_device.Initialize( hWnd, width, height, true );
     printf( "after init..\n" );
 	Object::BindGraphicsDevice( &graphics_device );
+        
 	SetBackgroundColor( Color::Black() );
 
 	printf( "before render atrges..\n" );
@@ -125,9 +126,8 @@ bool Scene::Render()
 
 void Scene::Draw()
 {
-	Render();
-    //glClearColor(1.0f, 0, 0, 1);
-    //glClear( GL_COLOR_BUFFER_BIT );
+    Object::BindGraphicsDevice( &graphics_device );
+    Render();
 	graphics_device.SwapBackBuffer();
 }
 

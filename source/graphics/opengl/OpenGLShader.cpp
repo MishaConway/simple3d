@@ -87,8 +87,6 @@ GLuint OpenGLShader::GetOpenGLShaderId()
 
 OpenGLVertexShader::OpenGLVertexShader( std::string name, std::string source  ) : OpenGLShader( GL_VERTEX_SHADER, name, source )
 {
-    printf( "vertex hader source is %s\n", source.c_str() );
-
 }
 
 
