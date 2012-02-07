@@ -77,13 +77,14 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 
 }
 
-void OpenGLEffect::AddTechnique( OpenGLShaderProgram program )
-{
-    shader_programs[program.GetName()] = program;
-}
-
- void OpenGLEffect::SetTechnique( const std::string& technique_name )
+#ifdef _WIN32	
+bool OpenGLEffect::RenderTechnique( const std::string& technique_name, std::function<void()> f )
+#endif
+#if defined(__APPLE__) || defined(__APPLE_CC__)  
+bool OpenGLEffect::RenderTechnique( const std::string& technique_name, void(^f)() )
+#endif
  {
+	 //setup technique
      shader_programs[technique_name].Enable();
 	 unsigned int mmm = matrix_uniforms.size();
 	 for( std::map<std::string, GeoMatrix>::iterator it = matrix_uniforms.begin(); it != matrix_uniforms.end();  it++ )
@@ -97,28 +98,21 @@ void OpenGLEffect::AddTechnique( OpenGLShaderProgram program )
 	 unsigned int i = 0;
 	 for( std::map<std::string, OpenGLTexture>::iterator it = texture_uniforms.begin(); it != texture_uniforms.end();  it++, i++ )
 		 shader_programs[technique_name].SetTexture( it->first, it->second, i );
- }
-
- void OpenGLEffect::UnsetTechnique()
- {
-	unsigned int i = 0;
+          
+	 //render
+     f(); 
+	 
+     //restore state
+     i = 0;
 	 for( std::map<std::string, OpenGLTexture>::iterator it = texture_uniforms.begin(); it != texture_uniforms.end();  it++, i++ )
-	{
-		glActiveTexture( GL_TEXTURE0 + i ); 
-		glBindTexture( GL_TEXTURE_2D, 0 );
-	}
-	glActiveTexture( GL_TEXTURE0 ); 
- }
- 
- #ifdef _WIN32	
- bool OpenGLEffect::RenderTechnique( const std::string& technique_name, portable_function<void()> f )
- {
-	 SetTechnique( technique_name );
-	 f(); 
-	 UnsetTechnique();
+     {
+         glActiveTexture( GL_TEXTURE0 + i ); 
+         glBindTexture( GL_TEXTURE_2D, 0 );
+     }
+     glActiveTexture( GL_TEXTURE0 );  
+     
 	return true;
  }
-#endif
 
  void OpenGLEffect::Enable()
  {

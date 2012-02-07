@@ -82,13 +82,9 @@ bool Sprite::Render()
 		pGraphicsDevice->SetVertexBuffer( GetVertexBuffer() );
 		pGraphicsDevice->GetStateManager().SetSpriteRendering( blend_type );
 
-		#ifdef _WIN32				
-		e.RenderTechnique( GetTechnique(), [this](){ pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );});
-		#else
-		e.SetTechnique( GetTechnique() );
-		pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
-		e.UnsetTechnique();
-		#endif
+        BEGIN_RENDER_CURRENT_TECHNIQUE(e)
+            pGraphicsDevice->Draw( GetVertexBuffer().GetNumVertices() );
+        END_RENDER_TECHNIQUE
 	}
 	return true;	
 }
