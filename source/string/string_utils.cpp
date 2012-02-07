@@ -1,5 +1,8 @@
 #include "string_utils.h"
 #include <sstream>
+#ifdef _WIN32
+#include <regex>
+#endif
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
 char** (^get_regex_matches_block)(const char* str, const char* pattern ); 
