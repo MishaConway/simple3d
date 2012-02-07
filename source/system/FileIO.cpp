@@ -23,6 +23,9 @@
 #include <wchar.h>
 #endif
 
+#if defined(__APPLE__) || defined(__APPLE_CC__)
+const char* (^File::read_all_text_block)(const char* path) = 0; 
+#endif
 
 
 bool Directory::Exists( const std::string& path )
@@ -132,9 +135,20 @@ bool File::Exists( const std::string& path )
 	return false;
 }
 
+#if defined(__APPLE__) || defined(__APPLE_CC__)
+void File::SetReadAllTextBlock( const char* (^_read_all_text_block)(const char* path) )
+{
+    read_all_text_block = _read_all_text_block;    
+}
+#endif
+
 std::string File::ReadAllText( const std::string& path )
 {
-	std::ifstream t(path.c_str());
+#if defined(__APPLE__) || defined(__APPLE_CC__)
+    if( read_all_text_block )
+        return std::string( read_all_text_block(path.c_str()) );
+#endif
+    std::ifstream t(path.c_str());
 	std::stringstream buffer;
 	buffer << t.rdbuf();
 	return buffer.str();

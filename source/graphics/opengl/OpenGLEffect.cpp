@@ -14,28 +14,19 @@ OpenGLEffect::OpenGLEffect()
 }
 
 std::string OpenGLEffect::EvaluateIncludeDirectives( std::string root_dir, std::string source )
-{
-#ifdef _WIN32	
-    const std::tr1::regex pattern("#include([^\n]+)");
-	const std::tr1::sregex_token_iterator end;
-	
-	std::vector<std::string> include_directive_matches;
-	for (std::tr1::sregex_token_iterator i(source.begin(), source.end(), pattern); i != end; ++i)
-		include_directive_matches.push_back( (*i).str() );
-
-	for( unsigned int i = 0; i < include_directive_matches.size(); i++ )
+{        
+    const std::vector<std::string> include_directive_matches = GetRegexMatches( source, "#include([^\n]+)" );    
+    for( unsigned int i = 0; i < include_directive_matches.size(); i++ )
 	{
 		std::string include_file = StripString( include_directive_matches[i], "\"" );
 		include_file = root_dir + ExplodeString( include_file, " \t" ).back();
-		std::string include_source = File::ReadAllText( include_file );
+		const std::string include_source = File::ReadAllText( include_file );
 		if( include_source.empty() )
 			printf( "could not find include source for %s\n", include_file.c_str() );
 		else
-			source = StringReplace( source, include_directive_matches[i], File::ReadAllText( include_file ) );
+			source = StringReplace( source, include_directive_matches[i], include_source );
 	}
-#endif
-
-//	printf( "final source is %s\n", source.c_str() );
+    
 	return source;
 }
  
@@ -44,43 +35,26 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 	std::vector<std::string> effect_path_parts = ExplodeString( effect_path, "/\\");
 	effect_path_parts.pop_back();
 	const std::string effect_directory = ImplodeVector( effect_path_parts, "/" ) + "/";	
-	std::string source = File::ReadAllText( effect_path );
-	
-#ifdef _WIN32
-	const std::tr1::regex pattern("technique(.)([^}]+)");
-
-	const std::tr1::sregex_token_iterator end;
-	for (std::tr1::sregex_token_iterator i(source.begin(), source.end(), pattern); i != end; ++i)
+	const std::string source = File::ReadAllText( effect_path );
+    
+    std::vector<std::string> regex_matches = GetRegexMatches( source, "technique([^}]+)" );
+    for( unsigned int i = 0; i < regex_matches.size(); i++ )
     {
-		const std::string technique_source = (*i).str() + "}";
-		 printf( "%s\n",  technique_source.c_str() );
-
-		std::tr1::cmatch technique_name_results;
-	    const std::tr1::regex technique_name_pattern("technique([^{]+)(([^)]+))");
-		std::regex_search( technique_source.c_str(), technique_name_results, technique_name_pattern );
-
-		std::string technique_name = technique_name_results[1].str().c_str();
-		technique_name = std::regex_replace( technique_name, std::regex("[\\{\\}[:blank:]]"), std::string("") );
-
-		std::string technique_body = technique_name_results[2].str().c_str();
-		technique_body = std::regex_replace( technique_body, std::regex("[\\{\\}[:blank:]]"), std::string("") );
-
-		std::vector<std::string> technique_body_parts = ExplodeString( technique_body, "," );
-
-		const std::string vertex_shader_path = effect_directory + technique_body_parts[0] + ".vert";
-		const std::string pixel_shader_path =  effect_directory + technique_body_parts[1] + ".frag";
-
-		std::string vertex_shader_source = EvaluateIncludeDirectives(effect_directory, File::ReadAllText( vertex_shader_path ));
-		std::string pixel_shader_source = EvaluateIncludeDirectives(effect_directory, File::ReadAllText( pixel_shader_path ));
-
-
-			
-		shader_programs[technique_name] = OpenGLShaderProgram( technique_name, OpenGLVertexShader( effect_directory + technique_body_parts[0] + ".vert", vertex_shader_source ), OpenGLFragmentShader( effect_directory + technique_body_parts[1] + ".frag", pixel_shader_source) ) ;
+        const std::vector<std::string> split = ExplodeString( StringReplace( regex_matches[i], "technique", "" ), "{" );
+        const std::string technique_name = Trim(split[0]);
+        const std::vector<std::string> shaders = ExplodeString( split[1], "," );
+        const std::string vertex_shader = Trim(shaders[0]);
+        const std::string pixel_shader = Trim( shaders[1]);
+        
+        const std::string vertex_shader_path = effect_directory + vertex_shader + ".vert";
+        const std::string pixel_shader_path = effect_directory + pixel_shader + ".frag";
+        
+        const std::string vertex_shader_source = EvaluateIncludeDirectives(effect_directory, File::ReadAllText(vertex_shader_path));
+		const std::string pixel_shader_source = EvaluateIncludeDirectives(effect_directory, File::ReadAllText( pixel_shader_path ));
+        
+		shader_programs[technique_name] = OpenGLShaderProgram( technique_name, OpenGLVertexShader( vertex_shader, vertex_shader_source ), OpenGLFragmentShader( pixel_shader, pixel_shader_source) ) ;
     }
-#else
-	//TODO: implement equivalent logic for systems that don't support regex....
-#endif
-
+    
 	std::vector<OpenGLShader> valid_shaders = OpenGLShader::GetValidShaders();
 	for( unsigned int i = 0; i < valid_shaders.size(); i++ )
 		printf( "valid shader: %s\n", valid_shaders[i].GetName().c_str() );
