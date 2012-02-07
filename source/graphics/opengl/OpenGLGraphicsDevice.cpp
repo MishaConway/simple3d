@@ -1,5 +1,8 @@
 #include "OpenGLGraphicsDevice.h"
 #include "../../std/nullptr.h"
+#if defined(__APPLE__) || defined(__APPLE_CC__) 
+#include "../../system/CocoaBindings.h"
+#endif
 
 
 OpenGLGraphicsDevice::OpenGLGraphicsDevice()
@@ -15,6 +18,11 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 {	  
 	if( initialized )
 		return true;
+    
+    #if defined(__APPLE__) || defined(__APPLE_CC__) 
+    SetCocoaBindings();
+    #endif
+    
 
 #ifdef _WIN32
 	hdc = GetDC(hWnd); // Get the device context for our window  

@@ -40,6 +40,7 @@ OpenGLTexture::OpenGLTexture( const std::string& image_filename )
         *pBlue = (float)data[width*4*y + x*4 + 2] / 255.0f;
         *pAlpha = (float)data[width*4*y + x*4 + 3] / 255.0f;
     });
+    delete [] data;
 #else    
 	texture_id = SOIL_load_OGL_texture( image_filename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,  SOIL_FLAG_MIPMAPS );
 	if( !texture_id )
