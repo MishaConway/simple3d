@@ -25,7 +25,7 @@ D3D11Effect::D3D11Effect( const std::string& effect_path )
 	ID3D10Blob* pErrorsBlob = nullptr;
 	if(FAILED(D3DX11CompileFromFile( effect_path.c_str(), NULL , NULL , NULL,  "fx_5_0" , NULL,D3DCOMPILE_DEBUG , NULL , &pShaderBlob , &pErrorsBlob , NULL)))
 	{
-		printf( "could not compile shader file" );
+		printf( "could not compile shader file %s\n", effect_path.c_str() );
 		if(pErrorsBlob)
 		{
 			printf( "%s", pErrorsBlob->GetBufferPointer() );
