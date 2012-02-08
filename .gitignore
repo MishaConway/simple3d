@@ -15,3 +15,6 @@
 *.exp
 simple3d_debug.lib
 simple3d.lib
+Simple3D*.lib
+simple*.lib
+simple3d_debug.lib
