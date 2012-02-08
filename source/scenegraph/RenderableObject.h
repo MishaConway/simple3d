@@ -30,6 +30,8 @@ public:
 	void SetGlowmap( const Texture& tex );
 	std::vector<Vertex> GetWorldspaceVertices();
 	virtual GeoVector GetWorldspaceCentroid();
+
+	static void SetRootAssetsPath( const std::string& root_assets_path );
 protected:
 	void SetDefaultValues();
 protected:
@@ -40,4 +42,5 @@ protected:
 	BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type;
 	std::string technique_name;
 	static std::string enforced_global_technique;
+	static std::string root_assets_path;
 };

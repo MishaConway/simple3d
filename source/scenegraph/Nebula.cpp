@@ -16,7 +16,7 @@ Nebula::Nebula()
 	std::tr1::normal_distribution<float> dist(0, 0.25f);  
 
 	std::vector<Texture> textures;
-	std::vector<std::string> nebula_files = Directory::GetFiles( "assets\\nebula" );
+	std::vector<std::string> nebula_files = Directory::GetFiles( root_assets_path + "/assets/nebula" );
 	for( unsigned int i = 0; i < nebula_files.size(); i++ )
 		textures.push_back( Texture( nebula_files[i] ) );
 

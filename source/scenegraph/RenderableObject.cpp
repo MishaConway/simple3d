@@ -1,6 +1,7 @@
 #include "RenderableObject.h"
 
 std::string RenderableObject::enforced_global_technique;
+std::string RenderableObject::root_assets_path;
 
 void RenderableObject::SetDefaultValues()
 {
@@ -24,6 +25,11 @@ RenderableObject::RenderableObject( Texture t, Geometry geometry ) : tex(t)
 	visible = true;
 	planar_reflector = false;	
 	vertex_buffer = VertexBuffer( geometry.GetVertices() );
+}
+
+void RenderableObject::SetRootAssetsPath( const std::string& _root_assets_path )
+{
+	root_assets_path = _root_assets_path;	
 }
 
 bool RenderableObject::IsRenderable()

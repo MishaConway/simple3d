@@ -18,6 +18,10 @@ public:
 	virtual void HandleRightMouseDown( const unsigned int x, const unsigned int y ); 
 	virtual void HandleKeyDown( const char key );
 	virtual void HandleKeyUp( const char key );
+
+	static bool SetRootShaderPath( const std::string& root_shader_path );
+	static bool SetRootAssetsPath( const std::string& root_assets_path );
+	static std::string GetRootAssetsPath();
 protected:
 	virtual void PreRender();
 	virtual bool Render();
@@ -43,4 +47,6 @@ protected:
 	bool perform_prerendering;
 
 	Color background_color;
+private:
+	static std::string root_shader_path, root_assets_path;
 };

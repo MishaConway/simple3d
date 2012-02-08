@@ -26,7 +26,7 @@ Texture GridTile::GetTexture()
 
 SpinningCylinderGrid::SpinningCylinderGrid(  const float radius, const float height, const unsigned int num_rows, const float tile_aspect_ratio )
 {
-	outline_blend_texture = Texture( "ui\\outerbox-blue.png");
+	outline_blend_texture = Texture( root_assets_path + "/" + "ui/outerbox-blue.png");
 	pSelectedTile = nullptr;
 
 	angular_deceleration = 40.0f;
@@ -59,7 +59,7 @@ SpinningCylinderGrid::SpinningCylinderGrid(  const float radius, const float hei
 	tile_frontside_texture.ClearColor( Color::Blue() );
 	quad = new Quad( tile_frontside_texture );
 
-	tile_backside_texture = Texture( "ui\\kinectgrid.png");
+	tile_backside_texture = Texture( root_assets_path + "/ui/kinectgrid.png");
 }
 
 void SpinningCylinderGrid::AddTile( const GridTile& grid_tile )

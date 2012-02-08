@@ -1,6 +1,10 @@
 #include "Scene.h"
 #include <algorithm>
 
+std::string Scene::root_shader_path;
+std::string Scene::root_assets_path;
+
+
 Scene::Scene(){}
 Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z )
 {		
@@ -19,11 +23,29 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
     
     printf( "after render tagrets ..\n" );
 
-	Effect( graphics_device.GetRendererType() == "D3D11" ? "shaders/hlsl/shaders.fx" : "shaders/glsl/techniques.fx" );
+	Effect( graphics_device.GetRendererType() == "D3D11" ? root_shader_path + "/hlsl/shaders.fx" : root_shader_path + "/glsl/techniques.fx" );
 
 	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, -0.2f, 3.7f ), GeoVector( 0, -0.14f, 0 ) );
 
 	perform_prerendering = false;
+}
+
+bool Scene::SetRootShaderPath( const std::string& _root_shader_path )
+{
+	root_shader_path = _root_shader_path;
+	return Directory::Exists( root_shader_path  );
+}
+
+bool Scene::SetRootAssetsPath( const std::string& _root_assets_path )
+{
+	root_assets_path = _root_assets_path;
+	RenderableObject::SetRootAssetsPath( root_assets_path );
+	return Directory::Exists( root_assets_path );
+}
+
+std::string Scene::GetRootAssetsPath()
+{
+	return root_assets_path;	
 }
 
 void Scene::SetBackgroundColor( const Color& background_color )
