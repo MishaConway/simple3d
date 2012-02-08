@@ -13,3 +13,5 @@
 *.exe
 *.manifest
 *.exp
+simple3d_debug.lib
+simple3d.lib
