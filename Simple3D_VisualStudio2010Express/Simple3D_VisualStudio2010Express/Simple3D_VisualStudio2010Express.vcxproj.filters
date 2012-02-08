@@ -1,0 +1,497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\geo">
+      <UniqueIdentifier>{c06c168e-9bc3-4c6f-ac3e-a01ba05559fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics">
+      <UniqueIdentifier>{96db0133-31a2-4969-b465-5df7582fc36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\d3d11">
+      <UniqueIdentifier>{60dc8246-6550-4d1c-8f74-19d384c6eaca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\opengl">
+      <UniqueIdentifier>{fad8617c-4140-44cc-8877-d2092b4b751a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\opengl\soil">
+      <UniqueIdentifier>{e4ae6a64-189e-4375-952e-ca7da13ea65c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\opengl\glew">
+      <UniqueIdentifier>{857f1e80-2694-4525-b467-2ec254b4b69a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interfaces">
+      <UniqueIdentifier>{acdf5157-48ff-4ba3-a5ab-899ba681ec9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenegraph">
+      <UniqueIdentifier>{7a587dd7-151c-476b-8912-3454e28ce820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenegraph\testscenes">
+      <UniqueIdentifier>{beb2329d-ddd6-4228-b6e2-c1c82cca03dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders">
+      <UniqueIdentifier>{7e0c30ea-ac6a-4236-be6c-a2687c55be47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\glsl">
+      <UniqueIdentifier>{607c45c3-569b-4ae2-a9aa-11fa9f6ee70f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\hlsl">
+      <UniqueIdentifier>{144e2f9a-0111-4c8a-ba01-da08eb71bce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\glsl\includes">
+      <UniqueIdentifier>{de94eb9b-5260-49d3-ba59-36d33ad1efc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\glsl\includes\cross_shader_includes">
+      <UniqueIdentifier>{ee9362a6-b9a2-4f21-aeee-ee4ac418c75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\glsl\includes\fragment_shader_includes">
+      <UniqueIdentifier>{1c52c046-82c8-418b-98db-1e27deec0ab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\glsl\includes\vertex_shader_includes">
+      <UniqueIdentifier>{fd43ed04-8f13-4cac-8e0d-c8cc4d3b31ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\std">
+      <UniqueIdentifier>{b992f092-4f1a-4560-9dd4-c983364dec66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\string">
+      <UniqueIdentifier>{b88aca88-16da-40df-a621-45ce0d01e361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\system">
+      <UniqueIdentifier>{bbbe6cee-0114-4814-9875-d1f2008854fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\geo\GeoFloat.cpp">
+      <Filter>Source Files\geo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\geo\GeoMatrix.cpp">
+      <Filter>Source Files\geo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\geo\Geometry.cpp">
+      <Filter>Source Files\geo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\geo\GeoQuaternion.cpp">
+      <Filter>Source Files\geo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\geo\GeoVector.cpp">
+      <Filter>Source Files\geo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\BaseEffect.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\BaseGraphicsDevice.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\BaseGraphicsDeviceStateManager.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\BaseRenderTarget.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\BaseTexture.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\BaseVertexBuffer.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\Color.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Buffer.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11DynamicVertexBuffer.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Effect.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11GraphicsDevice.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11GraphicsDeviceStateManager.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11RenderTarget.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11ShaderResource.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11TextRenderer.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Texture.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11VertexBuffer.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11VertexFormats.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLBuffer.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLCapabilities.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLDynamicVertexBuffer.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLEffect.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLGraphicsDevice.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLGraphicsDeviceStateManager.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLRenderTarget.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLShader.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLTextRenderer.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLTexture.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLVertexBuffer.cpp">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_DXT.c">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_helper.c">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\SOIL.c">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\stb_image_aug.c">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\interfaces\Initializable.cpp">
+      <Filter>Source Files\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\interfaces\IValidatable.cpp">
+      <Filter>Source Files\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.cpp">
+      <Filter>Source Files\scenegraph\testscenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.cpp">
+      <Filter>Source Files\scenegraph\testscenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\TestScenes\SpriteScene.cpp">
+      <Filter>Source Files\scenegraph\testscenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\Camera.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\Nebula.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\Object.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\Quad.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\RenderableObject.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\Scene.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\SpinningCylinderGrid.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\Sprite.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\string\string_utils.cpp">
+      <Filter>Source Files\string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\system\FileIO.cpp">
+      <Filter>Source Files\system</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\geo\GeoFloat.h">
+      <Filter>Source Files\geo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\geo\GeoMatrix.h">
+      <Filter>Source Files\geo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\geo\Geometry.h">
+      <Filter>Source Files\geo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\geo\GeoQuaternion.h">
+      <Filter>Source Files\geo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\geo\GeoVector.h">
+      <Filter>Source Files\geo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseEffect.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseGraphicsDevice.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseGraphicsDeviceStateManager.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseRenderTarget.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseTexture.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseVertexBuffer.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\Color.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\inc.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Buffer.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11DynamicVertexBuffer.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Effect.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11GraphicsDevice.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11GraphicsDeviceStateManager.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11RenderTarget.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11ShaderResource.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11TextRenderer.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Texture.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexBuffer.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexFormats.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\include_opengl.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLBuffer.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLCapabilities.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLDynamicVertexBuffer.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLEffect.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLGraphicsDevice.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLGraphicsDeviceStateManager.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLRenderTarget.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLShader.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLTextRenderer.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLTexture.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLVertexBuffer.h">
+      <Filter>Source Files\graphics\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\glew\glew.h">
+      <Filter>Source Files\graphics\opengl\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\glew\glxew.h">
+      <Filter>Source Files\graphics\opengl\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\glew\wglew.h">
+      <Filter>Source Files\graphics\opengl\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\soil\image_DXT.h">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\soil\image_helper.h">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\soil\SOIL.h">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\soil\stb_image_aug.h">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\soil\stbi_DDS_aug.h">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\opengl\soil\stbi_DDS_aug_c.h">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\interfaces\IInitializable.h">
+      <Filter>Source Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\interfaces\IValidatable.h">
+      <Filter>Source Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.h">
+      <Filter>Source Files\scenegraph\testscenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.h">
+      <Filter>Source Files\scenegraph\testscenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\TestScenes\SpriteScene.h">
+      <Filter>Source Files\scenegraph\testscenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\Camera.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\Nebula.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\Object.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\Quad.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\RenderableObject.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\Scene.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\SpinningCylinderGrid.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\Sprite.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\glsl\includes\cross_shader_includes\helpers.h">
+      <Filter>Source Files\shaders\glsl\includes\cross_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\glsl\includes\cross_shader_includes\uniforms.h">
+      <Filter>Source Files\shaders\glsl\includes\cross_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\glsl\includes\cross_shader_includes\varying.h">
+      <Filter>Source Files\shaders\glsl\includes\cross_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\glsl\includes\fragment_shader_includes\fragment_shader_helpers.h">
+      <Filter>Source Files\shaders\glsl\includes\fragment_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\glsl\includes\fragment_shader_includes\textures.h">
+      <Filter>Source Files\shaders\glsl\includes\fragment_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\glsl\includes\vertex_shader_includes\attributes.h">
+      <Filter>Source Files\shaders\glsl\includes\vertex_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\glsl\includes\vertex_shader_includes\vertex_shader_helpers.h">
+      <Filter>Source Files\shaders\glsl\includes\vertex_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\std\functional.h">
+      <Filter>Source Files\std</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\std\nullptr.h">
+      <Filter>Source Files\std</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\std\triple.h">
+      <Filter>Source Files\std</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\string\string_utils.h">
+      <Filter>Source Files\string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\CocoaBindings.h">
+      <Filter>Source Files\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\FileIO.h">
+      <Filter>Source Files\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\Timer.h">
+      <Filter>Source Files\system</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\source\shaders\hlsl\shaders.fx">
+      <Filter>Source Files\shaders\hlsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\AdditiveParticlePS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\BasicPS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\BasicVS.vert">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\GlowFillPS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\LinePS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\PlanarReflectionPS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\PostProcessHorizontalBlurPS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\PostProcessVerticalBlurPS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\ProgressSpritePS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\SolidColorPS.frag">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\SpriteVS.vert">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\shaders\glsl\techniques.fx">
+      <Filter>Source Files\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\source\system\CocoaBindings.mm">
+      <Filter>Source Files\system</Filter>
+    </None>
+  </ItemGroup>
+</Project>

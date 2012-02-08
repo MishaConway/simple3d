@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Simple3D_VisualStudio2010Express", "Simple3D_VisualStudio2010Express\Simple3D_VisualStudio2010Express.vcxproj", "{32644A59-4300-4E97-B7C6-C2C7CB83A9C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32644A59-4300-4E97-B7C6-C2C7CB83A9C4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{32644A59-4300-4E97-B7C6-C2C7CB83A9C4}.Debug|Win32.Build.0 = Debug|Win32
+		{32644A59-4300-4E97-B7C6-C2C7CB83A9C4}.Release|Win32.ActiveCfg = Release|Win32
+		{32644A59-4300-4E97-B7C6-C2C7CB83A9C4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

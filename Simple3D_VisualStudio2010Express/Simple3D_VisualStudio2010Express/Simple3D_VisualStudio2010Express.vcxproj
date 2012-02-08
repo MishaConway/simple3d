@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{32644A59-4300-4E97-B7C6-C2C7CB83A9C4}</ProjectGuid>
+    <RootNamespace>Simple3D_VisualStudio2010Express</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(DXSDK_DIR)Include;..\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>strmiids.lib;d3d11.lib;d3dx11.lib;dxgi.lib;glew32.lib;opengl32.lib;Effects11.lib;d3dcompiler.lib;FW1FontWrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)\Lib\x86;$(MSBuildProjectDirectory)\..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <NoEntryPoint>false</NoEntryPoint>
+    </Link>
+    <Lib>
+      <OutputFile>$(ProjectDir)debug\simple3d_debug$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\geo\GeoFloat.cpp" />
+    <ClCompile Include="..\..\source\geo\GeoMatrix.cpp" />
+    <ClCompile Include="..\..\source\geo\Geometry.cpp" />
+    <ClCompile Include="..\..\source\geo\GeoQuaternion.cpp" />
+    <ClCompile Include="..\..\source\geo\GeoVector.cpp" />
+    <ClCompile Include="..\..\source\graphics\BaseEffect.cpp" />
+    <ClCompile Include="..\..\source\graphics\BaseGraphicsDevice.cpp" />
+    <ClCompile Include="..\..\source\graphics\BaseGraphicsDeviceStateManager.cpp" />
+    <ClCompile Include="..\..\source\graphics\BaseRenderTarget.cpp" />
+    <ClCompile Include="..\..\source\graphics\BaseTexture.cpp" />
+    <ClCompile Include="..\..\source\graphics\BaseVertexBuffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\Color.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Buffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11DynamicVertexBuffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Effect.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11GraphicsDevice.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11GraphicsDeviceStateManager.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11RenderTarget.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11ShaderResource.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11TextRenderer.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Texture.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11VertexBuffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11VertexFormats.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLBuffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLCapabilities.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLDynamicVertexBuffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLEffect.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLGraphicsDevice.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLGraphicsDeviceStateManager.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLRenderTarget.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLShader.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLTextRenderer.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLTexture.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\OpenGLVertexBuffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_DXT.c" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_helper.c" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\SOIL.c" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\stb_image_aug.c" />
+    <ClCompile Include="..\..\source\interfaces\Initializable.cpp" />
+    <ClCompile Include="..\..\source\interfaces\IValidatable.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\Camera.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\Nebula.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\Object.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\Quad.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\RenderableObject.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\Scene.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\SpinningCylinderGrid.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\Sprite.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\TestScenes\SpriteScene.cpp" />
+    <ClCompile Include="..\..\source\string\string_utils.cpp" />
+    <ClCompile Include="..\..\source\system\FileIO.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\geo\GeoFloat.h" />
+    <ClInclude Include="..\..\source\geo\GeoMatrix.h" />
+    <ClInclude Include="..\..\source\geo\Geometry.h" />
+    <ClInclude Include="..\..\source\geo\GeoQuaternion.h" />
+    <ClInclude Include="..\..\source\geo\GeoVector.h" />
+    <ClInclude Include="..\..\source\graphics\BaseEffect.h" />
+    <ClInclude Include="..\..\source\graphics\BaseGraphicsDevice.h" />
+    <ClInclude Include="..\..\source\graphics\BaseGraphicsDeviceStateManager.h" />
+    <ClInclude Include="..\..\source\graphics\BaseRenderTarget.h" />
+    <ClInclude Include="..\..\source\graphics\BaseTexture.h" />
+    <ClInclude Include="..\..\source\graphics\BaseVertexBuffer.h" />
+    <ClInclude Include="..\..\source\graphics\Color.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Buffer.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11DynamicVertexBuffer.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Effect.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11GraphicsDevice.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11GraphicsDeviceStateManager.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11RenderTarget.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11ShaderResource.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11TextRenderer.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Texture.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexBuffer.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexFormats.h" />
+    <ClInclude Include="..\..\source\graphics\inc.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\glew\glew.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\glew\glxew.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\glew\wglew.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\include_opengl.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLBuffer.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLCapabilities.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLDynamicVertexBuffer.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLEffect.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLGraphicsDevice.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLGraphicsDeviceStateManager.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLRenderTarget.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLShader.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLTextRenderer.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLTexture.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\OpenGLVertexBuffer.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\soil\image_DXT.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\soil\image_helper.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\soil\SOIL.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\soil\stbi_DDS_aug.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\soil\stbi_DDS_aug_c.h" />
+    <ClInclude Include="..\..\source\graphics\opengl\soil\stb_image_aug.h" />
+    <ClInclude Include="..\..\source\interfaces\IInitializable.h" />
+    <ClInclude Include="..\..\source\interfaces\IValidatable.h" />
+    <ClInclude Include="..\..\source\scenegraph\Camera.h" />
+    <ClInclude Include="..\..\source\scenegraph\Nebula.h" />
+    <ClInclude Include="..\..\source\scenegraph\Object.h" />
+    <ClInclude Include="..\..\source\scenegraph\Quad.h" />
+    <ClInclude Include="..\..\source\scenegraph\RenderableObject.h" />
+    <ClInclude Include="..\..\source\scenegraph\Scene.h" />
+    <ClInclude Include="..\..\source\scenegraph\SpinningCylinderGrid.h" />
+    <ClInclude Include="..\..\source\scenegraph\Sprite.h" />
+    <ClInclude Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.h" />
+    <ClInclude Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.h" />
+    <ClInclude Include="..\..\source\scenegraph\TestScenes\SpriteScene.h" />
+    <ClInclude Include="..\..\source\shaders\glsl\includes\cross_shader_includes\helpers.h" />
+    <ClInclude Include="..\..\source\shaders\glsl\includes\cross_shader_includes\uniforms.h" />
+    <ClInclude Include="..\..\source\shaders\glsl\includes\cross_shader_includes\varying.h" />
+    <ClInclude Include="..\..\source\shaders\glsl\includes\fragment_shader_includes\fragment_shader_helpers.h" />
+    <ClInclude Include="..\..\source\shaders\glsl\includes\fragment_shader_includes\textures.h" />
+    <ClInclude Include="..\..\source\shaders\glsl\includes\vertex_shader_includes\attributes.h" />
+    <ClInclude Include="..\..\source\shaders\glsl\includes\vertex_shader_includes\vertex_shader_helpers.h" />
+    <ClInclude Include="..\..\source\std\functional.h" />
+    <ClInclude Include="..\..\source\std\nullptr.h" />
+    <ClInclude Include="..\..\source\std\triple.h" />
+    <ClInclude Include="..\..\source\string\string_utils.h" />
+    <ClInclude Include="..\..\source\system\CocoaBindings.h" />
+    <ClInclude Include="..\..\source\system\FileIO.h" />
+    <ClInclude Include="..\..\source\system\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\source\shaders\glsl\AdditiveParticlePS.frag" />
+    <None Include="..\..\source\shaders\glsl\BasicPS.frag" />
+    <None Include="..\..\source\shaders\glsl\BasicVS.vert" />
+    <None Include="..\..\source\shaders\glsl\GlowFillPS.frag" />
+    <None Include="..\..\source\shaders\glsl\LinePS.frag" />
+    <None Include="..\..\source\shaders\glsl\PlanarReflectionPS.frag" />
+    <None Include="..\..\source\shaders\glsl\PostProcessHorizontalBlurPS.frag" />
+    <None Include="..\..\source\shaders\glsl\PostProcessVerticalBlurPS.frag" />
+    <None Include="..\..\source\shaders\glsl\ProgressSpritePS.frag" />
+    <None Include="..\..\source\shaders\glsl\SolidColorPS.frag" />
+    <None Include="..\..\source\shaders\glsl\SpriteVS.vert" />
+    <None Include="..\..\source\shaders\glsl\techniques.fx" />
+    <None Include="..\..\source\shaders\hlsl\shaders.fx" />
+    <None Include="..\..\source\system\CocoaBindings.mm" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
