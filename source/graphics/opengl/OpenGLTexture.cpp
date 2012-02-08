@@ -321,7 +321,7 @@ unsigned char* OpenGLTexture::Map( unsigned int* pPitch )
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, buffer_size, (const GLubyte*) 0, GL_DYNAMIC_DRAW);
 
 		//Map our Pixel Buffer Object into client side memory
-		pMappedData = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+		pMappedData = (unsigned char* )glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
 
 		//Unbind our Pixel Buffer Object
 		glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );

@@ -45,9 +45,8 @@ public:
 	virtual bool IsFloatTexture();
 	bool SaveToFile( const std::string& filename, const bool save_only_once = false );
 protected:
-	unsigned char* Map();
-	unsigned char* Map( unsigned int* pPitch );
-	void Unmap();
+	virtual unsigned char* Map( unsigned int* pPitch );
+	virtual void Unmap();
 private:
 	void PrepareTextureArray( std::vector<OpenGLTexture> textures );
 	void Setup( const unsigned int width, const unsigned int height, const OpenGLTextureUsage::OPENGL_TEXTURE_USAGE usage );
