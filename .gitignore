@@ -1,0 +1,15 @@
+*.tlog
+*.idb
+*.pdb
+*.lastbuildstate
+*.log
+*.unsuccessfulbuild
+*.ipch
+*.obj
+*.suo
+*.sdf
+*.opensdf
+*.ilk
+*.exe
+*.manifest
+*.exp
