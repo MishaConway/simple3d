@@ -36,6 +36,12 @@ GLenum OpenGLVertexBuffer::GetOpenGLPrimitiveType()
 		return GL_TRIANGLES;
 	case PrimitiveType::LINELIST:
 		return GL_LINES;
+    case PrimitiveType::POINTLIST:
+        return GL_POINTS;
+    case PrimitiveType::LINESTRIP:
+        return GL_LINE_STRIP;
+    case PrimitiveType::TRIANGLESTRIP:
+        return GL_TRIANGLE_STRIP;
 	}
 	return -1;
 }

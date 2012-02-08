@@ -1,7 +1,9 @@
 #pragma once
 
 #include "include_opengl.h"
+#ifndef GL_ES_VERSION_2_0	
 #include "soil/SOIL.h"
+#endif
 #include <string>
 #include <map>
 #include <vector>
@@ -43,8 +45,8 @@ public:
 	virtual bool IsFloatTexture();
 	bool SaveToFile( const std::string& filename, const bool save_only_once = false );
 protected:
-	void* Map();
-	void* Map( unsigned int* pPitch );
+	unsigned char* Map();
+	unsigned char* Map( unsigned int* pPitch );
 	void Unmap();
 private:
 	void PrepareTextureArray( std::vector<OpenGLTexture> textures );
@@ -55,7 +57,7 @@ private:
 	GLenum format;
 	GLenum internal_format, external_format;
 	GLenum component_type;
-	void* pMappedData;
+	unsigned char* pMappedData;
 	static OpenGLGraphicsDevice* pGraphicsDevice;
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
     static unsigned char* (^load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);

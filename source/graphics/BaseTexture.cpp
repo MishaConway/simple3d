@@ -61,7 +61,7 @@ float BaseTexture::GetVerticalTiling()
 	return vertical_tiling_scale;
 }
 
-void* BaseTexture::Map()
+unsigned char* BaseTexture::Map()
 {
 	return Map( nullptr );
 }
@@ -74,7 +74,7 @@ bool BaseTexture::SetData( void(^write_pixel)(const unsigned int x, const unsign
 #endif
 {
 	unsigned int pitch;
-	unsigned char* pMappedData = (unsigned char*) Map( &pitch );	
+	unsigned char* pMappedData = Map( &pitch );	
 	for( unsigned int row = 0; row < GetHeight(); row++ )
 		for( unsigned int i = 0; i < GetWidth(); i++ )
 			if( IsFloatTexture() )

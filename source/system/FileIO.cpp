@@ -102,14 +102,15 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 
 	std::string fext = ".";
            
-	struct dirent* directoryEntry;
-	while ( directoryEntry = readdir (directory) )
+	struct dirent* directoryEntry = readdir(directory);
+	while ( directoryEntry )
 	{
 		if( directoryEntry->d_type != DT_DIR )
 		{
 			if (strstr(directoryEntry->d_name, fext.c_str()))
 				files.push_back( std::string( directoryEntry->d_name) );
 		}
+        directoryEntry = readdir(directory);
 	}
 	(void) closedir (directory);       
 #endif

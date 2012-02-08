@@ -201,10 +201,6 @@ void Scene::HandleKeyUp( const char key )
 
 }
 
-void HandleKeyUp( const char key )
-{
-
-}
 
 
 

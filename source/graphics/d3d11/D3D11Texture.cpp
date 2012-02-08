@@ -236,7 +236,7 @@ D3D11ShaderResource& D3D11Texture::GetShaderResource()
 	return shader_resource;
 }
 
-void* D3D11Texture::Map( unsigned int* pPitch )
+unsigned char* D3D11Texture::Map( unsigned int* pPitch )
 {
 	pTex->GetDesc( &texture_description );
 	if(FAILED(pDeviceContext->Map( pTex, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_resource )))
@@ -248,7 +248,7 @@ void* D3D11Texture::Map( unsigned int* pPitch )
 	if( pPitch )
 		*pPitch = mapped_resource.RowPitch;
 
-	return mapped_resource.pData;
+	return (unsigned char*) mapped_resource.pData;
 }
 
 void D3D11Texture::Unmap()

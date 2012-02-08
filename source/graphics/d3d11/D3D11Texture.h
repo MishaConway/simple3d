@@ -32,7 +32,7 @@ public:
 	D3D11ShaderResource& GetShaderResource();
 	bool SaveToFile( const std::string& filename, const bool save_only_once = false );
 protected:
-	void* Map( unsigned int* pPitch );
+	unsigned char* Map( unsigned int* pPitch );
 	void Unmap();
 	D3D11_SUBRESOURCE_DATA Read();
 private:

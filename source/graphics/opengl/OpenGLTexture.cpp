@@ -303,7 +303,7 @@ GLenum OpenGLTexture::GetFormat()
 	return format;
 }
 
-void* OpenGLTexture::Map( unsigned int* pPitch )
+unsigned char* OpenGLTexture::Map( unsigned int* pPitch )
 {
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture( GL_TEXTURE_2D, texture_id  ); 
@@ -361,7 +361,13 @@ void OpenGLTexture::Unmap()
 
 bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_only_once )
 {
-	if( save_only_once && saved )
+#ifdef GL_ES_VERSION_2_0
+    //opengl es does not provide glGetTexImage
+	//a possible alternative to implement later is to render to a frame buffer object and call glReadPixels
+    
+    //also can possibly leverage cocoa to save data instead of soil library...
+#else    
+    if( save_only_once && saved )
 		return true;
 	saved = true;
 	
@@ -375,10 +381,6 @@ bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_onl
 	else
 		return false;
 
-#ifdef GL_ES_VERSION_2_0
-	//opengl es does not provide glGetTexImage
-	//a possible alternative to implement later is to render to a frame buffer object and call glReadPixels
-#else
 	GLint is_compressed = GL_FALSE;
 	GLint compressed_size = 0;
 	GLint compressed_format = 0;

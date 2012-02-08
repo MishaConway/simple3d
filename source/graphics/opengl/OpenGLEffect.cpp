@@ -67,14 +67,9 @@ OpenGLEffect::OpenGLEffect( const std::string& effect_path )
 	for( unsigned int i = 0; i < invalid_shader_programs.size(); i++ )
 		printf( "invalid shader program: %s\n", invalid_shader_programs[i].GetName().c_str() );
 
-	const GLubyte* pShaderVersion = glGetString(GL_SHADING_LANGUAGE_VERSION); //undeclared identifier
-	printf( "cool\n" );
-
 	shader_programs["Basic"].Enable();
 
 	Enable();
-	printf( "enable program enable.\n" );
-
 }
 
 #ifdef _WIN32	
@@ -86,7 +81,6 @@ bool OpenGLEffect::RenderTechnique( const std::string& technique_name, void(^f)(
  {
 	 //setup technique
      shader_programs[technique_name].Enable();
-	 unsigned int mmm = matrix_uniforms.size();
 	 for( std::map<std::string, GeoMatrix>::iterator it = matrix_uniforms.begin(); it != matrix_uniforms.end();  it++ )
 		 shader_programs[technique_name].SetMatrix( it->first, it->second );
 	 for( std::map<std::string, float>::iterator it = float_uniforms.begin(); it != float_uniforms.end();  it++ )

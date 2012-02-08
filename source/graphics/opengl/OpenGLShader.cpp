@@ -134,7 +134,6 @@ OpenGLShaderProgram::OpenGLShaderProgram( const std::string& name, OpenGLVertexS
 				char name[256];
 				glGetActiveUniform( program_id, GLuint(i), sizeof(name)-1, &name_len, &num, &type, name );
 				name[name_len] = 0;
-				GLuint location = glGetUniformLocation( program_id, name );
 				printf( "adding used unifom %s\n", name );
 				used_uniforms.push_back( std::string(name) );
 			}

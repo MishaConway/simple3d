@@ -36,8 +36,8 @@ public:
     
 	virtual bool ClearColor( Color color, const bool preserve_alpha = false );
 protected:
-	void* Map();
-	virtual void* Map( unsigned int* pPitch ) = 0;
+	unsigned char* Map();
+	virtual unsigned char* Map( unsigned int* pPitch ) = 0;
 	virtual void Unmap() = 0;
 
 protected:

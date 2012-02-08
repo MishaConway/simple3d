@@ -28,7 +28,7 @@ void SetCocoaBindings()
         //  NSLog( @"here filepath is %@", file_path );
         
         
-        return [[NSString stringWithContentsOfFile:file_path] UTF8String]; 
+        return [[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]; 
     });
     
     SetGetRegexMatchesBlock( ^char** (const char* _str, const char* _pattern){

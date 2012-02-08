@@ -44,9 +44,6 @@
 		C607519914DB2E8200ADA912 /* D3D11VertexFormats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A014D8D9B4001BCCE7 /* D3D11VertexFormats.cpp */; };
 		C607519A14DB2E8200ADA912 /* D3D11VertexFormats.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A114D8D9B4001BCCE7 /* D3D11VertexFormats.h */; };
 		C607519B14DB2E8200ADA912 /* inc.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A214D8D9B4001BCCE7 /* inc.h */; };
-		C607519C14DB2E8200ADA912 /* glew.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A514D8D9B4001BCCE7 /* glew.h */; };
-		C607519D14DB2E8200ADA912 /* glxew.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A614D8D9B4001BCCE7 /* glxew.h */; };
-		C607519E14DB2E8200ADA912 /* wglew.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A714D8D9B4001BCCE7 /* wglew.h */; };
 		C607519F14DB2E8200ADA912 /* include_opengl.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A814D8D9B4001BCCE7 /* include_opengl.h */; };
 		C60751A014DB2E8200ADA912 /* OpenGLBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6A914D8D9B4001BCCE7 /* OpenGLBuffer.cpp */; };
 		C60751A114DB2E8200ADA912 /* OpenGLBuffer.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6AA14D8D9B4001BCCE7 /* OpenGLBuffer.h */; };
@@ -70,16 +67,6 @@
 		C60751B314DB2E8200ADA912 /* OpenGLTexture.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6BC14D8D9B4001BCCE7 /* OpenGLTexture.h */; };
 		C60751B414DB2E8200ADA912 /* OpenGLVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6BD14D8D9B4001BCCE7 /* OpenGLVertexBuffer.cpp */; };
 		C60751B514DB2E8200ADA912 /* OpenGLVertexBuffer.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6BE14D8D9B4001BCCE7 /* OpenGLVertexBuffer.h */; };
-		C60751B614DB2E8200ADA912 /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C014D8D9B4001BCCE7 /* image_DXT.c */; };
-		C60751B714DB2E8200ADA912 /* image_DXT.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C114D8D9B4001BCCE7 /* image_DXT.h */; };
-		C60751B814DB2E8200ADA912 /* image_helper.c in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C214D8D9B4001BCCE7 /* image_helper.c */; };
-		C60751B914DB2E8200ADA912 /* image_helper.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C314D8D9B4001BCCE7 /* image_helper.h */; };
-		C60751BA14DB2E8200ADA912 /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C414D8D9B4001BCCE7 /* SOIL.c */; };
-		C60751BB14DB2E8200ADA912 /* SOIL.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C514D8D9B4001BCCE7 /* SOIL.h */; };
-		C60751BC14DB2E8200ADA912 /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C614D8D9B4001BCCE7 /* stb_image_aug.c */; };
-		C60751BD14DB2E8200ADA912 /* stb_image_aug.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C714D8D9B4001BCCE7 /* stb_image_aug.h */; };
-		C60751BE14DB2E8200ADA912 /* stbi_DDS_aug.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C814D8D9B4001BCCE7 /* stbi_DDS_aug.h */; };
-		C60751BF14DB2E8200ADA912 /* stbi_DDS_aug_c.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6C914D8D9B4001BCCE7 /* stbi_DDS_aug_c.h */; };
 		C60751C014DB2E8200ADA912 /* IInitializable.h in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6CB14D8D9B4001BCCE7 /* IInitializable.h */; };
 		C60751C114DB2E8200ADA912 /* Initializable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6CC14D8D9B4001BCCE7 /* Initializable.cpp */; };
 		C60751C214DB2E8200ADA912 /* IValidatable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61AC6CD14D8D9B4001BCCE7 /* IValidatable.cpp */; };
@@ -185,9 +172,6 @@
 		C61AC6A014D8D9B4001BCCE7 /* D3D11VertexFormats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = D3D11VertexFormats.cpp; sourceTree = "<group>"; };
 		C61AC6A114D8D9B4001BCCE7 /* D3D11VertexFormats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = D3D11VertexFormats.h; sourceTree = "<group>"; };
 		C61AC6A214D8D9B4001BCCE7 /* inc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = inc.h; sourceTree = "<group>"; };
-		C61AC6A514D8D9B4001BCCE7 /* glew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glew.h; sourceTree = "<group>"; };
-		C61AC6A614D8D9B4001BCCE7 /* glxew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glxew.h; sourceTree = "<group>"; };
-		C61AC6A714D8D9B4001BCCE7 /* wglew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wglew.h; sourceTree = "<group>"; };
 		C61AC6A814D8D9B4001BCCE7 /* include_opengl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = include_opengl.h; sourceTree = "<group>"; };
 		C61AC6A914D8D9B4001BCCE7 /* OpenGLBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLBuffer.cpp; sourceTree = "<group>"; };
 		C61AC6AA14D8D9B4001BCCE7 /* OpenGLBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLBuffer.h; sourceTree = "<group>"; };
@@ -211,16 +195,6 @@
 		C61AC6BC14D8D9B4001BCCE7 /* OpenGLTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLTexture.h; sourceTree = "<group>"; };
 		C61AC6BD14D8D9B4001BCCE7 /* OpenGLVertexBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLVertexBuffer.cpp; sourceTree = "<group>"; };
 		C61AC6BE14D8D9B4001BCCE7 /* OpenGLVertexBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLVertexBuffer.h; sourceTree = "<group>"; };
-		C61AC6C014D8D9B4001BCCE7 /* image_DXT.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = image_DXT.c; sourceTree = "<group>"; };
-		C61AC6C114D8D9B4001BCCE7 /* image_DXT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = image_DXT.h; sourceTree = "<group>"; };
-		C61AC6C214D8D9B4001BCCE7 /* image_helper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = image_helper.c; sourceTree = "<group>"; };
-		C61AC6C314D8D9B4001BCCE7 /* image_helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = image_helper.h; sourceTree = "<group>"; };
-		C61AC6C414D8D9B4001BCCE7 /* SOIL.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SOIL.c; sourceTree = "<group>"; };
-		C61AC6C514D8D9B4001BCCE7 /* SOIL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SOIL.h; sourceTree = "<group>"; };
-		C61AC6C614D8D9B4001BCCE7 /* stb_image_aug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stb_image_aug.c; sourceTree = "<group>"; };
-		C61AC6C714D8D9B4001BCCE7 /* stb_image_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image_aug.h; sourceTree = "<group>"; };
-		C61AC6C814D8D9B4001BCCE7 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug.h; sourceTree = "<group>"; };
-		C61AC6C914D8D9B4001BCCE7 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug_c.h; sourceTree = "<group>"; };
 		C61AC6CB14D8D9B4001BCCE7 /* IInitializable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IInitializable.h; sourceTree = "<group>"; };
 		C61AC6CC14D8D9B4001BCCE7 /* Initializable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Initializable.cpp; sourceTree = "<group>"; };
 		C61AC6CD14D8D9B4001BCCE7 /* IValidatable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IValidatable.cpp; sourceTree = "<group>"; };
@@ -408,7 +382,6 @@
 		C61AC6A314D8D9B4001BCCE7 /* opengl */ = {
 			isa = PBXGroup;
 			children = (
-				C61AC6A414D8D9B4001BCCE7 /* glew */,
 				C61AC6A814D8D9B4001BCCE7 /* include_opengl.h */,
 				C61AC6A914D8D9B4001BCCE7 /* OpenGLBuffer.cpp */,
 				C61AC6AA14D8D9B4001BCCE7 /* OpenGLBuffer.h */,
@@ -432,36 +405,8 @@
 				C61AC6BC14D8D9B4001BCCE7 /* OpenGLTexture.h */,
 				C61AC6BD14D8D9B4001BCCE7 /* OpenGLVertexBuffer.cpp */,
 				C61AC6BE14D8D9B4001BCCE7 /* OpenGLVertexBuffer.h */,
-				C61AC6BF14D8D9B4001BCCE7 /* soil */,
 			);
 			path = opengl;
-			sourceTree = "<group>";
-		};
-		C61AC6A414D8D9B4001BCCE7 /* glew */ = {
-			isa = PBXGroup;
-			children = (
-				C61AC6A514D8D9B4001BCCE7 /* glew.h */,
-				C61AC6A614D8D9B4001BCCE7 /* glxew.h */,
-				C61AC6A714D8D9B4001BCCE7 /* wglew.h */,
-			);
-			path = glew;
-			sourceTree = "<group>";
-		};
-		C61AC6BF14D8D9B4001BCCE7 /* soil */ = {
-			isa = PBXGroup;
-			children = (
-				C61AC6C014D8D9B4001BCCE7 /* image_DXT.c */,
-				C61AC6C114D8D9B4001BCCE7 /* image_DXT.h */,
-				C61AC6C214D8D9B4001BCCE7 /* image_helper.c */,
-				C61AC6C314D8D9B4001BCCE7 /* image_helper.h */,
-				C61AC6C414D8D9B4001BCCE7 /* SOIL.c */,
-				C61AC6C514D8D9B4001BCCE7 /* SOIL.h */,
-				C61AC6C614D8D9B4001BCCE7 /* stb_image_aug.c */,
-				C61AC6C714D8D9B4001BCCE7 /* stb_image_aug.h */,
-				C61AC6C814D8D9B4001BCCE7 /* stbi_DDS_aug.h */,
-				C61AC6C914D8D9B4001BCCE7 /* stbi_DDS_aug_c.h */,
-			);
-			path = soil;
 			sourceTree = "<group>";
 		};
 		C61AC6CA14D8D9B4001BCCE7 /* interfaces */ = {
@@ -820,9 +765,6 @@
 				C607519914DB2E8200ADA912 /* D3D11VertexFormats.cpp in Sources */,
 				C607519A14DB2E8200ADA912 /* D3D11VertexFormats.h in Sources */,
 				C607519B14DB2E8200ADA912 /* inc.h in Sources */,
-				C607519C14DB2E8200ADA912 /* glew.h in Sources */,
-				C607519D14DB2E8200ADA912 /* glxew.h in Sources */,
-				C607519E14DB2E8200ADA912 /* wglew.h in Sources */,
 				C607519F14DB2E8200ADA912 /* include_opengl.h in Sources */,
 				C60751A014DB2E8200ADA912 /* OpenGLBuffer.cpp in Sources */,
 				C60751A114DB2E8200ADA912 /* OpenGLBuffer.h in Sources */,
@@ -846,16 +788,6 @@
 				C60751B314DB2E8200ADA912 /* OpenGLTexture.h in Sources */,
 				C60751B414DB2E8200ADA912 /* OpenGLVertexBuffer.cpp in Sources */,
 				C60751B514DB2E8200ADA912 /* OpenGLVertexBuffer.h in Sources */,
-				C60751B614DB2E8200ADA912 /* image_DXT.c in Sources */,
-				C60751B714DB2E8200ADA912 /* image_DXT.h in Sources */,
-				C60751B814DB2E8200ADA912 /* image_helper.c in Sources */,
-				C60751B914DB2E8200ADA912 /* image_helper.h in Sources */,
-				C60751BA14DB2E8200ADA912 /* SOIL.c in Sources */,
-				C60751BB14DB2E8200ADA912 /* SOIL.h in Sources */,
-				C60751BC14DB2E8200ADA912 /* stb_image_aug.c in Sources */,
-				C60751BD14DB2E8200ADA912 /* stb_image_aug.h in Sources */,
-				C60751BE14DB2E8200ADA912 /* stbi_DDS_aug.h in Sources */,
-				C60751BF14DB2E8200ADA912 /* stbi_DDS_aug_c.h in Sources */,
 				C60751C014DB2E8200ADA912 /* IInitializable.h in Sources */,
 				C60751C114DB2E8200ADA912 /* Initializable.cpp in Sources */,
 				C60751C214DB2E8200ADA912 /* IValidatable.cpp in Sources */,
