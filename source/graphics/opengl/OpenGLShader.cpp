@@ -108,7 +108,7 @@ OpenGLShaderProgram::OpenGLShaderProgram( const std::string& name, OpenGLVertexS
 		glAttachShader( program_id, vertex_shader.GetOpenGLShaderId() );
 		glAttachShader( program_id, fragment_shader.GetOpenGLShaderId() );	
 
-		char* attributes[] = {"in_position", "in_color_uv", "in_normal", "in_tangent", "in_bitangent", nullptr };
+		const char* attributes[] = {"in_position", "in_color_uv", "in_normal", "in_tangent", "in_bitangent", nullptr };
 		for( unsigned int i = 0; attributes[i]; i++ )
 		{
 			printf( "binding attribute %s to slot %i\n", attributes[i], i );

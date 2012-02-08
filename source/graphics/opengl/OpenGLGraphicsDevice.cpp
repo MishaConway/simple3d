@@ -84,7 +84,7 @@ bool OpenGLGraphicsDevice::Draw( const unsigned int num_vertices )
 	if( pBoundVertexBuffer )
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, pBoundVertexBuffer->buffer.vbo_id);
-		char* attributes[] = {"in_position", "in_color_uv", "in_normal", "in_tangent", "in_bitangent", nullptr };
+		const char* attributes[] = {"in_position", "in_color_uv", "in_normal", "in_tangent", "in_bitangent", nullptr };
 		for( unsigned int i = 0; attributes[i]; i++ )
 		{
 			glEnableVertexAttribArray( i );
