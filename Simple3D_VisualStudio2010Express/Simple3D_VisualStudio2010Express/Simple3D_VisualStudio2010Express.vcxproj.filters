@@ -70,6 +70,9 @@
     <Filter Include="Source Files\system">
       <UniqueIdentifier>{bbbe6cee-0114-4814-9875-d1f2008854fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scenegraph\templates">
+      <UniqueIdentifier>{df963544-caa9-4b53-9a4c-aa1d1c02c6be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\geo\GeoFloat.cpp">
@@ -230,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\system\FileIO.cpp">
       <Filter>Source Files\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.cpp">
+      <Filter>Source Files\scenegraph\templates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -448,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\system\Timer.h">
       <Filter>Source Files\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.h">
+      <Filter>Source Files\scenegraph\templates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

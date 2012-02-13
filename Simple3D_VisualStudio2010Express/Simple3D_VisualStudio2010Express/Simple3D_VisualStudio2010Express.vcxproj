@@ -122,6 +122,7 @@
     <ClCompile Include="..\..\source\scenegraph\Scene.cpp" />
     <ClCompile Include="..\..\source\scenegraph\SpinningCylinderGrid.cpp" />
     <ClCompile Include="..\..\source\scenegraph\Sprite.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.cpp" />
     <ClCompile Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.cpp" />
     <ClCompile Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.cpp" />
     <ClCompile Include="..\..\source\scenegraph\TestScenes\SpriteScene.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="..\..\source\scenegraph\Scene.h" />
     <ClInclude Include="..\..\source\scenegraph\SpinningCylinderGrid.h" />
     <ClInclude Include="..\..\source\scenegraph\Sprite.h" />
+    <ClInclude Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.h" />
     <ClInclude Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.h" />
     <ClInclude Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.h" />
     <ClInclude Include="..\..\source\scenegraph\TestScenes\SpriteScene.h" />
