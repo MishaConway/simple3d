@@ -97,6 +97,40 @@ void SetCocoaBindings()
         
         return imageData;
     });
+    
+    OpenGLTexture::SetOnSaveTextureFileBlock( ^(const char* cpath, unsigned char* data, const unsigned int width, const unsigned int height)
+    {
+        // make data provider with data.
+        CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, data, width*height*4, NULL);
+        
+        // prep the ingredients
+        int bitsPerComponent = 8;
+        int bitsPerPixel = 32;
+        int bytesPerRow = 4 * width;
+        CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+        CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+        CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+        
+        // make the cgimage
+        CGImageRef imageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+        
+        // then make the uiimage from that
+        UIImage* image = [UIImage imageWithCGImage:imageRef];
+       // return myImage;
+        
+        //NSString  *pngPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.png"];
+        //NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.jpg"];
+        
+        NSString* path = [NSString stringWithUTF8String: cpath];
+        
+        // Write a UIImage to JPEG with minimum compression (best quality)
+        // The value 'image' must be a UIImage object
+        // The value '1.0' represents image compression quality as value from 0.0 to 1.0
+     //   [UIImageJPEGRepresentation(image, 1.0) writeToFile:path atomically:YES];
+        
+        // Write image to PNG
+        [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
+    });
 }
 
 #endif

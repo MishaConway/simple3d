@@ -68,6 +68,7 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 	//capabilities.ForceDisablePixelBufferObject();
     
     glGetIntegerv( GL_FRAMEBUFFER_BINDING, &default_fbo_id );
+    glGetIntegerv( GL_RENDERBUFFER_BINDING, &default_depth_buffer_id );
 
 		
 	OpenGLRenderTarget::pGraphicsDevice = this;
@@ -140,11 +141,13 @@ void OpenGLGraphicsDevice::SetVertexBuffer( OpenGLDynamicVertexBuffer& vertexBuf
 void OpenGLGraphicsDevice::SetDefaultRenderTarget()
 {
 	glBindFramebuffer( GL_FRAMEBUFFER, default_fbo_id );
+    glBindRenderbuffer(GL_RENDERBUFFER, default_depth_buffer_id );
 }
 
 void OpenGLGraphicsDevice::SetRenderTarget( OpenGLRenderTarget& render_target )
 {
 	glBindFramebuffer( GL_FRAMEBUFFER, render_target.fbo_id );
+    glBindRenderbuffer(GL_RENDERBUFFER, render_target.depth_buffer_id );
 }
 
 void OpenGLGraphicsDevice::SetRenderTarget( OpenGLRenderTarget& render_target, const Color& clear_color )

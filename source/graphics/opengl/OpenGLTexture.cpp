@@ -8,6 +8,7 @@ OpenGLGraphicsDevice* OpenGLTexture::pGraphicsDevice = nullptr;
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
 unsigned char* (^OpenGLTexture::load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);
+void (^OpenGLTexture::save_texture_file_block)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height);
 #endif
 
 OpenGLTexture::OpenGLTexture()
@@ -21,6 +22,11 @@ OpenGLTexture::OpenGLTexture()
 void OpenGLTexture::SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) )
 {
     load_texture_file_block = load_texture_file;
+}
+
+void OpenGLTexture::SetOnSaveTextureFileBlock( void (^save_texture_file)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height) )
+{
+    save_texture_file_block = save_texture_file;
 }
 #endif
 
@@ -137,6 +143,8 @@ void OpenGLTexture::PrepareTextureArray( std::vector<OpenGLTexture> textures )
 {
 }
 
+
+//todo: try and move this to BaseTexture...
 OpenGLTexture OpenGLTexture::Clone( const unsigned w, const unsigned int h )
 {
 	OpenGLRenderTarget render_target = OpenGLRenderTarget( w, h );
@@ -361,18 +369,31 @@ void OpenGLTexture::Unmap()
 
 bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_only_once )
 {
-#ifdef GL_ES_VERSION_2_0
-    //opengl es does not provide glGetTexImage
-	//a possible alternative to implement later is to render to a frame buffer object and call glReadPixels
-    
-    //also can possibly leverage cocoa to save data instead of soil library...
-#else    
     if( save_only_once && saved )
 		return true;
 	saved = true;
 	
 	std::string extension = filename.substr(filename.find_last_of(".")+1);
 	std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+    
+#ifdef GL_ES_VERSION_2_0
+    OpenGLRenderTarget render_target( width, height );
+    GraphicsDeviceViewport vp = pGraphicsDevice->GetViewport();
+    pGraphicsDevice->SetViewport( width, height);
+    pGraphicsDevice->SetRenderTarget( render_target, Color::Green() );
+    Sprite( *this, GeoFloat2( -1, -1), GeoFloat2( 2, 2 ) ).Render();
+    // allocate array and read pixels into it.
+    GLubyte* buffer = new GLubyte[width*height*4];
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    pGraphicsDevice->SetDefaultRenderTarget();
+    pGraphicsDevice->SetViewport(vp.Width, vp.Height);
+    
+    #if defined(__APPLE__) || defined(__APPLE_CC__)  
+    save_texture_file_block( filename.c_str(), buffer, width, height );
+    #endif
+    
+    delete [] buffer;
+#else    
 	int file_format;
 	if( "bmp" == extension )
 		file_format = SOIL_SAVE_TYPE_BMP;

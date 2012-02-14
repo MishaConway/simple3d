@@ -32,6 +32,7 @@ public:
     
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
     static void SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) );
+    static void SetOnSaveTextureFileBlock( void (^save_texture_file)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height) );
 #endif
     
     
@@ -60,5 +61,6 @@ private:
 	static OpenGLGraphicsDevice* pGraphicsDevice;
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
     static unsigned char* (^load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);
+    static void (^save_texture_file_block)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height);
 #endif
 };

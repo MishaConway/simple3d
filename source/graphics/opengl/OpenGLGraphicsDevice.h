@@ -47,7 +47,7 @@ private:
 	OpenGLGraphicsDeviceStateManager graphics_device_state_manager;
 	OpenGLCapabilities capabilities;
 	OpenGLVertexBuffer* pBoundVertexBuffer;
-    int default_fbo_id;
+    int default_fbo_id, default_depth_buffer_id;
 #ifdef _WIN32
 	HDC hdc;
 #endif
