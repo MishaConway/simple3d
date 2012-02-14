@@ -1,5 +1,6 @@
 #include "SpinningCylinderGridScene.h"
 #include <algorithm>
+#include "../../std/nullptr.h"
 
 SpinningCylinderGridScene::SpinningCylinderGridScene(){}
 SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ) : Scene( hWnd, width, height, fovy, near_z, far_z )
@@ -14,11 +15,12 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	
 
 	spinning_cylinder_grid = new SpinningCylinderGrid( 2.25f, 1.3f, 4, 1.6f );
-	std::vector<std::string> video_files = Directory::GetFiles( Directory::GetWorkingDirectory() + "videos", false );
-	for( unsigned int i = 0; i < video_files.size(); i++ )
+	//std::vector<std::string> video_files = Directory::GetFiles( Directory::GetWorkingDirectory() + "videos", false );
+    Texture t = Texture( "assets/metalgrate.jpg" );
+	for( unsigned int i = 0; i < 100; i++ )
 	{
-		const std::string extension =  video_files[i].substr( video_files[i].find_last_of(".")+1);
-		if( "db" != extension )
+		//const std::string extension =  video_files[i].substr( video_files[i].find_last_of(".")+1);
+		/*if( "db" != extension )
 		{
 			std::string video_name( video_files[i].begin(), std::find(video_files[i].begin(), video_files[i].end(), '.' ) );
 			std::string thumbnail_image = Directory::GetWorkingDirectory() + "video_thumbnails\\" + video_name + ".jpg";
@@ -26,11 +28,13 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 			{
 				printf( "could not find thumbnail!\n" );
 			}
-
-			Texture thumbnail_texture = Texture( thumbnail_image );
-			spinning_cylinder_grid->AddTile( GridTile( video_name, thumbnail_texture ) );
-		}
+         */
+			//Texture thumbnail_texture = Texture( thumbnail_image );
+			spinning_cylinder_grid->AddTile( GridTile( "cool", t ) );
+		//}
 	}
+    
+    t.SaveToFile( "/Users/misha/Documents/Test.png", true);
 
 	pCircle = new RenderableObject( Texture(GetRootAssetsPath() + "ui/kinectgrid.png"), GeometryFactory().GenerateUnitXZCircle().Scale(2.2f, 1, 2.2f ) );
 	pCircle->SetTexture( Texture(GetRootAssetsPath() + "17730-1920x1200.jpg") );
@@ -39,12 +43,18 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	pCircle->Translate( 0, -.95f, 0 );
 	pCircle->SetPlanarReflector( true );
 	pCircle->GetTexture().SetTiling( 4.5f );
-	pCircle->SetRotationalVelocity( XMFLOAT3( 0, 1, 0 ), 3 );
+	pCircle->SetRotationalVelocity( GeoFloat3( 0, 1, 0 ), 3 );
 
 	Texture glow_circle = Texture( 128, 128 );
-	const XMFLOAT2 glow_circle_center( (float)glow_circle.GetWidth() / 2.0f, (float)glow_circle.GetHeight() / 2.0f );
+	const GeoFloat2 glow_circle_center( (float)glow_circle.GetWidth() / 2.0f, (float)glow_circle.GetHeight() / 2.0f );
 	const float glow_circle_radius = glow_circle_center.x * 0.7f;
-	glow_circle.SetData( [this, &glow_circle_center, &glow_circle_radius](const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){ 
+	#ifdef _WIN32	
+    glow_circle.SetData( [this, &glow_circle_center, &glow_circle_radius]
+    #endif
+    #if defined(__APPLE__) || defined(__APPLE_CC__)  
+    glow_circle.SetData( ^                 
+    #endif
+        (const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){ 
 		if( (x-glow_circle_center.x)*(x-glow_circle_center.x) + (y-glow_circle_center.y)*(y-glow_circle_center.y) > glow_circle_radius * glow_circle_radius )
 		{
 			*pRed = *pGreen = *pBlue = *pAlpha =  0;
@@ -60,7 +70,7 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	});
 
 
-	glow_circle.SaveToFile( "glowcircle.dds" );
+//	glow_circle.SaveToFile( "glowcircle.dds" );
 	Texture cylinder_top = Texture(GetRootAssetsPath()+ "17730-1920x1200.jpg");
 	Texture cylinder_bottom = Texture(GetRootAssetsPath()+ "17730-1920x1200.jpg");
 
@@ -71,7 +81,7 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	//pCylinder = new RenderableObject( glow_circle, GeometryFactory().GenerateUnitCappedCylinder().Scale(2.12f, 0.1f, 2.12f ) );
 	*/
 	pCylinder->Translate( 0, -1.11f, 0 );
-	pCylinder->SetRotationalVelocity( XMFLOAT3( 0, 1, 0 ), -4 );
+	pCylinder->SetRotationalVelocity( GeoFloat3( 0, 1, 0 ), -4 );
 //	pCylinder->SetTexture( glow_circle );
 	//pCylinder->GetTexture().SetTiling( .1f );
 	pCylinder->SetGlowmap( glow_circle );
@@ -90,8 +100,8 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	sprites.push_back( pRightArrowSpriteHighlighted );
 	sprites.push_back( pLeftArrowSpriteHighlighted );
 	
-	pCursor = new Sprite( Texture( GetRootAssetsPath() + "ui/hand.dds"), GeoFloat2( -.7f, 0.0f), GeoFloat2(0.188235294f, 0.188235294f) );
-	pCursorProgressCircle = new Sprite( Texture( GetRootAssetsPath() + "ui/circle.dds"), GeoFloat2( -.7f, 0.0f), GeoFloat2(0.258235294f, 0.258235294f) );
+	pCursor = new Sprite( Texture( GetRootAssetsPath() + "ui/hand.png"), GeoFloat2( -.7f, 0.0f), GeoFloat2(0.188235294f, 0.188235294f) );
+	pCursorProgressCircle = new Sprite( Texture( GetRootAssetsPath() + "ui/circle.png"), GeoFloat2( -.7f, 0.0f), GeoFloat2(0.258235294f, 0.258235294f) );
 	pCursorProgressCircle->SetTechnique( "ProgressSprite" );
 	cursor_progress = 0;
 	sprites.push_back( pCursor );
@@ -193,6 +203,7 @@ void SpinningCylinderGridScene::HandleMouseMove( const unsigned int x, const uns
 
 void SpinningCylinderGridScene::HandleLeftMouseDown( const unsigned int x, const unsigned int y )
 {
-	SelectCurrentHoverTile();
+	//UpdateCursor( x, y );
+    SelectCurrentHoverTile();
 }
 
