@@ -70,8 +70,19 @@ void SetCocoaBindings()
         if (image == nil)
             NSLog(@"Do real error checking here");
         
-        GLuint width = CGImageGetWidth(image.CGImage);
-        GLuint height = CGImageGetHeight(image.CGImage);
+        GLuint original_width = CGImageGetWidth(image.CGImage);
+        GLuint original_height = CGImageGetHeight(image.CGImage);
+        
+        unsigned int power_of_two = 1;
+        while( power_of_two < original_width )
+            power_of_two *= 2;
+        GLuint width = power_of_two;
+        
+        power_of_two = 1;
+        while( power_of_two < original_height  )
+            power_of_two *= 2;
+        GLuint height = power_of_two; 
+        
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         unsigned char* imageData = new unsigned char[height * width * 4];
         CGContextRef context = CGBitmapContextCreate( imageData, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big );
