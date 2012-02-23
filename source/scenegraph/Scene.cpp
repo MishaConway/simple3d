@@ -16,7 +16,7 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
 	SetBackgroundColor( Color::Black() );
 
 	printf( "before render atrges..\n" );
-    render_target = RenderTarget( width, height );
+    render_target = RenderTarget( 256, 256 );
 
 	downsample_render_target = RenderTarget( 512, 512 );
 	downsample_render_target2 = RenderTarget( 512, 512 );
@@ -81,7 +81,7 @@ void Scene::PreRender()
 	graphics_device.GetStateManager().SetDefaults();
 	ConfigureCameraShaderValues();
 
-	graphics_device.SetRenderTarget( downsample_render_target, Color::Black() );
+/*	graphics_device.SetRenderTarget( downsample_render_target, Color::Black() );
 		graphics_device.SetViewport( 512, 512 );
 		RenderableObject::EnableGlobalTechnique( "GlowFill" );
 		RenderScene();
@@ -91,7 +91,7 @@ void Scene::PreRender()
 				
 		downsample_render_target.HorizontalBlur( downsample_render_target2 );
 		downsample_render_target2.VerticalBlur( downsample_render_target );
-		downsample_render_target.GetTexture().SaveToFile( "downsampledafter.dds", true ); 
+		downsample_render_target.GetTexture().SaveToFile( "downsampledafter.dds", true ); */
 	
 
 	// REFLECTION FILL PASSES
@@ -104,6 +104,7 @@ void Scene::PreRender()
 		
 		//effects["shaders.fx"].UnsetRenderTarget( "PlanarReflection", "reflection" );
 		graphics_device.SetRenderTarget( render_target );
+        graphics_device.SetViewport( 256, 256 );
 
 		GeoVector reflection_plane( 0, 1, 0, -scene_objects[i]->GetWorldspaceCentroid().y);
 		ConfigureCameraShaderValues();

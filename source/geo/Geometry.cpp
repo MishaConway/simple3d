@@ -622,10 +622,10 @@ Geometry GeometryFactory::GenerateUnitXZCircle()
 		GeoVertex left_top_vertex( Vertex(GeoFloat3(left_top.x, 0, left_top.y)), true );
 		GeoVertex right_top_vertex( Vertex(GeoFloat3(right_top.x, 0, right_top.y)), true );
 		
-		if( abs( right_bottom.x - right_top.x ) < 0.01f && abs( right_bottom.y - right_top.y ) < 0.01f )
+		if( fabs( right_bottom.x - right_top.x ) < 0.01f && fabs( right_bottom.y - right_top.y ) < 0.01f )
 			xz_circle.triangles.push_back( GeoTriangle( left_top_vertex, right_bottom_vertex, left_bottom_vertex ) );
 		else
-		if( abs( left_bottom.x - left_top.x ) < 0.01f && abs( left_bottom.y - left_top.y ) < 0.01f )
+		if( fabs( left_bottom.x - left_top.x ) < 0.01f && fabs( left_bottom.y - left_top.y ) < 0.01f )
 			xz_circle.triangles.push_back( GeoTriangle( right_top_vertex, right_bottom_vertex, left_bottom_vertex ) );
 		else
 			xz_circle.quads.push_back( GeoQuad( left_bottom_vertex, right_bottom_vertex, right_top_vertex, left_top_vertex  ) );
