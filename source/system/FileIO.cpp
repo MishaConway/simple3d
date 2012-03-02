@@ -24,6 +24,7 @@
 #endif
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
+char** (^Directory::get_files_in_directory_block)(const char* path) = 0; 
 const char* (^File::read_all_text_block)(const char* path) = 0; 
 #endif
 
@@ -43,7 +44,11 @@ bool Directory::Exists( const std::string& path )
 
 std::string Directory::GetWorkingDirectory()
 {
-	std::string working_directory;
+	#if defined(__APPLE__) || defined(__APPLE_CC__)
+    return "/";
+    #endif
+    
+    std::string working_directory;
 
 	char buffer[1024];
 #if defined(_WINDOWS_)
@@ -62,9 +67,9 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 {
 	std::vector< std::string> files;
 	std::string currentFile;
+    std::string cleaned_path = path;
 
 #if defined(_WINDOWS_)
-    std::string cleaned_path = path;
 	std::replace( cleaned_path.begin(), cleaned_path.end(), '/', '\\');
 	if( '\\' != cleaned_path[cleaned_path.size()-1] )
 		cleaned_path += "\\";
@@ -96,7 +101,21 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 			}
 		}
 #else
-	DIR* directory = opendir( path.c_str() );
+    std::replace( cleaned_path.begin(), cleaned_path.end(), '\\', '/');
+    if( '/' != cleaned_path[cleaned_path.size()-1] )
+		cleaned_path += "/";
+    
+	#if defined(__APPLE__) || defined(__APPLE_CC__)
+    char** pFiles = get_files_in_directory_block( cleaned_path.c_str() );
+    while( *pFiles )
+    {
+        std::string file = std::string( *pFiles++ );
+        if( return_absolute_paths )
+            file = cleaned_path + file;
+        files.push_back( file );
+    }
+    #else
+    DIR* directory = opendir( path.c_str() );
 	if( directory == 0 )
 		return files;
 
@@ -112,12 +131,20 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 		}
         directoryEntry = readdir(directory);
 	}
-	(void) closedir (directory);       
+	(void) closedir (directory); 
+    #endif
 #endif
 
 	return files;
 
 }
+
+#if defined(__APPLE__) || defined(__APPLE_CC__)
+void Directory::SetGetFilesInDirectoryBlock( char** (^_get_files_in_directory_block)(const char* path) )
+{
+    get_files_in_directory_block = _get_files_in_directory_block;
+}
+#endif
 
 bool File::Exists( const std::string& path )
 {

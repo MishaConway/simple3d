@@ -9,6 +9,9 @@ Scene::Scene(){}
 Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z )
 {		
 	printf( "before inii\n" );
+    this->width = width;
+    this->height = height;
+    
     graphics_device.Initialize( hWnd, width, height, true );
     printf( "after init..\n" );
 	Object::BindGraphicsDevice( &graphics_device );
@@ -104,7 +107,10 @@ void Scene::PreRender()
 		
 		//effects["shaders.fx"].UnsetRenderTarget( "PlanarReflection", "reflection" );
 		graphics_device.SetRenderTarget( render_target );
-        graphics_device.SetViewport( 256, 256 );
+        printf( "width is %i\n", render_target.GetTexture().GetWidth() );
+        printf( "height is %i\n", render_target.GetTexture().GetHeight() );
+        camera.SetWidthHeight( render_target.GetTexture().GetWidth(), render_target.GetTexture().GetHeight() );
+        graphics_device.SetViewport( render_target.GetTexture().GetWidth(), render_target.GetTexture().GetHeight() );
 
 		GeoVector reflection_plane( 0, 1, 0, -scene_objects[i]->GetWorldspaceCentroid().y);
 		ConfigureCameraShaderValues();
@@ -127,9 +133,11 @@ void Scene::PreRender()
 
 void Scene::SetDefaults()
 {
-	graphics_device.GetStateManager().SetDefaults();
+	camera.SetWidthHeight( width, height );
+    
+    graphics_device.GetStateManager().SetDefaults();
 	graphics_device.SetDefaultRenderTarget();
-	graphics_device.SetViewport( camera.GetWidth(), camera.GetHeight() );
+	graphics_device.SetViewport( width, height );
 	graphics_device.Clear( background_color );
 
 	//render_target.GetTexture().SaveToFile( "lalala.png", true );	

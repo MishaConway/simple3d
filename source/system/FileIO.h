@@ -9,7 +9,15 @@ class Directory
 public:
 	static bool Exists( const std::string& path );	
 	static std::string GetWorkingDirectory(); 
-	static std::vector<std::string> GetFiles( const std::string& path, const bool return_absolute_paths = true );	
+	static std::vector<std::string> GetFiles( const std::string& path, const bool return_absolute_paths = true );
+#if defined(__APPLE__) || defined(__APPLE_CC__)
+    static void SetGetFilesInDirectoryBlock( char** (^get_files_in_directory_block)(const char* path) );
+#endif
+private:
+#if defined(__APPLE__) || defined(__APPLE_CC__)
+    static char** (^get_files_in_directory_block)(const char* path); 
+#endif
+	
 };
 
 class File

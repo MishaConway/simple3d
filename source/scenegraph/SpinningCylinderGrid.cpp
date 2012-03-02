@@ -26,7 +26,7 @@ Texture GridTile::GetTexture()
 
 SpinningCylinderGrid::SpinningCylinderGrid(  const float radius, const float height, const unsigned int num_rows, const float tile_aspect_ratio )
 {
-	outline_blend_texture = Texture( root_assets_path + "/" + "ui/outerbox-blue.png");
+	outline_blend_texture = Texture( root_assets_path + "ui/outerbox-blue.png");
 	pSelectedTile = nullptr;
 
 	angular_deceleration = 40.0f;

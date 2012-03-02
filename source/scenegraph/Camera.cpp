@@ -101,6 +101,13 @@ unsigned int Camera::GetHeight()
 	return height;
 }
 
+void Camera::SetWidthHeight( const unsigned int width, const unsigned int height )
+{
+    this->width = width;
+    this->height = height;
+    projection_transform = GeoMatrix::MatrixPerspectiveFovRH( GeoConvertToRadians(fovy),(float)width / (float)height, near_z, far_z );
+}
+
 GeoMatrix Camera::GetProjectionTransform()
 {
 	return projection_transform;	

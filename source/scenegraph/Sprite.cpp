@@ -74,7 +74,7 @@ bool Sprite::Render()
 	{
 		SetIdentity();
 		Scale( size.x, size.y, 0 );
-		Translate( position.x + size.x / 2.0f, position.y + size.y / 2.0f, 0 );
+		Translate( position.x, position.y, 0 );
 
 		Effect e = Effect::GetCurrentEffect();
 		e.SetTexture( "lala", GetTexture() );

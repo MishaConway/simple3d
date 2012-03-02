@@ -16,6 +16,23 @@
 
 void SetCocoaBindings()
 {
+    Directory::SetGetFilesInDirectoryBlock(^char** (const char* path ){
+        NSArray* array  = [[NSFileManager defaultManager] directoryContentsAtPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingString:[NSString stringWithUTF8String:path]]];
+        
+        NSLog( @"size of dir contents is %d\n", [array count] );
+        for( NSString* f in array )
+            NSLog( @"file is: %@\n", f );
+        
+        
+        char** pFiles = new char* [[array count]+1];
+        char** pStartFiles = pFiles;
+        for( unsigned int i = 0; i < [array count]; i++ )
+            *pFiles++ = (char*) [[array objectAtIndex:i] UTF8String];
+        *pFiles = 0;
+        
+        return pStartFiles; 
+    });
+    
     File::SetReadAllTextBlock( ^const char*( const char* path){
         NSString* filename = [[[NSString stringWithUTF8String: path] componentsSeparatedByString:@"/"] lastObject];
         
@@ -24,9 +41,6 @@ void SetCocoaBindings()
         NSString* extension = [[split objectAtIndex: 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         NSString* file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension ];   
-        
-        //  NSLog( @"here filepath is %@", file_path );
-        
         
         return [[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]; 
     });
@@ -59,12 +73,42 @@ void SetCocoaBindings()
     });
     
     OpenGLTexture::SetOnLoadTextureFileBlock(^unsigned char* (const char* cstr_path, unsigned int *pOutWidth, unsigned int *pOutHeight) {            
-        NSString* path = [[[[NSString alloc] initWithUTF8String:cstr_path] componentsSeparatedByString:@"/"] lastObject];
-        NSArray* split = [path componentsSeparatedByString:@"."];
-        NSString* filename_without_extension = [[split objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        NSString* extension = [[split objectAtIndex: 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSArray* path_split = [[[NSString alloc] initWithUTF8String:cstr_path] componentsSeparatedByString:@"/"];
+        NSString* filename = [path_split lastObject];
+        NSString* directory = @"/";
+        for( unsigned int i = 0; i < [path_split count] - 1; i++ )
+        {
+            if( 0 != [[path_split objectAtIndex:i] caseInsensitiveCompare:@""] )
+            {
+                NSLog( @"pathsplit here is %@\n", [path_split objectAtIndex:i] );
+                directory = [directory stringByAppendingString:[path_split objectAtIndex:i]];
+                directory = [directory stringByAppendingString:@"/"];
+            }
+        }
         
-        NSString* bundle_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension];
+        
+        
+        NSArray* split = [filename componentsSeparatedByString:@"."];
+        NSString* filename_without_extension = [[split objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString* extension = [[split lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        NSLog( @"directory is %@\n", directory );
+        NSLog( @"extension is %@\n", extension );
+        NSLog( @"filename without is %@\n", filename_without_extension );
+        
+        NSString* bundle_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension inDirectory:directory];
+        
+        NSLog( @"bundle path is %@\n", bundle_path );
+        
+     /*   NSArray *dirContents  = [[NSFileManager defaultManager]
+         directoryContentsAtPath:
+         [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/assets/video_thumbnails"]];
+        
+        NSLog( @"size of dir contents is %d\n", [dirContents count] );
+        for( NSString* f in dirContents )
+            NSLog( @"file is: %@\n", f ); */
+        
+        
         NSData *texData = [[NSData alloc] initWithContentsOfFile:bundle_path];
         UIImage *image = [[UIImage alloc] initWithData:texData];
         if (image == nil)

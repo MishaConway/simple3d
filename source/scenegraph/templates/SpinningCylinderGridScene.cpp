@@ -7,40 +7,26 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 {
 	perform_prerendering = true;
 	
-	default_height = -0.2f;
-	default_focus_height = -0.14f;
-	distance_from_spinning_cylinder_grid = 3.7f;
+	float offset = -1.5f;
+    default_height = 1.4f + offset;
+	default_focus_height = 1.19 + offset;
+	distance_from_spinning_cylinder_grid = 4.2f;
 	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, default_height, distance_from_spinning_cylinder_grid ), GeoVector( 0, default_focus_height, 0 ) );
 	
-	
-
 	spinning_cylinder_grid = new SpinningCylinderGrid( 2.25f, 1.3f, 4, 1.6f );
-	//std::vector<std::string> video_files = Directory::GetFiles( Directory::GetWorkingDirectory() + "videos", false );
-    Texture t = Texture( "assets/metalgrate.jpg" );
-	for( unsigned int i = 0; i < 100; i++ )
-	{
-		//const std::string extension =  video_files[i].substr( video_files[i].find_last_of(".")+1);
-		/*if( "db" != extension )
-		{
-			std::string video_name( video_files[i].begin(), std::find(video_files[i].begin(), video_files[i].end(), '.' ) );
-			std::string thumbnail_image = Directory::GetWorkingDirectory() + "video_thumbnails\\" + video_name + ".jpg";
-			if( thumbnail_image.empty() )
-			{
-				printf( "could not find thumbnail!\n" );
-			}
-         */
-			//Texture thumbnail_texture = Texture( thumbnail_image );
-			spinning_cylinder_grid->AddTile( GridTile( "cool", t ) );
-		//}
-	}
+	std::vector<std::string> video_files = Directory::GetFiles( Directory::GetWorkingDirectory() + "assets/video_thumbnails", true );
+    for( unsigned int i = 0; i < video_files.size(); i++ )
+        printf( "got video file of : %s\n", video_files[i].c_str() );
     
-    t.SaveToFile( "/Users/misha/Documents/Test.png", true);
 
+	for( unsigned int i = 0; i < video_files.size(); i++ )
+        spinning_cylinder_grid->AddTile( GridTile( "cool", Texture( video_files[i] ) ) );
+	
 	pCircle = new RenderableObject( Texture(GetRootAssetsPath() + "ui/kinectgrid.png"), GeometryFactory().GenerateUnitXZCircle().Scale(2.2f, 1, 2.2f ) );
-	pCircle->SetTexture( Texture(GetRootAssetsPath() + "17730-1920x1200.jpg") );
+	//pCircle->SetTexture( Texture(GetRootAssetsPath() + "17730-1920x1200.jpg") );
 	pCircle->SetTexture( Texture(GetRootAssetsPath()+ "flux-studios-lineage-hourglass-stainless-steel-tile.jpg") );
 	scene_objects.push_back( pCircle );
-	pCircle->Translate( 0, -.95f, 0 );
+	pCircle->Translate( 0, -1.2f, 0 );
 	pCircle->SetPlanarReflector( true );
 	pCircle->GetTexture().SetTiling( 4.5f );
 	pCircle->SetRotationalVelocity( GeoFloat3( 0, 1, 0 ), 3 );
@@ -85,7 +71,7 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 //	pCylinder->SetTexture( glow_circle );
 	//pCylinder->GetTexture().SetTiling( .1f );
 	pCylinder->SetGlowmap( glow_circle );
-	scene_objects.push_back( pCylinder );
+	//scene_objects.push_back( pCylinder );
 
 	const float arrow_margin = 0.001f;
 	const GeoFloat2 arrow_size( 0.188235294f, 0.188235294f );
@@ -136,7 +122,7 @@ void SpinningCylinderGridScene::UpdateCursor( const unsigned int x, const unsign
 	float cursor_screenspace_width = (pCursor->GetSize().x / 2 ) * graphics_device.GetViewport().Width;
 	float cursor_screenspace_height = (pCursor->GetSize().y / 2 ) * graphics_device.GetViewport().Height;	
 	const float clipspace_x = ((float) x / graphics_device.GetViewport().Width) * 2 - 1;
-	const float clipspace_y = (-((float) y) / graphics_device.GetViewport().Height) * 2 + 1;
+	const float clipspace_y = (((float) graphics_device.GetViewport().Height - y) / graphics_device.GetViewport().Height) * 2 - 1;
 	
 	pRightArrowSpriteHighlighted->SetVisible( clipspace_x >= pRightArrowSprite->GetPosition().x  );
 	pRightArrowSprite->SetVisible( clipspace_x < pRightArrowSprite->GetPosition().x   );
@@ -160,7 +146,7 @@ void SpinningCylinderGridScene::UpdateCursor( const unsigned int x, const unsign
 		}
 	}
 
-	pCursor->SetPosition( GeoFloat2( clipspace_x - pCursor->GetSize().x/2.0f, clipspace_y - pCursor->GetSize().y/2.0f ) );	
+	pCursor->SetPosition( GeoFloat2( clipspace_x, clipspace_y ) );	
 }
 
 bool SpinningCylinderGridScene::Update( const float elapsed_seconds )

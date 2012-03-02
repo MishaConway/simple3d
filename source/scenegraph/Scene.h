@@ -35,6 +35,7 @@ protected:
 protected:
 	GraphicsDevice graphics_device;
 	Camera camera;
+    unsigned int width, height;
 	
 	//std::map< std::string, Effect> effects;
 	std::vector< RenderableObject* > scene_objects;

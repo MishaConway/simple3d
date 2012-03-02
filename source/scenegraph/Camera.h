@@ -16,6 +16,7 @@ public:
 	bool IsMoving();
 	unsigned int GetWidth();
 	unsigned int GetHeight();
+    void SetWidthHeight( const unsigned int width, const unsigned int height );
 	GeoMatrix GetProjectionTransform();
 	GeoMatrix GetViewTransform();
 	GeoMatrix GetReflectedViewTransform( const GeoVector& reflection_plane );
