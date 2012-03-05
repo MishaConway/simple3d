@@ -27,6 +27,8 @@ protected:
 	virtual bool Render();
 	virtual void RenderScene( const bool reflection = false );
 	virtual void RenderSprites();
+    
+    void SetupRenderTarget( RenderTarget render_target );
 
 	void SetDefaults();
 	void ConfigureCameraShaderValues();

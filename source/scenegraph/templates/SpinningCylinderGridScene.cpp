@@ -43,9 +43,9 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
         (const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){ 
 		if( (x-glow_circle_center.x)*(x-glow_circle_center.x) + (y-glow_circle_center.y)*(y-glow_circle_center.y) > glow_circle_radius * glow_circle_radius )
 		{
-			*pRed = *pGreen = *pBlue = *pAlpha =  0;
-			*pBlue = 0.2f;
-			*pAlpha = 1.0f;    
+			*pRed = *pGreen = *pBlue = *pAlpha =  0.0f;
+			*pBlue = 0.6f;
+			*pAlpha = 0.0f;    
 		}
 		else
 		{
@@ -66,12 +66,12 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
     pCylinder = new RenderableObject( Texture(glow_circle, cylinder_top, cylinder_bottom), GeometryFactory().GenerateUnitCappedCylinder().Scale(2.12f, 0.1f, 2.12f ) );
 	//pCylinder = new RenderableObject( glow_circle, GeometryFactory().GenerateUnitCappedCylinder().Scale(2.12f, 0.1f, 2.12f ) );
 	*/
-	pCylinder->Translate( 0, -1.11f, 0 );
+	pCylinder->Translate( 0, -0.81f, 0 );
 	pCylinder->SetRotationalVelocity( GeoFloat3( 0, 1, 0 ), -4 );
 //	pCylinder->SetTexture( glow_circle );
 	//pCylinder->GetTexture().SetTiling( .1f );
 	pCylinder->SetGlowmap( glow_circle );
-	//scene_objects.push_back( pCylinder );
+	scene_objects.push_back( pCylinder );
 
 	const float arrow_margin = 0.001f;
 	const GeoFloat2 arrow_size( 0.188235294f, 0.188235294f );

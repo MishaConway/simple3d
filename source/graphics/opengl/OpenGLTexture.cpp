@@ -381,7 +381,7 @@ bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_onl
     GraphicsDeviceViewport vp = pGraphicsDevice->GetViewport();
     pGraphicsDevice->SetViewport( width, height);
     pGraphicsDevice->SetRenderTarget( render_target, Color::Green() );
-    Sprite( *this, GeoFloat2( -1, -1), GeoFloat2( 2, 2 ) ).Render();
+    Sprite( *this, GeoFloat2( 0, 0), GeoFloat2( 2, 2 ) ).Render();
     // allocate array and read pixels into it.
     GLubyte* buffer = new GLubyte[width*height*4];
     glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);

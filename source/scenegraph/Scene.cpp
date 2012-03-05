@@ -19,10 +19,12 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
 	SetBackgroundColor( Color::Black() );
 
 	printf( "before render atrges..\n" );
-    render_target = RenderTarget( 256, 256 );
+    render_target = RenderTarget( 512, 512 );
+    
 
-	downsample_render_target = RenderTarget( 512, 512 );
-	downsample_render_target2 = RenderTarget( 512, 512 );
+
+	downsample_render_target = RenderTarget( 256, 256 );
+	downsample_render_target2 = RenderTarget( 256, 256 );
     
     printf( "after render tagrets ..\n" );
 
@@ -76,6 +78,13 @@ void Scene::ConfigureCameraShaderValues()
 	graphics_device.SetViewport( camera.GetWidth(), camera.GetHeight() );
 }
 
+void Scene::SetupRenderTarget( RenderTarget _render_target )
+{
+    graphics_device.SetRenderTarget( _render_target, Color::Black() );
+    graphics_device.SetViewport( _render_target.GetTexture().GetWidth(), _render_target.GetTexture().GetHeight() );
+    camera.SetWidthHeight( _render_target.GetTexture().GetWidth(), _render_target.GetTexture().GetHeight() );
+}
+
 void Scene::PreRender()
 {
 	if( !perform_prerendering )
@@ -84,17 +93,18 @@ void Scene::PreRender()
 	graphics_device.GetStateManager().SetDefaults();
 	ConfigureCameraShaderValues();
 
-/*	graphics_device.SetRenderTarget( downsample_render_target, Color::Black() );
-		graphics_device.SetViewport( 512, 512 );
-		RenderableObject::EnableGlobalTechnique( "GlowFill" );
-		RenderScene();
-		RenderableObject::DisableGlobalTechnique();
-		graphics_device.SetDefaultRenderTarget();
-		//downsample_render_target.GetTexture().SaveToFile( "beforedownsample.dds", true ); 
+	
+    SetupRenderTarget( downsample_render_target );
+    RenderableObject::EnableGlobalTechnique( "GlowFill" );
+    RenderScene();
+    RenderableObject::DisableGlobalTechnique();
+		
+    graphics_device.SetDefaultRenderTarget();
+    //downsample_render_target.GetTexture().SaveToFile( "/Users/misha/Documents/beforedownsample.png", true ); 
 				
-		downsample_render_target.HorizontalBlur( downsample_render_target2 );
-		downsample_render_target2.VerticalBlur( downsample_render_target );
-		downsample_render_target.GetTexture().SaveToFile( "downsampledafter.dds", true ); */
+    downsample_render_target.HorizontalBlur( downsample_render_target2 );
+    downsample_render_target2.VerticalBlur( downsample_render_target );
+    downsample_render_target2.GetTexture().SaveToFile( "/Users/misha/Documents/downsampledafterhorizontal.png", true ); 
 	
 
 	// REFLECTION FILL PASSES
@@ -106,12 +116,8 @@ void Scene::PreRender()
 		Effect::GetCurrentEffect().SetInt( "clipping_enabled", 1 );
 		
 		//effects["shaders.fx"].UnsetRenderTarget( "PlanarReflection", "reflection" );
-		graphics_device.SetRenderTarget( render_target );
-        printf( "width is %i\n", render_target.GetTexture().GetWidth() );
-        printf( "height is %i\n", render_target.GetTexture().GetHeight() );
-        camera.SetWidthHeight( render_target.GetTexture().GetWidth(), render_target.GetTexture().GetHeight() );
-        graphics_device.SetViewport( render_target.GetTexture().GetWidth(), render_target.GetTexture().GetHeight() );
-
+        
+        SetupRenderTarget( render_target );
 		GeoVector reflection_plane( 0, 1, 0, -scene_objects[i]->GetWorldspaceCentroid().y);
 		ConfigureCameraShaderValues();
 		Effect::GetCurrentEffect().SetFloatArray( "clip_plane",  reflection_plane );
@@ -150,7 +156,7 @@ bool Scene::Render()
 	SetDefaults();
 	RenderScene();
 	if( perform_prerendering )
-		Sprite( downsample_render_target.GetTexture(), GeoFloat2( -1, -1), GeoFloat2( 2, 2 ), BlendType::ADDITIVE ).Render();
+		Sprite( downsample_render_target.GetTexture(), GeoFloat2( 0, 0), GeoFloat2( 2, 2 ), BlendType::ADDITIVE ).Render();
 	RenderSprites();
 	return true;
 }

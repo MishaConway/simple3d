@@ -73,11 +73,11 @@ bool OpenGLRenderTarget::VerticalBlur( OpenGLRenderTarget render_target_written 
 }
 
 bool OpenGLRenderTarget::Blur( OpenGLRenderTarget pRenderTargetWritten, const std::string& blur_technique )
-{
-	Effect::GetCurrentEffect().SetFloatArray( "BlurWeights", ComputeGaussianKernel( 9, 400.5f  ) );
+{    
+    Effect::GetCurrentEffect().SetFloatArray( "BlurWeights", ComputeGaussianKernel( 9, 400.5f  ) );
 	pGraphicsDevice->SetRenderTarget( pRenderTargetWritten );
 #if RENDERER == RENDERER_OPENGL
-	Sprite( GetTexture(), GeoFloat2( -1, -1), GeoFloat2( 2, 2 ), BlendType::NONE, blur_technique ).Render();
+	Sprite( GetTexture(), GeoFloat2( 0, 0), GeoFloat2( 2, 2 ), BlendType::NONE, blur_technique ).Render();
 #endif
 	return true;
 }
