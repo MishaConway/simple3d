@@ -2,6 +2,7 @@
 #include "../../geo/Geometry.h"
 #include <algorithm>
 #include "../../std/nullptr.h"
+#include "../../string/string_utils.h"
 
 std::map<std::string, OpenGLShader> OpenGLShader::shaders;
 OpenGLShaderProgram OpenGLShaderProgram::current_program;
@@ -135,7 +136,7 @@ OpenGLShaderProgram::OpenGLShaderProgram( const std::string& name, OpenGLVertexS
 				glGetActiveUniform( program_id, GLuint(i), sizeof(name)-1, &name_len, &num, &type, name );
 				name[name_len] = 0;
 				printf( "adding used unifom %s\n", name );
-				used_uniforms.push_back( std::string(name) );
+				used_uniforms.push_back( StringReplace( std::string(name), "[0]", "") );
 			}
 
 			if( total > 0 )
