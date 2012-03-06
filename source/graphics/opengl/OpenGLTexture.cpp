@@ -9,6 +9,7 @@ OpenGLGraphicsDevice* OpenGLTexture::pGraphicsDevice = nullptr;
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
 unsigned char* (^OpenGLTexture::load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);
 void (^OpenGLTexture::save_texture_file_block)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height);
+unsigned char* (^OpenGLTexture::create_texture_from_text_block)(const char* font, const unsigned int font_size, const char* text, unsigned int* pOutWidth, unsigned int* pOutHeight);
 #endif
 
 OpenGLTexture::OpenGLTexture()
@@ -19,15 +20,9 @@ OpenGLTexture::OpenGLTexture()
 ///// consid
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
-void OpenGLTexture::SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) )
-{
-    load_texture_file_block = load_texture_file;
-}
-
-void OpenGLTexture::SetOnSaveTextureFileBlock( void (^save_texture_file)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height) )
-{
-    save_texture_file_block = save_texture_file;
-}
+void OpenGLTexture::SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) ){load_texture_file_block = load_texture_file;}
+void OpenGLTexture::SetOnSaveTextureFileBlock( void (^save_texture_file)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height) ){save_texture_file_block = save_texture_file;}
+void OpenGLTexture::SetCreateTextureFromTextBlock( unsigned char* (^create_texture_from_text)(const char* font, const unsigned int font_size, const char* text, unsigned int* pOutWidth, unsigned int* pOutHeight) ){create_texture_from_text_block = create_texture_from_text;}
 #endif
 
 

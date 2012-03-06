@@ -14,6 +14,9 @@
 #include "../string/string_utils.h"
 #include "../graphics/opengl/OpenGLTexture.h"
 
+
+
+
 void SetCocoaBindings()
 {
     Directory::SetGetFilesInDirectoryBlock(^char** (const char* path ){
@@ -44,6 +47,10 @@ void SetCocoaBindings()
         
         return [[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]; 
     });
+    
+    
+   
+    
     
     SetGetRegexMatchesBlock( ^char** (const char* _str, const char* _pattern){
         NSString* str = [NSString stringWithUTF8String:_str];
@@ -140,6 +147,28 @@ void SetCocoaBindings()
         *pOutHeight = height;
         
         return imageData;
+    });
+    
+    OpenGLTexture::SetCreateTextureFromTextBlock(^unsigned char *(const char *font, const unsigned int font_size, const char *text, unsigned int *pOutWidth, unsigned int *pOutHeight) {
+        
+        UIImage* img = 0;
+        NSString* text1 = [[NSString alloc] initWithUTF8String:text];
+        
+        CGSize sizeText = [text1 sizeWithFont:[UIFont fontWithName:@"Helvetica" size:36] minFontSize:36 actualFontSize:nil forWidth:783 lineBreakMode:UILineBreakModeTailTruncation];
+        
+        CGFloat posX = 1024.0 - 230.0 - sizeText.width;
+        
+        
+        UIGraphicsBeginImageContextWithOptions(img.size, NO, 0.0f);
+        [img drawAtPoint:CGPointMake(0.0f, 0.0f)];
+        [text1 drawAtPoint:CGPointMake(posX, 588.0) withFont:[UIFont fontWithName:@"Helvetica" size:36]];
+        UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        
+        unsigned char* image_data = 0;
+        
+        return image_data;
     });
     
     OpenGLTexture::SetOnSaveTextureFileBlock( ^(const char* cpath, unsigned char* data, const unsigned int width, const unsigned int height)
