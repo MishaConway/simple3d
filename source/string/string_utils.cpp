@@ -104,6 +104,13 @@ std::string StringReplace( std::string result,
   return result;
 }
 
+std::string IntToString( const int i )
+{
+    std::stringstream out;
+    out << i;
+    return out.str();   
+}
+
 
 std::vector<std::string> GetRegexMatches( std::string str, std::string _pattern )
 {
