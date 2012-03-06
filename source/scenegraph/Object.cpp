@@ -15,6 +15,16 @@ Object::Object()
 	rotated_in_objectspace = false;
 }
 
+void Object::SetUserData( const std::string& key, const std::string& value )
+{
+    user_data[key] = value;
+}
+
+std::string Object::GetUserData( const std::string& key )
+{
+    return user_data[key];
+}
+
 bool Object::Update( const float elapsed_seconds )
 {
     if( rotating )

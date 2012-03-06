@@ -31,6 +31,8 @@ public:
 	void SetRotationalVelocity( const GeoVector& rotation_axis, const float degrees_per_second, const float objectspace_angular_deceleration = 0 );
 
 	
+    void SetUserData( const std::string& key, const std::string& value );
+    std::string GetUserData( const std::string& key );
 
 	GeoMatrix GetWorldTransform();
 	GeoMatrix   GetWorldInverseTranspose();
@@ -47,5 +49,6 @@ protected:
 	float revolve_degrees_per_second;
 	GeoVector revolution_axis;
 	float degrees_revolved;
+    std::map<std::string, std::string> user_data;
 	static GraphicsDevice* pGraphicsDevice;
 };
