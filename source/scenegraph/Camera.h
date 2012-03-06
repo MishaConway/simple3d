@@ -28,6 +28,9 @@ public:
 	GeoFloat2 ScreenspaceToClipspace( const GeoFloat2& screensapce_vertex );
 
 	GeoVector ProjectIntoScreenspace( const GeoVector& worldspace_vertex );
+    
+    float DistanceFromEye( const GeoVector& point );
+    
 private:
 	GeoMatrix projection_transform;
 	unsigned int width;

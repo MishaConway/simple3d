@@ -156,3 +156,12 @@ GeoFloat2 Camera::ScreenspaceToClipspace( const GeoFloat2& screenspace_vertex )
 {
 	return GeoFloat2( screenspace_vertex.x / (width * 0.5f) - 1.0f, 1.0f- screenspace_vertex.y /(height*0.5f) );
 }
+
+float Camera::DistanceFromEye( const GeoVector& point )
+{
+    return (point - current_eye_position).Length();
+}
+
+
+
+
