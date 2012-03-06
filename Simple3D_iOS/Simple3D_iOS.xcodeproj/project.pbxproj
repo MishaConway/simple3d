@@ -64,6 +64,8 @@
 		C61AC73F14D8DAED001BCCE7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C61AC73E14D8DAED001BCCE7 /* AppDelegate.m */; };
 		C61AC74E14D8DBD0001BCCE7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C61AC73014D8DAED001BCCE7 /* Foundation.framework */; };
 		C61AC75414D8DBD0001BCCE7 /* Simple3D_iOS_static.m in Sources */ = {isa = PBXBuildFile; fileRef = C61AC75314D8DBD0001BCCE7 /* Simple3D_iOS_static.m */; };
+		C6474C5F15048FFB001331B1 /* SpinningCubeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6474C5E15048FFB001331B1 /* SpinningCubeScene.cpp */; };
+		C6474C6015049269001331B1 /* SpinningCubeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6474C5E15048FFB001331B1 /* SpinningCubeScene.cpp */; };
 		C669543614E1B5CD00AC8324 /* CocoaBindings.mm in Sources */ = {isa = PBXBuildFile; fileRef = C669543514E1B5CD00AC8324 /* CocoaBindings.mm */; };
 		C669543914E1B6D100AC8324 /* CocoaBindings.mm in Sources */ = {isa = PBXBuildFile; fileRef = C669543514E1B5CD00AC8324 /* CocoaBindings.mm */; };
 		C6DB312114E9D82C00B86F93 /* SpinningCylinderGridScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F6CB5614E9D72D0040BD18 /* SpinningCylinderGridScene.cpp */; };
@@ -209,8 +211,11 @@
 		C61AC75114D8DBD0001BCCE7 /* Simple3D_iOS_static-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Simple3D_iOS_static-Prefix.pch"; sourceTree = "<group>"; };
 		C61AC75214D8DBD0001BCCE7 /* Simple3D_iOS_static.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simple3D_iOS_static.h; sourceTree = "<group>"; };
 		C61AC75314D8DBD0001BCCE7 /* Simple3D_iOS_static.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Simple3D_iOS_static.m; sourceTree = "<group>"; };
+		C6474C5C15048FDE001331B1 /* SpinningCubeScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SpinningCubeScene.h; path = templates/SpinningCubeScene.h; sourceTree = "<group>"; };
+		C6474C5E15048FFB001331B1 /* SpinningCubeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpinningCubeScene.cpp; path = templates/SpinningCubeScene.cpp; sourceTree = "<group>"; };
 		C669543414E1B5CD00AC8324 /* CocoaBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaBindings.h; sourceTree = "<group>"; };
 		C669543514E1B5CD00AC8324 /* CocoaBindings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CocoaBindings.mm; sourceTree = "<group>"; };
+		C6D1E13D15056AA0009B143E /* IStringable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IStringable.h; sourceTree = "<group>"; };
 		C6F6CB5614E9D72D0040BD18 /* SpinningCylinderGridScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpinningCylinderGridScene.cpp; path = templates/SpinningCylinderGridScene.cpp; sourceTree = "<group>"; };
 		C6F6CB5714E9D72D0040BD18 /* SpinningCylinderGridScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpinningCylinderGridScene.h; path = templates/SpinningCylinderGridScene.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -364,6 +369,7 @@
 				C61AC6CC14D8D9B4001BCCE7 /* Initializable.cpp */,
 				C61AC6CD14D8D9B4001BCCE7 /* IValidatable.cpp */,
 				C61AC6CE14D8D9B4001BCCE7 /* IValidatable.h */,
+				C6D1E13D15056AA0009B143E /* IStringable.h */,
 			);
 			name = interfaces;
 			path = ../source/interfaces;
@@ -581,6 +587,8 @@
 			children = (
 				C6F6CB5614E9D72D0040BD18 /* SpinningCylinderGridScene.cpp */,
 				C6F6CB5714E9D72D0040BD18 /* SpinningCylinderGridScene.h */,
+				C6474C5C15048FDE001331B1 /* SpinningCubeScene.h */,
+				C6474C5E15048FFB001331B1 /* SpinningCubeScene.cpp */,
 			);
 			name = templates;
 			sourceTree = "<group>";
@@ -678,6 +686,7 @@
 				C61AC73F14D8DAED001BCCE7 /* AppDelegate.m in Sources */,
 				C669543614E1B5CD00AC8324 /* CocoaBindings.mm in Sources */,
 				C6F6CB5814E9D72D0040BD18 /* SpinningCylinderGridScene.cpp in Sources */,
+				C6474C5F15048FFB001331B1 /* SpinningCubeScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,6 +694,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6474C6015049269001331B1 /* SpinningCubeScene.cpp in Sources */,
 				C6DB312114E9D82C00B86F93 /* SpinningCylinderGridScene.cpp in Sources */,
 				C669543914E1B6D100AC8324 /* CocoaBindings.mm in Sources */,
 				C607517714DB2E8200ADA912 /* BaseEffect.cpp in Sources */,

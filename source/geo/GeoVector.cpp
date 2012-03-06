@@ -1,5 +1,13 @@
 #include "GeoVector.h"
 #include <math.h>
+#include <stdio.h>
+
+std::string GeoVector::ToString()
+{
+    char buffer[512];
+    sprintf( buffer, "GeoVector:%f, %f, %f, %f\n", x, y, z, w );
+    return std::string(buffer);
+}
 
 //constructors
 GeoVector::GeoVector() 
@@ -238,6 +246,11 @@ float GeoVector::LengthSquared()
 GeoVector GeoVector::Lerp( const GeoVector& vec, const float s )
 {
 	return *this + ( vec - *this )*s;	
+}
+
+GeoVector GeoVector::InvertXY()
+{
+    return GeoVector( y, x, z, w );
 }
 
 GeoFloat3 GeoVector::ToGeoFloat3()

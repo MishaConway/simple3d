@@ -26,6 +26,7 @@ struct Vertex
 struct GeoVertex
 {
 	GeoVertex();
+    GeoVertex( GeoVector vector );
 	GeoVertex( const Vertex& vertex );
 	GeoVertex( const Vertex& vertex, const bool perimeter );
 	Vertex vertex;
@@ -36,8 +37,10 @@ class GeoTriangle
 {
 public:
 	GeoTriangle( const GeoVertex& a, const GeoVertex& b, const GeoVertex& c );
+    GeoTriangle( const GeoVector& a, const GeoVector& b, const GeoVector& c );
 	GeoTriangle( const std::triple<GeoVertex, GeoVertex, GeoVertex>& vertices );
 	std::triple<GeoVertex, GeoVertex, GeoVertex>  GetVertices();
+    bool PointInsideXYTriangle( const GeoFloat2& point );
 	GeoVector ComputeNormal();
 	void ReverseWinding();
 private:

@@ -7,9 +7,10 @@
 #endif
 
 #include "GeoFloat.h"
+#include "../interfaces/IStringable.h"
 
 /* Four component vector */
-struct GeoVector
+struct GeoVector : public IStringable
 {
 	float x, y, z, w;
 
@@ -59,8 +60,12 @@ struct GeoVector
 	float Length();
 	float LengthSquared();
 	GeoVector Lerp( const GeoVector& vec, const float s ); 
+    
+    GeoVector InvertXY();
 
 	GeoFloat3 ToGeoFloat3();
+    
+    virtual std::string ToString();
 
 #ifdef _WIN32	
 	XMVECTOR ToXMVec3();

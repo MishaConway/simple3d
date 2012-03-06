@@ -11,14 +11,19 @@ Object::Object()
 {
 	SetIdentity();
 	rotating = false;
-	degrees_per_second = 0;
+	degrees_per_second = objectspace_angular_deceleration = 0;
 	rotated_in_objectspace = false;
 }
 
 bool Object::Update( const float elapsed_seconds )
 {
-	if( rotating )
+    if( rotating )
+    {
 		RotateInObjectspace( objectspace_rotation_axis, elapsed_seconds * degrees_per_second );
+        const float old_degrees_per_second = degrees_per_second;
+        degrees_per_second -= (float) copysign( objectspace_angular_deceleration * elapsed_seconds, degrees_per_second );
+        rotating = (int)copysign( 1, old_degrees_per_second ) == (int)copysign( 1, degrees_per_second ); 
+    }
 	return true;
 }
 
@@ -54,34 +59,50 @@ void Object::RotateY( const float angle_in_degrees )
 	//XMStoreFloat4x4( &world_transform, XMMatrixMultiply( XMLoadFloat4x4(&world_transform), XMMatrixRotationY( XMConvertToRadians(angle_in_degrees) ) ));		
 }
 
+
+void Object::RotateInWorldspace( const GeoVector& rotation_axis, const float degrees )
+{
+    world_transform *= GeoQuaternion( rotation_axis, degrees ).ToMatrix();
+}
+
+void Object::SetObjectspaceRotation( const GeoVector& rotation_axis, const float degrees )
+{
+    objectspace_rotation_axis = rotation_axis;
+    rotated_in_objectspace = true;
+    objectspace_quaternion =  GeoQuaternion( rotation_axis, degrees ); 
+}
+
+
 void Object::RotateInObjectspace( const GeoVector& rotation_axis, const float degrees )
 {
-	//XMFLOAT4 quatty;
+    objectspace_rotation_axis = rotation_axis;
+
 	if( !rotated_in_objectspace )
 	{
 		rotated_in_objectspace = true;
 		objectspace_quaternion = GeoQuaternion( rotation_axis, 0 ); 
-		
-		
-		//XMStoreFloat4( &quatty, XMQuaternionRotationAxis( XMLoadFloat3(&rotation_axis), XMConvertToRadians( 40 ) ) );
-
-		//objectspace_quaternion =  objectspace_quaternion * GeoQuaternion( GeoVector(objectspace_rotation_axis), 20 );
-		
-		//XMStoreFloat4( &quatty, XMQuaternionMultiply( XMLoadFloat4(&quatty), XMQuaternionRotationAxis( XMLoadFloat3(&objectspace_rotation_axis), XMConvertToRadians( 20 )) ) );
-		//printf( "what...\n" );
 	}
 
-	objectspace_quaternion =  GeoQuaternion( objectspace_rotation_axis, degrees  ) * objectspace_quaternion;
-
-	//XMStoreFloat4( &quatty, XMQuaternionMultiply( XMLoadFloat4(&objectspace_quaternion) ,XMQuaternionRotationAxis( XMLoadFloat3(&objectspace_rotation_axis), XMConvertToRadians( degrees )) ) );
+    objectspace_quaternion =  GeoQuaternion( objectspace_rotation_axis, degrees  ) * objectspace_quaternion;
 }
 
-void Object::SetRotationalVelocity( const GeoVector& rotation_axis, const float degrees_per_second )
+void Object::SetRotationalVelocity( const GeoVector& rotation_axis, const float degrees_per_second, const float objectspace_angular_deceleration  )
 {
 	objectspace_rotation_axis = rotation_axis;
 	this->degrees_per_second = degrees_per_second;
+    this->objectspace_angular_deceleration = objectspace_angular_deceleration;
 	RotateInObjectspace( rotation_axis, 0 );
 	rotating = true;
+}
+
+float Object::GetObjectspaceAngle()
+{
+    return objectspace_quaternion.GetAngle();
+}
+
+GeoVector Object::GetObjectspaceAxis()
+{
+    return objectspace_quaternion.GetAxis();
 }
 
 GeoMatrix Object::GetWorldTransform()

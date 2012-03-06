@@ -194,6 +194,10 @@ void Scene::HandleLeftMouseDown( const unsigned int x, const unsigned int y )
 {
 }
 
+void Scene::HandleLeftMouseUp( const unsigned int x, const unsigned int y )
+{    
+}
+
 void Scene::HandleRightMouseDown( const unsigned int x, const unsigned int y )
 {
 }

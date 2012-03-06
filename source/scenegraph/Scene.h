@@ -15,6 +15,7 @@ public:
 	virtual bool Update( const float elapsed_seconds );	
 	virtual void HandleMouseMove( const unsigned int x, const unsigned int y ); 
 	virtual void HandleLeftMouseDown( const unsigned int x, const unsigned int y ); 
+    virtual void HandleLeftMouseUp( const unsigned int x, const unsigned int y );
 	virtual void HandleRightMouseDown( const unsigned int x, const unsigned int y ); 
 	virtual void HandleKeyDown( const char key );
 	virtual void HandleKeyUp( const char key );

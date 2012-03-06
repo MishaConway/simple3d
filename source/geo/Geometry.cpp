@@ -25,6 +25,12 @@ GeoVertex::GeoVertex()
 	perimeter = false;
 }
 
+GeoVertex::GeoVertex( GeoVector vector )
+{
+    perimeter = false;
+    vertex.position = vector.ToGeoFloat3();
+}
+
 GeoVertex::GeoVertex( const Vertex& vertex )
 {
 	this->vertex = vertex;
@@ -51,6 +57,13 @@ GeoTriangle::GeoTriangle( const std::triple<GeoVertex, GeoVertex, GeoVertex>& ve
 	this->vertices[2] = vertices.third;
 }
 
+GeoTriangle::GeoTriangle( const GeoVector& a, const GeoVector& b, const GeoVector& c )
+{
+    this->vertices[0] = GeoVertex(a);
+	this->vertices[1] = GeoVertex(b);
+	this->vertices[2] = GeoVertex(c);
+}
+
 std::triple<GeoVertex, GeoVertex, GeoVertex>  GeoTriangle::GetVertices()
 {
 	return std::triple<GeoVertex, GeoVertex, GeoVertex>( vertices[0], vertices[1], vertices[2] );
@@ -59,6 +72,36 @@ std::triple<GeoVertex, GeoVertex, GeoVertex>  GeoTriangle::GetVertices()
 GeoVector GeoTriangle::ComputeNormal()
 {
 	return ( GeoVector( vertices[0].vertex.position ) - GeoVector( vertices[1].vertex.position) ).Cross( GeoVector( vertices[2].vertex.position ) - GeoVector( vertices[0].vertex.position) ).Normalize();
+}
+
+bool GeoTriangle::PointInsideXYTriangle( const GeoFloat2& point )
+{
+    GeoVector A = GeoVector(vertices[0].vertex.position);
+    GeoVector B = GeoVector(vertices[1].vertex.position);
+    GeoVector C = GeoVector(vertices[2].vertex.position);
+    GeoVector P( point.x, point.y );
+    
+    
+    
+    // Compute vectors        
+    GeoVector v0 = C - A;
+    GeoVector v1 = B - A;
+    GeoVector v2 = P - A;
+    
+    // Compute dot products
+    float dot00 = v0.Dot(v0);
+    float dot01 = v0.Dot(v1);
+    float dot02 = v0.Dot(v2);
+    float dot11 = v1.Dot(v1);
+    float dot12 = v1.Dot(v2);
+    
+    // Compute barycentric coordinates
+    float invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+    float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+    float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+    
+    // Check if point is in triangle
+    return (u >= 0) && (v >= 0) && (u + v < 1);
 }
 
 void GeoTriangle::ReverseWinding()

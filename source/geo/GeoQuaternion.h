@@ -10,15 +10,19 @@
 #define GEO_PIDIV4           0.785398163f
 
 #define GeoConvertToRadians(X) (X*GEO_PI/180.0f) 
+#define GeoConvertToDegrees(radians) ((radians) * (180.0 / GEO_PI))
 
 /* Four component vector */
-class GeoQuaternion
+class GeoQuaternion : public IStringable
 {
 public:
 	GeoQuaternion();
 	GeoQuaternion( const GeoVector& rotation_axis, const float degrees );
 	GeoQuaternion operator * ( const GeoQuaternion& ) const;
 	GeoMatrix ToMatrix();
+    GeoVector GetAxis();
+    float     GetAngle();
+    virtual std::string ToString();
 private:
 	float w, x, y, z;
 };
