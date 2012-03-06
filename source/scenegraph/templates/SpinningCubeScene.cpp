@@ -1,6 +1,7 @@
 #include "SpinningCubeScene.h"
 #include <math.h>
 #include <algorithm>
+#include "../../string/string_utils.h"
 
 SpinningCubeScene::SpinningCubeScene(){}
 SpinningCubeScene::SpinningCubeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ) : Scene( hWnd, width, height, fovy, near_z, far_z )
@@ -29,14 +30,22 @@ SpinningCubeScene::SpinningCubeScene( HWND hWnd, const unsigned int width, const
     
     
     red_tex = Texture( 32, 32, Color::Red() );
+    o_tex = Texture( 32, 32, Color::Green() );
+    x_tex = Texture( 32, 32, Color::Blue() );
+    
+    
     tile_tex = Texture( "assets/metalgrate.jpg" );
     
-    for(  int i = 0; i < 3; i++ )
+    for(  int z = 0; z < 3; z++ )
     for( int x = 0; x < 3; x++ )
     for( int y = 0; y < 3; y++ )
     {
         RenderableObject* tile = new RenderableObject( tile_tex, tile_geometry);
-        tile->Translate( -slice_width / 2.0f + tile_width * x + x * tile_spacing, -slice_height / 2.0f + tile_height * y + y * tile_spacing,  separation - i * separation );
+        tile->Translate( -slice_width / 2.0f + tile_width * x + x * tile_spacing, -slice_height / 2.0f + tile_height * y + y * tile_spacing,  separation - z * separation );
+        tile->SetUserData( "X", IntToString(x) );
+        tile->SetUserData( "Y", IntToString(y) );
+        tile->SetUserData( "Z", IntToString(z) );
+        
         scene_objects.push_back(tile);
         tiles.push_back(tile);
     }
@@ -86,8 +95,12 @@ void SpinningCubeScene::HandleMouseMove( const unsigned int x, const unsigned in
 
 void SpinningCubeScene::PickTiles( const unsigned int x, const unsigned int y )
 {
+    std::vector<RenderableObject*> selected_tile_candidates;
+    
     for( unsigned int i = 0; i < tiles.size(); i++ )
     {
+        tiles[i]->SetTexture( tile_tex );
+        
         std::vector<Vertex> worldspace_vertices = tiles[i]->GetWorldspaceVertices();
         std::vector<GeoVector> screenspace_vertices;
         for( unsigned int j = 0; j < worldspace_vertices.size(); j++ )
@@ -98,8 +111,34 @@ void SpinningCubeScene::PickTiles( const unsigned int x, const unsigned int y )
             GeoTriangle screenspace_triangle( screenspace_vertices[j], screenspace_vertices[j+1], screenspace_vertices[j+2]);
             selected = selected || screenspace_triangle.PointInsideXYTriangle( GeoFloat2(x, y) );
         }
-        tiles[i]->SetTexture( selected ? red_tex : tile_tex );
-    }    
+        
+        if( selected )
+            selected_tile_candidates.push_back(tiles[i]);
+    }
+    
+    if( selected_tile_candidates.empty() )
+        focused_tile = 0;
+    else 
+    {
+        focused_tile = selected_tile_candidates[0];
+        float min_distance_from_eye = camera.DistanceFromEye( selected_tile_candidates[0]->GetWorldspaceCentroid() );
+        for( unsigned int i = 1; i < selected_tile_candidates.size(); i++ )
+        {
+            if( camera.DistanceFromEye( selected_tile_candidates[i]->GetWorldspaceCentroid() ) < min_distance_from_eye )
+            {
+                min_distance_from_eye = camera.DistanceFromEye( selected_tile_candidates[i]->GetWorldspaceCentroid() );
+                focused_tile = selected_tile_candidates[i];
+            }        
+        }
+        focused_tile->SetTexture(red_tex);
+        
+        char focused_tile_info_buffer[256];
+        sprintf( focused_tile_info_buffer, "(%s, %s, %s)\n", focused_tile->GetUserData("X").c_str(), focused_tile->GetUserData("Y").c_str(), focused_tile->GetUserData("Z").c_str() );
+        printf( "focused tile info is %s\n", focused_tile_info_buffer );
+        
+    }
+    
+    
 }
 
 void SpinningCubeScene::ComputeSpin( const int x, const int y, const bool mouseup )

@@ -29,6 +29,8 @@ protected:
     
     Texture red_tex;
     Texture tile_tex;
+    Texture o_tex, x_tex;
+    
     
     int last_mousedown_x, last_mousedown_y;
     
