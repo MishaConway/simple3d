@@ -110,6 +110,34 @@ OpenGLTexture::OpenGLTexture( const std::string& image_filename )
 		valid = true;
 }
 
+OpenGLTexture OpenGLTexture::FromText( const std::string& text, const Color& background_color  )
+{
+    OpenGLTexture texture( 32, 32 );
+    unsigned int width, height;
+    unsigned char* data = create_texture_from_text_block( "helvetica", 12, text.c_str(), &width, &height);
+    texture.SetData( ^(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){
+        *pRed = (float)data[width*4*y + x*4] / 255.0f;
+        *pGreen = (float)data[width*4*y + x*4 + 1] / 255.0f;
+        *pBlue = (float)data[width*4*y + x*4 + 2] / 255.0f;
+        *pAlpha = (float)data[width*4*y + x*4 + 3] / 255.0f;
+        if( !*pAlpha )
+        {
+            *pRed = (float) background_color.r / 255.0f;
+            *pGreen = (float) background_color.g / 255.0f;
+            *pBlue = (float) background_color.b / 255.0f;
+            *pAlpha = (float) background_color.a / 255.0f;
+        }
+        else {
+          //  *pAlpha = 1.0f;
+        }
+    });    
+        
+    
+    
+    
+    return texture;
+}
+
 
 OpenGLTexture::OpenGLTexture( OpenGLTexture a, OpenGLTexture b )
 {

@@ -24,6 +24,15 @@ void OpenGLGraphicsDeviceStateManager::SetDefaultBackFaceRendering()
 	glDepthMask( GL_TRUE );
 }
 
+void OpenGLGraphicsDeviceStateManager::SetDefaultFrontAndBackRendering()
+{
+	if( locked )
+		return;    
+    glDisable( GL_CULL_FACE );
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask( GL_TRUE );
+}
+
 void OpenGLGraphicsDeviceStateManager::SetParticleRendering()
 {
 	if( locked )

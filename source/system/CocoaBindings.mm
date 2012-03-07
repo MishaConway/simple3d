@@ -16,6 +16,39 @@
 
 
 
+unsigned char* RawDataFromUIImage( UIImage* image, unsigned int* pOutWidth, unsigned int* pOutHeight )
+{
+    if (image == nil)
+        NSLog(@"Do real error checking here");
+    
+    GLuint original_width = CGImageGetWidth(image.CGImage);
+    GLuint original_height = CGImageGetHeight(image.CGImage);
+    
+    unsigned int power_of_two = 1;
+    while( power_of_two < original_width )
+        power_of_two *= 2;
+    GLuint width = power_of_two;
+    
+    power_of_two = 1;
+    while( power_of_two < original_height  )
+        power_of_two *= 2;
+    GLuint height = power_of_two; 
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    unsigned char* imageData = new unsigned char[height * width * 4];
+    CGContextRef context = CGBitmapContextCreate( imageData, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big );
+    CGColorSpaceRelease( colorSpace );
+    CGContextClearRect( context, CGRectMake( 0, 0, width, height ) );
+    CGContextTranslateCTM( context, 0, height - height );
+    CGContextDrawImage( context, CGRectMake( 0, 0, width, height ), image.CGImage );
+    CGContextRelease( context );
+    
+    *pOutWidth = width;
+    *pOutHeight = height;
+    
+    return imageData;
+}
+
 
 void SetCocoaBindings()
 {
@@ -118,57 +151,47 @@ void SetCocoaBindings()
         
         NSData *texData = [[NSData alloc] initWithContentsOfFile:bundle_path];
         UIImage *image = [[UIImage alloc] initWithData:texData];
-        if (image == nil)
-            NSLog(@"Do real error checking here");
         
-        GLuint original_width = CGImageGetWidth(image.CGImage);
-        GLuint original_height = CGImageGetHeight(image.CGImage);
-        
-        unsigned int power_of_two = 1;
-        while( power_of_two < original_width )
-            power_of_two *= 2;
-        GLuint width = power_of_two;
-        
-        power_of_two = 1;
-        while( power_of_two < original_height  )
-            power_of_two *= 2;
-        GLuint height = power_of_two; 
-        
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        unsigned char* imageData = new unsigned char[height * width * 4];
-        CGContextRef context = CGBitmapContextCreate( imageData, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big );
-        CGColorSpaceRelease( colorSpace );
-        CGContextClearRect( context, CGRectMake( 0, 0, width, height ) );
-        CGContextTranslateCTM( context, 0, height - height );
-        CGContextDrawImage( context, CGRectMake( 0, 0, width, height ), image.CGImage );
-        CGContextRelease( context );
-        
-        *pOutWidth = width;
-        *pOutHeight = height;
-        
-        return imageData;
+        return RawDataFromUIImage( image, pOutWidth, pOutHeight );
     });
     
-    OpenGLTexture::SetCreateTextureFromTextBlock(^unsigned char *(const char *font, const unsigned int font_size, const char *text, unsigned int *pOutWidth, unsigned int *pOutHeight) {
+    OpenGLTexture::SetCreateTextureFromTextBlock(^unsigned char *(const char *_font, const unsigned int font_size, const char *_text, unsigned int *pOutWidth, unsigned int *pOutHeight) {
         
-        UIImage* img = 0;
-        NSString* text1 = [[NSString alloc] initWithUTF8String:text];
+        CGSize imageSize;
+        imageSize.width = 32;
+        imageSize.height = 32;
         
-        CGSize sizeText = [text1 sizeWithFont:[UIFont fontWithName:@"Helvetica" size:36] minFontSize:36 actualFontSize:nil forWidth:783 lineBreakMode:UILineBreakModeTailTruncation];
-        
-        CGFloat posX = 1024.0 - 230.0 - sizeText.width;
-        
-        
-        UIGraphicsBeginImageContextWithOptions(img.size, NO, 0.0f);
-        [img drawAtPoint:CGPointMake(0.0f, 0.0f)];
-        [text1 drawAtPoint:CGPointMake(posX, 588.0) withFont:[UIFont fontWithName:@"Helvetica" size:36]];
-        UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        NSString* text = [[NSString alloc] initWithUTF8String:_text];
         
         
-        unsigned char* image_data = 0;
+        // Create a bitmap graphics context of the given size
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGContextRef context = CGBitmapContextCreate(NULL, imageSize.width, imageSize.height, 8, imageSize.width*4, colorSpace, kCGImageAlphaPremultipliedLast);
+        CGColorSpaceRelease(colorSpace);
+        if (context== NULL) {
+            return nil;
+        }
         
-        return image_data;
+        // Custom CGContext coordinate system is flipped with respect to UIView, so transform, then push
+        CGContextTranslateCTM(context,0,imageSize.height);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        UIGraphicsPushContext(context);
+        
+        // Inset the text rect then draw the text
+        CGRect textRect = CGRectMake(4, 2, imageSize.width - 8, imageSize.height - 8);
+        UIFont *font = [UIFont boldSystemFontOfSize:24];
+        [[UIColor orangeColor] set];
+        [text drawInRect:textRect withFont:font
+           lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
+        
+        // Create and return the UIImage object
+        CGImageRef cgImage = CGBitmapContextCreateImage(context);
+        UIImage *uiImage = [[UIImage alloc] initWithCGImage:cgImage];
+        UIGraphicsPopContext();
+        CGContextRelease(context);
+        CGImageRelease(cgImage);
+        
+        return RawDataFromUIImage( uiImage, pOutWidth, pOutHeight );
     });
     
     OpenGLTexture::SetOnSaveTextureFileBlock( ^(const char* cpath, unsigned char* data, const unsigned int width, const unsigned int height)

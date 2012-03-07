@@ -3,40 +3,45 @@
 #include "../Scene.h"
 #include "SpinningCubeScene.h"
 
+struct TicTacToeMove
+{
+    unsigned int x, y, z;
+    char value;
+};
+
 class SpinningCubeScene : public Scene
 {
 public:
 	SpinningCubeScene();
-	SpinningCubeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ); 
-	//virtual bool Update( const float elapsed_seconds );	
+	SpinningCubeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player ); 
+    
+    virtual bool Update( const float elapsed_seconds );
+
 	virtual void HandleMouseMove( const unsigned int x, const unsigned int y ); 
 	virtual void HandleLeftMouseDown( const unsigned int x, const unsigned int y ); 
-    virtual void HandleLeftMouseUp( const unsigned int x, const unsigned int y ); 
+    virtual void HandleLeftMouseUp( const unsigned int x, const unsigned int y );
+    
+    void PlayMove( TicTacToeMove move );
+    
+    void ReenablePlay();
+    bool HasSelectedMove();
+    TicTacToeMove GetSelectedMove();
+    void SubmitSelectedMove();
 protected:
-	//virtual void RenderScene( const bool reflection = false );
-    
-    void ComputeSpin( const int x, const int y, const bool mouseup );
-    
-    void SnapCubeToAxis();
-    
     void PickTiles( const unsigned int x, const unsigned int y );
-    
-protected:
-    RenderableObject* cube;
-    
+    void SortSceneObjects();
+    RenderableObject* GetTile( const unsigned int x, const unsigned int y, const unsigned z );
+protected:    
     std::vector<RenderableObject*> tiles;
     RenderableObject* focused_tile;
-    
-    Texture red_tex;
-    Texture tile_tex;
-    Texture o_tex, x_tex;
-    
-    
+    Texture tile_tex, o_tex, x_tex;
     int last_mousedown_x, last_mousedown_y;
+    unsigned int movements_in_touch;
     
-    std::vector<GeoVector> movements;
-    
-    GeoVector last_rotation_axis;
+    char x_or_o_player;
+    bool playing_enabled;
+    bool has_selected_move;
+    TicTacToeMove selected_move;
 };
 
 

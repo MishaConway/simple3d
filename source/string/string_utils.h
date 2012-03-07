@@ -8,6 +8,7 @@ std::string StripString( std::string str, std::string charsToStrip );
 std::string StringReplace( std::string result, const std::string& replaceWhat, const std::string& replaceWithWhat);
 
 std::string IntToString( const int i );
+std::string CharToString( const char ch );
 
 
 std::vector<std::string> GetRegexMatches( std::string str, std::string pattern );

@@ -29,6 +29,9 @@ public:
 	OpenGLTexture( const unsigned int width, const unsigned int height, const Color& color );
 	OpenGLTexture( const unsigned int width, const unsigned int height,  const OpenGLTextureUsage::OPENGL_TEXTURE_USAGE usage );
 	OpenGLTexture( const std::string& image_filename );
+    static OpenGLTexture FromText( const std::string& text, const Color& background_color );
+    
+    
     
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
     static void SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) );

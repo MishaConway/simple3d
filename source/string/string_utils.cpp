@@ -111,6 +111,13 @@ std::string IntToString( const int i )
     return out.str();   
 }
 
+std::string CharToString( const char ch )
+{
+    std::stringstream out;
+    out << ch;
+    return out.str();   
+}
+
 
 std::vector<std::string> GetRegexMatches( std::string str, std::string _pattern )
 {

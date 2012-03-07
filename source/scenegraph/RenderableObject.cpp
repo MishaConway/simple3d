@@ -7,6 +7,7 @@ void RenderableObject::SetDefaultValues()
 {
 	visible = true;
 	planar_reflector = false;
+    two_sided = false;
 	blend_type = BlendType::NONE;
 }
 
@@ -45,6 +46,11 @@ void RenderableObject::SetVisible( const bool visible )
 bool RenderableObject::IsVisible()
 {
 	return visible;
+}
+
+void RenderableObject::SetTwoSided( const bool two_sided )
+{
+    this->two_sided = two_sided;
 }
 
 void RenderableObject::SetBlendType( const BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type )
@@ -99,6 +105,11 @@ bool RenderableObject::Render()
 		e.SetInt( "compute_projective_texture_coordinates", planar_reflector );
 		pGraphicsDevice->SetVertexBuffer( GetVertexBuffer() );
 		pGraphicsDevice->GetStateManager().SetDefaults();
+        if( two_sided )
+            pGraphicsDevice->GetStateManager().SetDefaultFrontAndBackRendering();
+        
+        pGraphicsDevice->GetStateManager().SetBlendType(blend_type);
+        
 			
 		if( enforced_global_technique.empty() && planar_reflector )
 		{

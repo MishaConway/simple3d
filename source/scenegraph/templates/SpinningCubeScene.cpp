@@ -2,46 +2,50 @@
 #include <math.h>
 #include <algorithm>
 #include "../../string/string_utils.h"
+#include "../../std/nullptr.h"
 
 SpinningCubeScene::SpinningCubeScene(){}
-SpinningCubeScene::SpinningCubeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ) : Scene( hWnd, width, height, fovy, near_z, far_z )
+SpinningCubeScene::SpinningCubeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player  ) : Scene( hWnd, width, height, fovy, near_z, far_z )
 {
-	SetBackgroundColor( Color::Green() );
-	cube = new RenderableObject( Texture( "assets/metalgrate.jpg" ), GeometryFactory().GenerateUnitCube().UniformScale(1.3f) );
-	//cube->SetRotationalVelocity( GeoVector(0,1,0), 20 );
-//	scene_objects.push_back( cube );
+	SetBackgroundColor( Color::MidnightBlue());
+
+    //set x_or_o_player
+    this->x_or_o_player = tolower(x_or_o_player);
+    playing_enabled = true;
     
+    //initialize various values to zero or null state
+    focused_tile = nullptr; 
+    last_mousedown_x = 0;
+    last_mousedown_y = 0;
+    movements_in_touch = 0;
     
-    focused_tile = 0;
+    //create all textures used for the board
+    Color tile_tex_color = Color::Gray();
+    tile_tex_color.a = 140;
+    tile_tex = Texture( 32, 32, tile_tex_color );
+    o_tex = Texture::FromText("O", tile_tex_color);
+    x_tex = Texture::FromText("X", tile_tex_color);
     
-    const float separation = 0.73f;
-    const float slice_size = 2;
+    //configure distances used to build board
+    const unsigned int num_tiles_per_row = 3;
+    const unsigned int num_tiles_per_col = 3;
+    const float separation = 0.93f;
+    const float slice_size = 1.5f;
     const float slice_width = slice_size;
     const float slice_height = slice_size;
-    const float tile_width = slice_width / 3.0f;
-    const float tile_height = slice_height / 3.0f;
+    const float tile_width = slice_width / (float)num_tiles_per_row;
+    const float tile_height = slice_height / (float)num_tiles_per_col;
     const float tile_spacing = 0.03f;
-    const float num_tiles_per_row = 3;
-    const float num_tiles_per_col = 3;
-    
-    const float start_x = -slice_width / 2.0f - (num_tiles_per_row-1) / 2.0f;
-    
-    Geometry tile_geometry = GeometryFactory().GenerateXYUnitSquare().Scale(tile_width, tile_height, 1 );
-    
-    
-    red_tex = Texture( 32, 32, Color::Red() );
-    o_tex = Texture( 32, 32, Color::Green() );
-    x_tex = Texture( 32, 32, Color::Blue() );
-    
-    
-    tile_tex = Texture( "assets/metalgrate.jpg" );
-    
-    for(  int z = 0; z < 3; z++ )
+       
+    //construct all tile renderable objects
+    for( int z = 0; z < 3; z++ )
     for( int x = 0; x < 3; x++ )
     for( int y = 0; y < 3; y++ )
     {
-        RenderableObject* tile = new RenderableObject( tile_tex, tile_geometry);
+        RenderableObject* tile = new RenderableObject( tile_tex, GeometryFactory().GenerateXYUnitSquare().Scale(tile_width, tile_height, 1 ));
         tile->Translate( -slice_width / 2.0f + tile_width * x + x * tile_spacing, -slice_height / 2.0f + tile_height * y + y * tile_spacing,  separation - z * separation );
+        tile->SetBlendType(BlendType::ALPHA);
+        tile->SetTwoSided(true);
         tile->SetUserData( "X", IntToString(x) );
         tile->SetUserData( "Y", IntToString(y) );
         tile->SetUserData( "Z", IntToString(z) );
@@ -49,48 +53,88 @@ SpinningCubeScene::SpinningCubeScene( HWND hWnd, const unsigned int width, const
         scene_objects.push_back(tile);
         tiles.push_back(tile);
     }
+        
+    //finally we want to start the scene with all objects sorted from most distant to closest to camera
+    SortSceneObjects();
+}
+
+bool SpinningCubeScene::Update( const float elapsed_seconds )
+{
+    for( unsigned int i = 0; i < tiles.size(); i++ )
+        if( tiles[i]->GetUserData("value").empty() )
+            tiles[i]->SetTexture(tile_tex);
+        else if( "x" == tiles[i]->GetUserData("value") || "X" == tiles[i]->GetUserData("value") )
+            tiles[i]->SetTexture(x_tex);
+        else if( "o" == tiles[i]->GetUserData("value") || "O" == tiles[i]->GetUserData("value") )
+            tiles[i]->SetTexture(o_tex);
     
-    
-   // RenderableObject* slice = new RenderableObject( Texture( "assets/metalgrate.jpg" ), GeometryFactory().GenerateXYUnitSquare() + GeometryFactory().GenerateXYUnitSquare().Translate(0, 0, 0.4f) + GeometryFactory().GenerateXYUnitSquare().Translate( 0, 0, -0.4f ) );
-    
-   // slices.push_back(slice);
-   // slice->Scale( 1.8f, 1.8f, 1.8f );
-   // scene_objects.push_back(slice);
-    
-    
-    cube->RotateInObjectspace( GeoVector( 1, 0, 0 ), -360 );
-    
-    tiles[0]->SetTexture(red_tex);
-    
-    last_mousedown_x = 0;
-    last_mousedown_y = 0;
-    
- //   cube->SetRotationalVelocity( GeoVector( 1, 0, 0 ), 100, 20 );
-    
+    return Scene::Update(elapsed_seconds);
 }
 
 void SpinningCubeScene::HandleLeftMouseDown( const unsigned int x, const unsigned int y )
 {
-    printf( "got left mouse down with x,y of %i, %i\n", x, y );
-    cube->SetRotationalVelocity(GeoVector(0,1,0), 0);
+    movements_in_touch = 0;
     last_mousedown_x = x;
     last_mousedown_y = y;
-    movements.clear();
-    
-    PickTiles( x, y );
+    if( playing_enabled )
+        PickTiles( x, y );
 }
 
 void SpinningCubeScene::HandleLeftMouseUp( const unsigned int x, const unsigned int y )
 {
-    printf( "got left mouse up with x,y of %i, %i\n", x, y ); 
-    ComputeSpin(x, y, true);
-     SnapCubeToAxis();
-    movements.clear();
+    movements_in_touch = 0;
 }
 
 void SpinningCubeScene::HandleMouseMove( const unsigned int x, const unsigned int y )
 {    
-    ComputeSpin(x, y, false);
+    //only process if move position has changed since last time
+    if( x == last_mousedown_x && y == last_mousedown_y )
+        return;
+    //to keep the rotations from being too sensitive, only start processing them once we've accumulated 4 movements
+    if( ++movements_in_touch < 4 )
+        return;
+    
+    //compute the rotation axis and amount of rotation and rotate each tile in worldspace
+    GeoVector swipe_direction = GeoVector( (int)x - last_mousedown_x, (int)y - last_mousedown_y );    
+    GeoVector rotation_axis = swipe_direction.InvertXY().Normalize();
+    for( unsigned int i = 0; i < tiles.size(); i++ )
+        tiles[i]->RotateInWorldspace( rotation_axis, swipe_direction.Length()*3 );
+    
+    //after rotations the orientation of the tiles with respect to the camera has changed so resort them from furthest to closest
+    SortSceneObjects();
+    
+    //finally store the last move position
+    last_mousedown_x = x;
+    last_mousedown_y = y;  
+}
+
+void SpinningCubeScene::SortSceneObjects()
+{
+    struct RenderableObjectDistanceNode
+    {
+        RenderableObject* renderable_object;
+        float distance_from_cam;
+        bool operator < (const RenderableObjectDistanceNode& r) const
+        {
+            return (distance_from_cam < r.distance_from_cam);
+        }
+    };
+    
+    std::map< RenderableObject*, float > objects_with_distance_from_cam;
+    std::vector<RenderableObjectDistanceNode> renderable_object_distance_nodes;
+    for( unsigned int i = 0; i < scene_objects.size(); i++ )
+    {
+        RenderableObjectDistanceNode r;
+        r.renderable_object = scene_objects[i];
+        r.distance_from_cam = camera.DistanceFromEye(scene_objects[i]->GetWorldspaceCentroid() );
+        renderable_object_distance_nodes.push_back(r);
+    }
+    
+    std::sort( renderable_object_distance_nodes.begin(), renderable_object_distance_nodes.end() );
+    std::reverse( renderable_object_distance_nodes.begin(), renderable_object_distance_nodes.end() );
+    scene_objects.clear();
+    for( unsigned int i = 0; i < renderable_object_distance_nodes.size(); i++ )
+        scene_objects.push_back(renderable_object_distance_nodes[i].renderable_object);    
 }
 
 void SpinningCubeScene::PickTiles( const unsigned int x, const unsigned int y )
@@ -99,8 +143,6 @@ void SpinningCubeScene::PickTiles( const unsigned int x, const unsigned int y )
     
     for( unsigned int i = 0; i < tiles.size(); i++ )
     {
-        tiles[i]->SetTexture( tile_tex );
-        
         std::vector<Vertex> worldspace_vertices = tiles[i]->GetWorldspaceVertices();
         std::vector<GeoVector> screenspace_vertices;
         for( unsigned int j = 0; j < worldspace_vertices.size(); j++ )
@@ -130,147 +172,65 @@ void SpinningCubeScene::PickTiles( const unsigned int x, const unsigned int y )
                 focused_tile = selected_tile_candidates[i];
             }        
         }
-        focused_tile->SetTexture(red_tex);
         
-        char focused_tile_info_buffer[256];
-        sprintf( focused_tile_info_buffer, "(%s, %s, %s)\n", focused_tile->GetUserData("X").c_str(), focused_tile->GetUserData("Y").c_str(), focused_tile->GetUserData("Z").c_str() );
-        printf( "focused tile info is %s\n", focused_tile_info_buffer );
-        
-    }
-    
-    
-}
-
-void SpinningCubeScene::ComputeSpin( const int x, const int y, const bool mouseup )
-{
-    const int delta = 1;
-    if( abs(x - last_mousedown_x) < delta  && abs(y - last_mousedown_y) < delta )
-        return;
-    
-    GeoVector swipe_direction = GeoVector( x - last_mousedown_x, y - last_mousedown_y );
-    movements.push_back( swipe_direction );
-    
-    if( movements.size() < 4 )
-        return;
-    
-    
-    GeoVector overall_movement;
-    for( unsigned int i = std::max<unsigned int>( 0, movements.size() - 12 ); i < movements.size(); i++ )
-        overall_movement += movements[i];
-    
-    if( fabs( overall_movement.x ) < fabs( overall_movement.y ) )
-        swipe_direction.x = 0;
-    else 
-        swipe_direction.y = 0;
-    
-    if( swipe_direction.x == 0 && swipe_direction.y == 0 )
-        return;
-    
-    
-    
-    
-    
-    if( fabs( swipe_direction.x ) < fabs( swipe_direction.y ) )
-        swipe_direction.x = 0;
-    else 
-        swipe_direction.y = 0; 
-    
-    if( !swipe_direction.x && !swipe_direction.y )
-        return;
-        
-    
-
-    
-    printf( "swipe direction is %f, %f\n", swipe_direction.x, swipe_direction.y );
-    
-    GeoVector rotation_axis = swipe_direction.InvertXY().Normalize();
-    
-    printf( "after normalize roation axis is %f, %f, %f, %f\n", rotation_axis.x, rotation_axis.y, rotation_axis.z, rotation_axis.w );
-    
-    
-    if( !mouseup )
-    {
-        cube->RotateInObjectspace( rotation_axis, swipe_direction.Length()*3 );
-            
-        for( unsigned int i = 0; i < tiles.size(); i++ )
-            tiles[i]->RotateInWorldspace( rotation_axis, swipe_direction.Length()*3 );
-        
-    }
-    else
-    {
-       
-        
-        
-        //cube->SetRotationalVelocity( last_rotation_axis, swipe_direction.Length()*50, 40);
-    }
-    
-    last_mousedown_x = x;
-    last_mousedown_y = y;   
-    last_rotation_axis = rotation_axis;
-}
-
-void SpinningCubeScene::SnapCubeToAxis()
-{
-    std::vector<GeoVector> standard_axes;
-    standard_axes.push_back( GeoVector(1, 0, 0) );
-    standard_axes.push_back( GeoVector(-1, 0, 0) );
-    standard_axes.push_back( GeoVector(0, -1, 0) );
-    standard_axes.push_back( GeoVector(0, -1, 0) );
-    standard_axes.push_back( GeoVector(0, 0, -1) );
-    standard_axes.push_back( GeoVector(0, 0, -1) );
-    GeoVector closest_standard_axis = standard_axes[0];
-    float largest_dot = fabs( standard_axes[0].Dot(cube->GetObjectspaceAxis() ) );
-    
-    for( unsigned int i = 1; i < standard_axes.size(); i++ )
-    {
-        if( fabs(standard_axes[i].Dot(cube->GetObjectspaceAxis())) > largest_dot )
+        if( focused_tile->GetUserData( "value" ).empty() )
         {
-            largest_dot = fabs(standard_axes[i].Dot(cube->GetObjectspaceAxis()));
-            closest_standard_axis = standard_axes[i];
+            for( unsigned int i = 0; i < tiles.size(); i++ )
+                if( "x" == tiles[i]->GetUserData("value") || "o" == tiles[i]->GetUserData("value") )
+                    tiles[i]->SetUserData("value", "" );
             
-            //cube->SetObjectspaceRotation( standard_axes[i], cube->GetObjectspaceAngle() );
-            
+            focused_tile->SetUserData("value", CharToString(x_or_o_player) );
+            has_selected_move = true;
+            selected_move.x = atoi( focused_tile->GetUserData("X").c_str() );
+            selected_move.y = atoi( focused_tile->GetUserData("Y").c_str() );
+            selected_move.z = atoi( focused_tile->GetUserData("Z").c_str() );
+            selected_move.value = x_or_o_player;
         }
-        
-        
+    }
+}
+
+RenderableObject* SpinningCubeScene::GetTile( const unsigned int x, const unsigned int y, const unsigned z )
+{
+    for( unsigned int i = 0; i < tiles.size(); i++ )
+    {
+        const unsigned int X = atoi( tiles[i]->GetUserData("X").c_str() ); 
+        const unsigned int Y = atoi( tiles[i]->GetUserData("Y").c_str() ); 
+        unsigned int Z = atoi( tiles[i]->GetUserData("Z").c_str() ); 
+        if( x == X && y == Y && z == Z )
+            return tiles[i];
     }
     
-      printf( "here cube axis angle is %f %s", cube->GetObjectspaceAngle(), cube->GetObjectspaceAxis().ToString().c_str()  );
-    
-    GeoVector axis = cube->GetObjectspaceAxis();
-    if( fabs(axis.x) > 0.9f) 
-        axis.x = copysign( 1.0f, axis.x );
-    if( fabs( axis.x ) < 0.25f  )
-        axis.x = 0;
-    
-    if( fabs(axis.y) > 0.9f) 
-        axis.y = copysign( 1.0f, axis.y );
-    if( fabs( axis.y ) < 0.25f  )
-        axis.y = 0;
-    
-    if( fabs(axis.z) > 0.9f) 
-        axis.z = copysign( 1.0f, axis.z );
-    if( fabs( axis.z ) < 0.25f  )
-        axis.z = 0; 
-    
-    
-    
-   // axis.z = 0;
-   
-    
-    
-    
-   // axis.z = 0;
-  //  axis = axis.Normalize();
-    
-    if( axis.x || axis.y || axis.z )
-        cube->SetObjectspaceRotation(axis.Normalize(), cube->GetObjectspaceAngle() );
-    
-  
-    
-  //  cube->SetObjectspaceRotation( closest_standard_axis, cube->GetObjectspaceAngle() );
-    
-    printf( "after cube axis angle is %f %s", cube->GetObjectspaceAngle(), cube->GetObjectspaceAxis().ToString().c_str()  );
-    
+    return nullptr;
 }
+
+void SpinningCubeScene::PlayMove( TicTacToeMove move )
+{
+    GetTile( move.x, move.y, move.z )->SetUserData("value", CharToString(toupper(move.value)) );
+}
+
+void SpinningCubeScene::ReenablePlay()
+{
+    playing_enabled = true;
+}
+
+bool SpinningCubeScene::HasSelectedMove()
+{
+    return has_selected_move;
+}
+
+TicTacToeMove SpinningCubeScene::GetSelectedMove()
+{
+    return selected_move;
+}
+
+void SpinningCubeScene::SubmitSelectedMove()
+{
+    PlayMove( selected_move );
+    playing_enabled = false;
+    has_selected_move = false;
+}
+
+
+
+
 
