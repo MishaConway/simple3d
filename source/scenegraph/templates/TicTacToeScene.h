@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Scene.h"
-#include "SpinningCubeScene.h"
+//#include "SpinningCubeScene.h"
 
 struct TicTacToeMove
 {
@@ -9,11 +9,11 @@ struct TicTacToeMove
     char value;
 };
 
-class SpinningCubeScene : public Scene
+class TicTacToeScene : public Scene
 {
 public:
-	SpinningCubeScene();
-	SpinningCubeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player ); 
+	TicTacToeScene();
+	TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player ); 
     
     virtual bool Update( const float elapsed_seconds );
 

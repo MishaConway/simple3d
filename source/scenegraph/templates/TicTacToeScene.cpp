@@ -1,11 +1,11 @@
-#include "SpinningCubeScene.h"
+#include "TicTacToeScene.h"
 #include <math.h>
 #include <algorithm>
 #include "../../string/string_utils.h"
 #include "../../std/nullptr.h"
 
-SpinningCubeScene::SpinningCubeScene(){}
-SpinningCubeScene::SpinningCubeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player  ) : Scene( hWnd, width, height, fovy, near_z, far_z )
+TicTacToeScene::TicTacToeScene(){}
+TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player  ) : Scene( hWnd, width, height, fovy, near_z, far_z )
 {
 	SetBackgroundColor( Color::MidnightBlue());
 
@@ -58,7 +58,7 @@ SpinningCubeScene::SpinningCubeScene( HWND hWnd, const unsigned int width, const
     SortSceneObjects();
 }
 
-bool SpinningCubeScene::Update( const float elapsed_seconds )
+bool TicTacToeScene::Update( const float elapsed_seconds )
 {
     for( unsigned int i = 0; i < tiles.size(); i++ )
         if( tiles[i]->GetUserData("value").empty() )
@@ -71,7 +71,7 @@ bool SpinningCubeScene::Update( const float elapsed_seconds )
     return Scene::Update(elapsed_seconds);
 }
 
-void SpinningCubeScene::HandleLeftMouseDown( const unsigned int x, const unsigned int y )
+void TicTacToeScene::HandleLeftMouseDown( const unsigned int x, const unsigned int y )
 {
     movements_in_touch = 0;
     last_mousedown_x = x;
@@ -80,12 +80,12 @@ void SpinningCubeScene::HandleLeftMouseDown( const unsigned int x, const unsigne
         PickTiles( x, y );
 }
 
-void SpinningCubeScene::HandleLeftMouseUp( const unsigned int x, const unsigned int y )
+void TicTacToeScene::HandleLeftMouseUp( const unsigned int x, const unsigned int y )
 {
     movements_in_touch = 0;
 }
 
-void SpinningCubeScene::HandleMouseMove( const unsigned int x, const unsigned int y )
+void TicTacToeScene::HandleMouseMove( const unsigned int x, const unsigned int y )
 {    
     //only process if move position has changed since last time
     if( x == last_mousedown_x && y == last_mousedown_y )
@@ -108,7 +108,7 @@ void SpinningCubeScene::HandleMouseMove( const unsigned int x, const unsigned in
     last_mousedown_y = y;  
 }
 
-void SpinningCubeScene::SortSceneObjects()
+void TicTacToeScene::SortSceneObjects()
 {
     struct RenderableObjectDistanceNode
     {
@@ -137,7 +137,7 @@ void SpinningCubeScene::SortSceneObjects()
         scene_objects.push_back(renderable_object_distance_nodes[i].renderable_object);    
 }
 
-void SpinningCubeScene::PickTiles( const unsigned int x, const unsigned int y )
+void TicTacToeScene::PickTiles( const unsigned int x, const unsigned int y )
 {
     std::vector<RenderableObject*> selected_tile_candidates;
     
@@ -189,7 +189,7 @@ void SpinningCubeScene::PickTiles( const unsigned int x, const unsigned int y )
     }
 }
 
-RenderableObject* SpinningCubeScene::GetTile( const unsigned int x, const unsigned int y, const unsigned z )
+RenderableObject* TicTacToeScene::GetTile( const unsigned int x, const unsigned int y, const unsigned z )
 {
     for( unsigned int i = 0; i < tiles.size(); i++ )
     {
@@ -203,27 +203,27 @@ RenderableObject* SpinningCubeScene::GetTile( const unsigned int x, const unsign
     return nullptr;
 }
 
-void SpinningCubeScene::PlayMove( TicTacToeMove move )
+void TicTacToeScene::PlayMove( TicTacToeMove move )
 {
     GetTile( move.x, move.y, move.z )->SetUserData("value", CharToString(toupper(move.value)) );
 }
 
-void SpinningCubeScene::ReenablePlay()
+void TicTacToeScene::ReenablePlay()
 {
     playing_enabled = true;
 }
 
-bool SpinningCubeScene::HasSelectedMove()
+bool TicTacToeScene::HasSelectedMove()
 {
     return has_selected_move;
 }
 
-TicTacToeMove SpinningCubeScene::GetSelectedMove()
+TicTacToeMove TicTacToeScene::GetSelectedMove()
 {
     return selected_move;
 }
 
-void SpinningCubeScene::SubmitSelectedMove()
+void TicTacToeScene::SubmitSelectedMove()
 {
     PlayMove( selected_move );
     playing_enabled = false;
