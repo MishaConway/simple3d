@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Scene.h"
-//#include "SpinningCubeScene.h"
 
 struct TicTacToeMove
 {
@@ -22,8 +21,13 @@ public:
     virtual void HandleLeftMouseUp( const unsigned int x, const unsigned int y );
     
     void PlayMove( TicTacToeMove move );
+    void PlayRandomMove(const char value);
     
-    void ReenablePlay();
+    
+    
+    void EnablePlaying();
+    void DisablePlaying();
+    bool IsPlayingEnabled();
     bool HasSelectedMove();
     TicTacToeMove GetSelectedMove();
     void SubmitSelectedMove();
@@ -42,6 +46,10 @@ protected:
     bool playing_enabled;
     bool has_selected_move;
     TicTacToeMove selected_move;
+    
+    Sprite* submit_button;
+    Sprite* submit_button_hover;
+    Sprite* submit_button_down;
 };
 
 

@@ -53,6 +53,13 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
         scene_objects.push_back(tile);
         tiles.push_back(tile);
     }
+    
+    //construct UI objects
+    submit_button = new Sprite( Texture( "assets/metalgrate.jpg" ), GeoFloat2(0,-0.88f), GeoFloat2( 0.6f, 0.2f ) );
+    submit_button_hover = new Sprite( Texture( "assets/metalgrate.jpg" ), GeoFloat2(0,0), GeoFloat2( 0.3f, 0.3f ) );
+    submit_button_down = new Sprite( Texture( "assets/metalgrate.jpg" ), GeoFloat2(0,0), GeoFloat2( 0.3f, 0.3f ) );
+    
+   // sprites.push_back(submit_button);
         
     //finally we want to start the scene with all objects sorted from most distant to closest to camera
     SortSceneObjects();
@@ -208,14 +215,38 @@ void TicTacToeScene::PlayMove( TicTacToeMove move )
     GetTile( move.x, move.y, move.z )->SetUserData("value", CharToString(toupper(move.value)) );
 }
 
-void TicTacToeScene::ReenablePlay()
+void TicTacToeScene::PlayRandomMove(const char value)
+{
+    std::vector<RenderableObject*> available_tiles;
+    for( unsigned int i = 0; i < tiles.size(); i++ )
+        if( tiles[i]->GetUserData("value").empty() )
+            available_tiles.push_back(tiles[i]);
+    
+    if( !available_tiles.empty() )
+    {
+        std::random_shuffle(available_tiles.begin(), available_tiles.end() );
+        available_tiles.front()->SetUserData("value", CharToString(toupper(value)) );
+    }
+}
+
+void TicTacToeScene::EnablePlaying()
 {
     playing_enabled = true;
 }
 
+void TicTacToeScene::DisablePlaying()
+{
+    playing_enabled = false;
+}
+
+bool TicTacToeScene::IsPlayingEnabled()
+{
+    return playing_enabled;
+}
+
 bool TicTacToeScene::HasSelectedMove()
 {
-    return has_selected_move;
+    return playing_enabled && has_selected_move;
 }
 
 TicTacToeMove TicTacToeScene::GetSelectedMove()
