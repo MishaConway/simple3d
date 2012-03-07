@@ -22,9 +22,18 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     //create all textures used for the board
     Color tile_tex_color = Color::Gray();
     tile_tex_color.a = 140;
+    
+    Color x_text_color = Color::Green();
+    Color o_text_color = Color::Orange();
+    Color temp_x_text_color = Color::Gray();
+    Color temp_o_text_color = Color::Gray();
+    
+    
     tile_tex = Texture( 32, 32, tile_tex_color );
-    o_tex = Texture::FromText("O", tile_tex_color);
-    x_tex = Texture::FromText("X", tile_tex_color);
+    o_tex = Texture::FromText("O", o_text_color, tile_tex_color);
+    x_tex = Texture::FromText("X", x_text_color, tile_tex_color);
+    temp_o_tex = Texture::FromText("O", temp_x_text_color, tile_tex_color);
+    temp_x_tex = Texture::FromText("X", temp_o_text_color, tile_tex_color);
     
     //configure distances used to build board
     const unsigned int num_tiles_per_row = 3;
@@ -70,9 +79,13 @@ bool TicTacToeScene::Update( const float elapsed_seconds )
     for( unsigned int i = 0; i < tiles.size(); i++ )
         if( tiles[i]->GetUserData("value").empty() )
             tiles[i]->SetTexture(tile_tex);
-        else if( "x" == tiles[i]->GetUserData("value") || "X" == tiles[i]->GetUserData("value") )
+        else if( "x" == tiles[i]->GetUserData("value") )
+            tiles[i]->SetTexture(temp_x_tex);
+        else if( "X" == tiles[i]->GetUserData("value") )
             tiles[i]->SetTexture(x_tex);
-        else if( "o" == tiles[i]->GetUserData("value") || "O" == tiles[i]->GetUserData("value") )
+        else if( "o" == tiles[i]->GetUserData("value") )
+            tiles[i]->SetTexture(temp_o_tex);
+        else if( "O" == tiles[i]->GetUserData("value") )
             tiles[i]->SetTexture(o_tex);
     
     return Scene::Update(elapsed_seconds);

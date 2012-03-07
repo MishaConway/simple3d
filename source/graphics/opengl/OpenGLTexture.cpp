@@ -9,7 +9,7 @@ OpenGLGraphicsDevice* OpenGLTexture::pGraphicsDevice = nullptr;
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
 unsigned char* (^OpenGLTexture::load_texture_file_block)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight);
 void (^OpenGLTexture::save_texture_file_block)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height);
-unsigned char* (^OpenGLTexture::create_texture_from_text_block)(const char* font, const unsigned int font_size, const char* text, unsigned int* pOutWidth, unsigned int* pOutHeight);
+unsigned char* (^OpenGLTexture::create_texture_from_text_block)(const char* font, const unsigned int font_size, const unsigned int r, const unsigned int g, const unsigned int b, const unsigned int a, const char* text, unsigned int* pOutWidth, unsigned int* pOutHeight);
 #endif
 
 OpenGLTexture::OpenGLTexture()
@@ -22,7 +22,7 @@ OpenGLTexture::OpenGLTexture()
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
 void OpenGLTexture::SetOnLoadTextureFileBlock( unsigned char* (^load_texture_file)(const char* path, unsigned int* pOutWidth, unsigned int* pOutHeight) ){load_texture_file_block = load_texture_file;}
 void OpenGLTexture::SetOnSaveTextureFileBlock( void (^save_texture_file)(const char* path, unsigned char* data, const unsigned int width, const unsigned int height) ){save_texture_file_block = save_texture_file;}
-void OpenGLTexture::SetCreateTextureFromTextBlock( unsigned char* (^create_texture_from_text)(const char* font, const unsigned int font_size, const char* text, unsigned int* pOutWidth, unsigned int* pOutHeight) ){create_texture_from_text_block = create_texture_from_text;}
+void OpenGLTexture::SetCreateTextureFromTextBlock( unsigned char* (^create_texture_from_text)(const char* font, const unsigned int font_size, const unsigned int r, const unsigned int g, const unsigned int b, const unsigned int a, const char* text, unsigned int* pOutWidth, unsigned int* pOutHeight) ){create_texture_from_text_block = create_texture_from_text;}
 #endif
 
 
@@ -110,11 +110,11 @@ OpenGLTexture::OpenGLTexture( const std::string& image_filename )
 		valid = true;
 }
 
-OpenGLTexture OpenGLTexture::FromText( const std::string& text, const Color& background_color  )
+OpenGLTexture OpenGLTexture::FromText( const std::string& text, const Color& text_color, const Color& background_color  )
 {
     OpenGLTexture texture( 32, 32 );
     unsigned int width, height;
-    unsigned char* data = create_texture_from_text_block( "helvetica", 12, text.c_str(), &width, &height);
+    unsigned char* data = create_texture_from_text_block( "helvetica", 12, text_color.r, text_color.g, text_color.b, text_color.a, text.c_str(), &width, &height);
     texture.SetData( ^(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){
         *pRed = (float)data[width*4*y + x*4] / 255.0f;
         *pGreen = (float)data[width*4*y + x*4 + 1] / 255.0f;

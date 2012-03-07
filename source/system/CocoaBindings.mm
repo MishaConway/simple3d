@@ -155,7 +155,7 @@ void SetCocoaBindings()
         return RawDataFromUIImage( image, pOutWidth, pOutHeight );
     });
     
-    OpenGLTexture::SetCreateTextureFromTextBlock(^unsigned char *(const char *_font, const unsigned int font_size, const char *_text, unsigned int *pOutWidth, unsigned int *pOutHeight) {
+    OpenGLTexture::SetCreateTextureFromTextBlock(^unsigned char *(const char *_font, const unsigned int font_size, const unsigned int r, const unsigned int g, const unsigned int b, const unsigned int a, const char *_text, unsigned int *pOutWidth, unsigned int *pOutHeight) {
         
         CGSize imageSize;
         imageSize.width = 32;
@@ -180,7 +180,9 @@ void SetCocoaBindings()
         // Inset the text rect then draw the text
         CGRect textRect = CGRectMake(4, 2, imageSize.width - 8, imageSize.height - 8);
         UIFont *font = [UIFont boldSystemFontOfSize:24];
-        [[UIColor orangeColor] set];
+        
+        UIColor* text_color = [UIColor colorWithRed:((float)r / 255.0f) green:((float)g / 255.0f) blue:((float)b / 255.0f) alpha:((float)a/255.0f)];
+        [text_color set];
         [text drawInRect:textRect withFont:font
            lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
         
