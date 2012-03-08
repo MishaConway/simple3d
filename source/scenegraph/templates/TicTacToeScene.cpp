@@ -20,8 +20,8 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     movements_in_touch = 0;
     
     //create all textures used for the board
-    Color tile_tex_color = Color::Gray();
-    tile_tex_color.a = 140;
+    Color tile_tex_color = Color::White();
+    tile_tex_color.a = 90;
     
     Color x_text_color = Color::Green();
     Color o_text_color = Color::Orange();
@@ -64,14 +64,18 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     }
     
     //construct UI objects
-    submit_button = new Sprite( Texture( "assets/metalgrate.jpg" ), GeoFloat2(0,-0.88f), GeoFloat2( 0.6f, 0.2f ) );
-    submit_button_hover = new Sprite( Texture( "assets/metalgrate.jpg" ), GeoFloat2(0,0), GeoFloat2( 0.3f, 0.3f ) );
-    submit_button_down = new Sprite( Texture( "assets/metalgrate.jpg" ), GeoFloat2(0,0), GeoFloat2( 0.3f, 0.3f ) );
+    background = new Sprite( Texture( "assets/spback.jpg" ), GeoFloat2(0,0), GeoFloat2( 2, 2 ) );
     
-   // sprites.push_back(submit_button);
+    //sprites.push_back(background);
         
     //finally we want to start the scene with all objects sorted from most distant to closest to camera
     SortSceneObjects();
+}
+
+void TicTacToeScene::RenderScene( const bool reflection )
+{
+    background->Render();
+    Scene::RenderScene( reflection );
 }
 
 bool TicTacToeScene::Update( const float elapsed_seconds )

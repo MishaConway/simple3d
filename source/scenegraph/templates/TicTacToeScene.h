@@ -14,6 +14,7 @@ public:
 	TicTacToeScene();
 	TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player ); 
     
+    virtual void RenderScene( const bool reflection = false );
     virtual bool Update( const float elapsed_seconds );
 
 	virtual void HandleMouseMove( const unsigned int x, const unsigned int y ); 
@@ -47,9 +48,7 @@ protected:
     bool has_selected_move;
     TicTacToeMove selected_move;
     
-    Sprite* submit_button;
-    Sprite* submit_button_hover;
-    Sprite* submit_button_down;
+    Sprite* background;
 };
 
 
