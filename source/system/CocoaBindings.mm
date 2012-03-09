@@ -16,7 +16,7 @@
 
 
 
-unsigned char* RawDataFromUIImage( UIImage* image, unsigned int* pOutWidth, unsigned int* pOutHeight )
+static unsigned char* RawDataFromUIImage( UIImage* image, unsigned int* pOutWidth, unsigned int* pOutHeight )
 {
     if (image == nil)
         NSLog(@"Do real error checking here");
@@ -53,7 +53,7 @@ unsigned char* RawDataFromUIImage( UIImage* image, unsigned int* pOutWidth, unsi
 void SetCocoaBindings()
 {
     Directory::SetGetFilesInDirectoryBlock(^char** (const char* path ){
-        NSArray* array  = [[NSFileManager defaultManager] directoryContentsAtPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingString:[NSString stringWithUTF8String:path]]];
+        NSArray* array  = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingString:[NSString stringWithUTF8String:path]] error:nil];
         
         NSLog( @"size of dir contents is %d\n", [array count] );
         for( NSString* f in array )

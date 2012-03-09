@@ -211,7 +211,7 @@
 		C61AC75114D8DBD0001BCCE7 /* Simple3D_iOS_static-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Simple3D_iOS_static-Prefix.pch"; sourceTree = "<group>"; };
 		C61AC75214D8DBD0001BCCE7 /* Simple3D_iOS_static.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simple3D_iOS_static.h; sourceTree = "<group>"; };
 		C61AC75314D8DBD0001BCCE7 /* Simple3D_iOS_static.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Simple3D_iOS_static.m; sourceTree = "<group>"; };
-		C6474C5C15048FDE001331B1 /* TicTacToeScene.h */ = {isa = PBXFileReference; name = TicTacToeScene.h; path = templates/TicTacToeScene.h; sourceTree = "<group>"; };
+		C6474C5C15048FDE001331B1 /* TicTacToeScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TicTacToeScene.h; path = templates/TicTacToeScene.h; sourceTree = "<group>"; };
 		C6474C5E15048FFB001331B1 /* TicTacToeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TicTacToeScene.cpp; path = templates/TicTacToeScene.cpp; sourceTree = "<group>"; };
 		C669543414E1B5CD00AC8324 /* CocoaBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaBindings.h; sourceTree = "<group>"; };
 		C669543514E1B5CD00AC8324 /* CocoaBindings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CocoaBindings.mm; sourceTree = "<group>"; };
@@ -646,7 +646,7 @@
 		C61AC66A14D8D97F001BCCE7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = C61AC66D14D8D97F001BCCE7 /* Build configuration list for PBXProject "Simple3D_iOS" */;
 			compatibilityVersion = "Xcode 3.2";
