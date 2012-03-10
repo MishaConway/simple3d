@@ -2,7 +2,7 @@
 
 #include "../Scene.h"
 
-struct TicTacToeMove
+struct TicTacToeTile
 {
     unsigned int x, y, z;
     char value;
@@ -21,7 +21,7 @@ public:
 	virtual void HandleLeftMouseDown( const unsigned int x, const unsigned int y ); 
     virtual void HandleLeftMouseUp( const unsigned int x, const unsigned int y );
     
-    void PlayMove( TicTacToeMove move );
+    void PlayMove( TicTacToeTile move );
     void PlayRandomMove(const char value);
     
     
@@ -30,7 +30,7 @@ public:
     void DisablePlaying();
     bool IsPlayingEnabled();
     bool HasSelectedMove();
-    TicTacToeMove GetSelectedMove();
+    TicTacToeTile GetSelectedMove();
     void SubmitSelectedMove();
 protected:
     void PickTiles( const unsigned int x, const unsigned int y );
@@ -46,7 +46,7 @@ protected:
     char x_or_o_player;
     bool playing_enabled;
     bool has_selected_move;
-    TicTacToeMove selected_move;
+    TicTacToeTile selected_move;
     
     Sprite* background;
 };

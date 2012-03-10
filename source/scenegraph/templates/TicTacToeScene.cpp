@@ -227,7 +227,7 @@ RenderableObject* TicTacToeScene::GetTile( const unsigned int x, const unsigned 
     return nullptr;
 }
 
-void TicTacToeScene::PlayMove( TicTacToeMove move )
+void TicTacToeScene::PlayMove( TicTacToeTile move )
 {
     GetTile( move.x, move.y, move.z )->SetUserData("value", CharToString(toupper(move.value)) );
 }
@@ -266,7 +266,7 @@ bool TicTacToeScene::HasSelectedMove()
     return playing_enabled && has_selected_move;
 }
 
-TicTacToeMove TicTacToeScene::GetSelectedMove()
+TicTacToeTile TicTacToeScene::GetSelectedMove()
 {
     return selected_move;
 }
