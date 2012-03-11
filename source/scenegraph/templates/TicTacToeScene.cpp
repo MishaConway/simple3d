@@ -64,7 +64,7 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     }
     
     //construct UI objects
-    background = new Sprite( Texture( "assets/spback.jpg" ), GeoFloat2(0,0), GeoFloat2( 2, 2 ) );
+    background = new Sprite( Texture( "assets/space_backgrounds/1.jpg" ), GeoFloat2(0,0), GeoFloat2( 2, 2 ) );
     
     //sprites.push_back(background);
         
@@ -91,6 +91,12 @@ bool TicTacToeScene::Update( const float elapsed_seconds )
             tiles[i]->SetTexture(temp_o_tex);
         else if( "O" == tiles[i]->GetUserData("value") )
             tiles[i]->SetTexture(o_tex);
+    
+    float horizontal_offset = background->GetTexture().GetHorizontalOffset();
+    float vertical_offset = background->GetTexture().GetVerticalOffset();
+    horizontal_offset += 0.03f * elapsed_seconds;
+    
+    background->GetTexture().SetOffsets( horizontal_offset, vertical_offset );
     
     return Scene::Update(elapsed_seconds);
 }
