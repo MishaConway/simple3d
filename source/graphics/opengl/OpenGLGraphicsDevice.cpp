@@ -84,14 +84,6 @@ bool OpenGLGraphicsDevice::Draw( const unsigned int num_vertices )
 {	
 	if( pBoundVertexBuffer )
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, pBoundVertexBuffer->buffer.vbo_id);
-		const char* attributes[] = {"in_position", "in_color_uv", "in_normal", "in_tangent", "in_bitangent", nullptr };
-		for( unsigned int i = 0; attributes[i]; i++ )
-		{
-			glEnableVertexAttribArray( i );
-			glVertexAttribPointer( i, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*) nullptr + sizeof(float)*3*i);
-		}
-
 		glDrawArrays( pBoundVertexBuffer->GetOpenGLPrimitiveType(), 0, num_vertices );
 		return true;
 	}
@@ -131,11 +123,13 @@ bool OpenGLGraphicsDevice::SwapBackBuffer()
 void OpenGLGraphicsDevice::SetVertexBuffer( OpenGLVertexBuffer& vertexBuffer )
 {
 	pBoundVertexBuffer = &vertexBuffer;
+    glBindBuffer(GL_ARRAY_BUFFER, pBoundVertexBuffer->buffer.vbo_id);
 }
 
 void OpenGLGraphicsDevice::SetVertexBuffer( OpenGLDynamicVertexBuffer& vertexBuffer )
 {
 	pBoundVertexBuffer = &vertexBuffer;
+    glBindBuffer(GL_ARRAY_BUFFER, pBoundVertexBuffer->buffer.vbo_id);
 }
 
 void OpenGLGraphicsDevice::SetDefaultRenderTarget()

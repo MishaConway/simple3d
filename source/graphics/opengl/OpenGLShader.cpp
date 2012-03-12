@@ -88,6 +88,14 @@ GLuint OpenGLShader::GetOpenGLShaderId()
 
 OpenGLVertexShader::OpenGLVertexShader( std::string name, std::string source  ) : OpenGLShader( GL_VERTEX_SHADER, name, source )
 {
+    std::vector<std::string> regex_matches = GetRegexMatches( source, "attribute([^;]+)" );
+    for( unsigned int i = 0; i < regex_matches.size(); i++ )
+        input_attributes.push_back( ExplodeString( regex_matches[i], " \t\n" ).back() );
+}
+
+std::vector<std::string> OpenGLVertexShader::GetInputAttributes()
+{
+    return input_attributes;
 }
 
 
@@ -105,19 +113,17 @@ OpenGLShaderProgram::OpenGLShaderProgram( const std::string& name, OpenGLVertexS
 
 	if( vertex_shader.IsValid() && fragment_shader.IsValid() )
 	{
-		program_id = glCreateProgram();
+        program_id = glCreateProgram();
 		glAttachShader( program_id, vertex_shader.GetOpenGLShaderId() );
 		glAttachShader( program_id, fragment_shader.GetOpenGLShaderId() );	
 
-		const char* attributes[] = {"in_position", "in_color_uv", "in_normal", "in_tangent", "in_bitangent", nullptr };
-		for( unsigned int i = 0; attributes[i]; i++ )
-		{
-			printf( "binding attribute %s to slot %i\n", attributes[i], i );
-			glBindAttribLocation( program_id, i, attributes[i] );
-		//	glEnableVertexAttribArray( i );
-		//	glVertexAttribPointer( 0, 3, GL_FLOAT, 0, sizeof(Vertex), (char*) nullptr + sizeof(float)*3*i);
-		}
-
+		input_attributes = vertex_shader.GetInputAttributes();
+        for( unsigned int i = 0; i < input_attributes.size(); i++ )
+        {
+            printf( "binding attribute %s to slot %i\n", input_attributes[i].c_str(), i );
+            glBindAttribLocation(program_id, i, input_attributes[i].c_str() );
+        }
+        
 		glLinkProgram( program_id );
 		GLint linked;
 		glGetProgramiv(program_id, GL_LINK_STATUS, &linked);
@@ -170,6 +176,11 @@ OpenGLShaderProgram::OpenGLShaderProgram( const std::string& name, OpenGLVertexS
 void OpenGLShaderProgram::Enable()
 {
 	glUseProgram( program_id );
+    for( unsigned int i = 0; i < input_attributes.size(); i++ )
+    {
+        glEnableVertexAttribArray( i );
+        glVertexAttribPointer( i, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*) nullptr + sizeof(float)*3*i);
+    }
 	current_program = *this;
 }
 
@@ -186,6 +197,11 @@ std::string OpenGLShaderProgram::GetName()
 std::vector<std::string> OpenGLShaderProgram::GetUsedUniforms()
 {
 	return used_uniforms;
+}
+
+std::vector<std::string> OpenGLShaderProgram::GetInputAttributes()
+{
+    return input_attributes;
 }
 
 bool OpenGLShaderProgram::UsingUniform( const std::string& uniform_name )

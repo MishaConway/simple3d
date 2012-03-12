@@ -26,6 +26,9 @@ class OpenGLVertexShader : public OpenGLShader
 {
 public:
     OpenGLVertexShader( std::string name, std::string source );
+    std::vector<std::string> GetInputAttributes();
+private:
+    std::vector<std::string> input_attributes;
 };
 
 class OpenGLFragmentShader : public OpenGLShader
@@ -45,6 +48,7 @@ public:
 	GLuint GetProgramId();
 	std::string GetName();
 	std::vector<std::string> GetUsedUniforms();
+    std::vector<std::string> GetInputAttributes();
 	bool UsingUniform( const std::string& uniform_name );
 	void Enable();
 public:
@@ -75,5 +79,6 @@ protected:
 	GLuint program_id;
 	std::string name;
 	std::vector<std::string> used_uniforms;
+    std::vector<std::string> input_attributes;
 	static std::map<std::string, OpenGLShaderProgram> shader_programs;
 };
