@@ -21,6 +21,7 @@ public:
 	virtual void HandleLeftMouseDown( const unsigned int x, const unsigned int y ); 
     virtual void HandleLeftMouseUp( const unsigned int x, const unsigned int y );
     
+    void ClearMoves();
     void PlayMove( TicTacToeTile move );
     void PlayRandomMove(const char value);
     

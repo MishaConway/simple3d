@@ -297,6 +297,12 @@ RenderableObject* TicTacToeScene::GetTile( const unsigned int x, const unsigned 
     return nullptr;
 }
 
+void TicTacToeScene::ClearMoves()
+{
+    for( unsigned int i = 0; i < tiles.size(); i++ )
+        tiles[i]->SetUserData("value", "" );
+}
+
 void TicTacToeScene::PlayMove( TicTacToeTile move )
 {
     GetTile( move.x, move.y, move.z )->SetUserData("value", CharToString(toupper(move.value)) );
