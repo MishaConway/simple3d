@@ -15,6 +15,8 @@ public:
 	void Scale( const float x, const float y, const float z );
 	void RotateY( const float angle_in_degrees );
 	
+    void SetVelocity( const GeoVector& velocity );
+    
     
     void SetObjectspaceRotation( const GeoVector& rotation_axis, const float degrees );
     void RotateInObjectspace( const GeoVector& rotation_axis, const float degrees );
@@ -42,7 +44,13 @@ protected:
 	GeoMatrix world_transform;
 	GeoVector objectspace_rotation_axis;
 	GeoQuaternion objectspace_quaternion;
-	float degrees_per_second, objectspace_angular_deceleration;
+    
+    //linear movement 
+    bool translating;
+    GeoVector velocity;
+	
+    //rotational movement
+    float degrees_per_second, objectspace_angular_deceleration;
 	bool rotating;
 	bool rotated_in_objectspace;
 	bool revolving;

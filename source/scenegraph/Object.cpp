@@ -10,7 +10,7 @@ void Object::BindGraphicsDevice( GraphicsDevice* pGraphicsDevice )
 Object::Object()
 {
 	SetIdentity();
-	rotating = false;
+	translating = rotating = false;
 	degrees_per_second = objectspace_angular_deceleration = 0;
 	rotated_in_objectspace = false;
 }
@@ -27,6 +27,11 @@ std::string Object::GetUserData( const std::string& key )
 
 bool Object::Update( const float elapsed_seconds )
 {
+    if( translating )
+    {
+        Translate( velocity * elapsed_seconds );
+    }
+    
     if( rotating )
     {
 		RotateInObjectspace( objectspace_rotation_axis, elapsed_seconds * degrees_per_second );
@@ -55,6 +60,12 @@ void Object::Translate( const float x, const float y, const float z )
 void Object::Translate( const GeoVector& translation )
 {
 	Translate( translation.x, translation.y, translation.z );
+}
+
+void Object::SetVelocity( const GeoVector& velocity )
+{
+    translating = true;
+    this->velocity = velocity;
 }
 
 void Object::Scale( const float x, const float y, const float z )

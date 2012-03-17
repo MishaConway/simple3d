@@ -39,6 +39,7 @@ protected:
 protected:    
     std::vector<RenderableObject*> tiles;
     RenderableObject* focused_tile;
+    std::vector<RenderableObject*> stars;
     Texture tile_tex, o_tex, x_tex, temp_o_tex, temp_x_tex;
     int last_mousedown_x, last_mousedown_y;
     unsigned int movements_in_touch;

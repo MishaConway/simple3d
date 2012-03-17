@@ -35,6 +35,65 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     temp_o_tex = Texture::FromText("O", temp_x_text_color, tile_tex_color);
     temp_x_tex = Texture::FromText("X", temp_o_text_color, tile_tex_color);
     
+    Texture glow_circle = Texture( 128, 128 );
+	const GeoFloat2 glow_circle_center( (float)glow_circle.GetWidth() / 2.0f, (float)glow_circle.GetHeight() / 2.0f );
+	const float glow_circle_radius = glow_circle_center.x * 0.7f;
+    glow_circle.SetData( ^(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){ 
+        if((x-glow_circle_center.x)*(x-glow_circle_center.x)+(y-glow_circle_center.y)*(y-glow_circle_center.y) > glow_circle_radius *glow_circle_radius )
+        {
+            *pRed = *pGreen = *pBlue = *pAlpha =  0.0f;
+            *pBlue = 0.6f;
+            *pAlpha = 0.0f;    
+        }
+        else
+        {
+            *pRed = *pGreen = *pBlue = *pAlpha = 1;
+           // *pGreen = 0;
+            *pAlpha = 1;
+        }
+    });
+    
+    
+    Sprite* star = new Sprite( Texture( "/assets/space_backgrounds/spiral_galaxy.jpg" ) );
+    star->SetSize( GeoFloat2(0.8f, 0.8f) );
+    star->SetPosition(GeoFloat2(-.4, .5));
+    star->SetBlendType(BlendType::ADDITIVE);
+    //stars.push_back(star);
+    
+    for( unsigned int i = 0; i < 40; i++ )
+        {
+            const float size = (float)rand()/(float)RAND_MAX * .03f + 0.01f;
+            
+            const float x = (2.0f*((float)rand()/RAND_MAX)) - 1;
+            const float y = (1.5f*((float)rand()/RAND_MAX)) - 0.5f;
+            
+            Color c( 150 + (float)rand()/(float)RAND_MAX * 105.0f, 255, 150 + (float)rand()/(float)RAND_MAX * 105.0f, 100 );
+            
+            Sprite* star = new Sprite( glow_circle );
+            star->SetSize( GeoFloat2(size, size) );
+            star->SetPosition( GeoFloat2(x, y) );
+            star->SetColor( c );
+            star->SetVelocity( GeoVector(-(float)rand()/(float)RAND_MAX * 0.02f - 0.02f, 0, 0) );
+            stars.push_back(star);
+            
+           // ((b-a)*((float)rand()/RAND_MAX))+a;
+        }
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   // tile_tex = Texture( "assets/glass2.jpg" );
+    
+    
+    
     //configure distances used to build board
     const unsigned int num_tiles_per_row = 3;
     const unsigned int num_tiles_per_col = 3;
@@ -75,6 +134,7 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
 void TicTacToeScene::RenderScene( const bool reflection )
 {
     background->Render();
+    RenderObjects(stars);    
     Scene::RenderScene( reflection );
 }
 
@@ -98,11 +158,15 @@ bool TicTacToeScene::Update( const float elapsed_seconds )
     
     background->GetTexture().SetOffsets( horizontal_offset, vertical_offset );
     
+    for( unsigned int i = 0; i < stars.size(); i++ )
+        stars[i]->Update( elapsed_seconds );
+    
     return Scene::Update(elapsed_seconds);
 }
 
 void TicTacToeScene::HandleLeftMouseDown( const unsigned int x, const unsigned int y )
 {
+    printf( "got touch down at %i, %i\n", x, y );
     movements_in_touch = 0;
     last_mousedown_x = x;
     last_mousedown_y = y;

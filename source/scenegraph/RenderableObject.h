@@ -17,6 +17,7 @@ public:
 	bool IsVisible();
     
     virtual void SetTwoSided( const bool two_sided );
+    virtual void SetColor( const Color color );
     
 	virtual void SetPlanarReflector( const bool is_planar_reflector );
 	virtual void SetBlendType( const BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type );
@@ -43,6 +44,7 @@ protected:
 	bool visible;
 	bool planar_reflector;
     bool two_sided;
+    Color color;
 	BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type;
 	std::string technique_name;
 	static std::string enforced_global_technique;

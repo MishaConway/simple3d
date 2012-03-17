@@ -36,11 +36,18 @@ Sprite::Sprite( Texture t, const GeoFloat2& p, const GeoFloat2& s, const BlendTy
 void Sprite::SetPosition( const GeoFloat2& p )
 {
 	position = p;
+    SetIdentity();
+    Scale( size.x, size.y, 0 );
+    Translate( position.x, position.y, 0 );
 }
 
 void Sprite::SetSize( const GeoFloat2& s )
 {
 	size = s;
+    SetIdentity();
+    Scale( size.x, size.y, 0 );
+    Translate( position.x, position.y, 0 );
+    
 }
 
 GeoFloat2 Sprite::GetSize()
@@ -72,13 +79,12 @@ bool Sprite::Render()
 {
 	if( visible )
 	{
-		SetIdentity();
-		Scale( size.x, size.y, 0 );
-		Translate( position.x, position.y, 0 );
+		
 
 		Effect e = Effect::GetCurrentEffect();
 		e.SetTexture( "lala", GetTexture() );
 		e.SetMatrix( "WorldTransform", GetWorldTransform() );
+        e.SetColor( "color", color );
 		pGraphicsDevice->SetVertexBuffer( GetVertexBuffer() );
 		pGraphicsDevice->GetStateManager().SetSpriteRendering( blend_type );
 

@@ -9,6 +9,7 @@ void RenderableObject::SetDefaultValues()
 	planar_reflector = false;
     two_sided = false;
 	blend_type = BlendType::NONE;
+    color = Color::White();
 }
 
 RenderableObject::RenderableObject()
@@ -23,8 +24,7 @@ RenderableObject::RenderableObject( Texture t, VertexBuffer v) : tex(t), vertex_
 
 RenderableObject::RenderableObject( Texture t, Geometry geometry ) : tex(t)
 {
-	visible = true;
-	planar_reflector = false;	
+	SetDefaultValues();
 	vertex_buffer = VertexBuffer( geometry.GetVertices() );
 }
 
@@ -51,6 +51,11 @@ bool RenderableObject::IsVisible()
 void RenderableObject::SetTwoSided( const bool two_sided )
 {
     this->two_sided = two_sided;
+}
+
+void RenderableObject::SetColor( const Color color )
+{
+    this->color = color;
 }
 
 void RenderableObject::SetBlendType( const BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type )
@@ -103,6 +108,7 @@ bool RenderableObject::Render()
 		e.SetMatrix( "WorldTransform", GetWorldTransform() );
 		e.SetMatrix( "WorldInverseTranspose", GetWorldInverseTranspose() );
 		e.SetInt( "compute_projective_texture_coordinates", planar_reflector );
+        e.SetColor( "color", color);
 		pGraphicsDevice->SetVertexBuffer( GetVertexBuffer() );
 		pGraphicsDevice->GetStateManager().SetDefaults();
         if( two_sided )
