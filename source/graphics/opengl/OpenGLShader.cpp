@@ -314,7 +314,10 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, v
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
      return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
 #endif
-    glUniform1fv( uniform_location, float_array.size(), (float*) &float_array[0]);});
+    if( variable_name == "color" )
+        glUniform4fv( uniform_location, 1, &float_array[0] );
+    else
+         glUniform1fv( uniform_location, float_array.size(),  &float_array[0]);});
  }
 
 #ifdef __XNAMATH_H__
