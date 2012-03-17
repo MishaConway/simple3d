@@ -39,6 +39,9 @@ public:
     #endif
     bool SetMatrix( const std::string& variable_name, GeoMatrix matrix );
     bool SetTexture( const std::string& variable_name, OpenGLTexture texture );
+    
+    bool SetColor( const std::string& variable_name, Color color );
+    
 private:
      std::string EvaluateIncludeDirectives( std::string root_dir, std::string source );
 private:

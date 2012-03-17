@@ -165,8 +165,6 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
 	 f.push_back( float_array.w );
 	 float_array_uniforms[variable_name] = f;
 	 return true;
-	 
-	 // return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){glUniform4fv( uniform_location, 1, (float*) &float_array );});
  }
 
  bool OpenGLEffect::SetFloatArray( const std::string& variable_name, std::vector<float> float_array )
@@ -194,6 +192,12 @@ OpenGLEffect& OpenGLEffect::GetCurrentEffect()
 	 
 	 //return SetEffectVariable( variable_name, [&matrix](const GLint uniform_location){glUniformMatrix4fv( uniform_location, 1, GL_FALSE, (float*) &matrix );});
  }
+
+bool OpenGLEffect::SetColor( const std::string& variable_name, Color color )
+{
+    SetFloatArray( variable_name, GeoVector( ((float)color.r) / 255.0f, ((float)color.g) / 255.0f, ((float)color.b) / 255.0f, ((float)color.a) / 255.0f ) );
+    return true;
+}
 
  bool OpenGLEffect::SetTexture( const std::string& variable_name, OpenGLTexture texture )
  {
