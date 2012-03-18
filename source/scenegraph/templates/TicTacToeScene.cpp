@@ -11,7 +11,8 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
 
     //set x_or_o_player
     this->x_or_o_player = tolower(x_or_o_player);
-    playing_enabled = true;
+    playing_enabled = false;
+    has_selected_move = false;
     
     //initialize various values to zero or null state
     focused_tile = nullptr; 
