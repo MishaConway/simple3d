@@ -31,10 +31,10 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     
     
     tile_tex = Texture( 32, 32, tile_tex_color );
-   // o_tex = Texture::FromText("O", o_text_color, tile_tex_color);
-  //  x_tex = Texture::FromText("X", x_text_color, tile_tex_color);
-//    temp_o_tex = Texture::FromText("O", temp_x_text_color, tile_tex_color);
- //   temp_x_tex = Texture::FromText("X", temp_o_text_color, tile_tex_color);
+    o_tex = Texture::FromText("O", o_text_color, tile_tex_color);
+    x_tex = Texture::FromText("X", x_text_color, tile_tex_color);
+    temp_o_tex = Texture::FromText("O", temp_x_text_color, tile_tex_color);
+    temp_x_tex = Texture::FromText("X", temp_o_text_color, tile_tex_color);
     
     Texture glow_circle = Texture( 128, 128 );
 	const GeoFloat2 glow_circle_center( (float)glow_circle.GetWidth() / 2.0f, (float)glow_circle.GetHeight() / 2.0f );
