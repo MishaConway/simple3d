@@ -16,6 +16,7 @@ public:
 	
 	virtual void SetDefaultFrontFaceRendering() = 0;
 	virtual void SetDefaultBackFaceRendering() = 0;
+	virtual void SetDefaultFrontAndBackRendering() = 0;
 	virtual void SetParticleRendering() = 0;
 	virtual void SetSpriteRendering( const BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type = BlendType::NONE ) = 0;
 	

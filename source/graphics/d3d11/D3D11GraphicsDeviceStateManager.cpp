@@ -120,6 +120,14 @@ void D3D11GraphicsDeviceStateManager::SetDefaultBackFaceRendering()
 	SetDepthStencilState( default_depth_stencil_state );
 }
 
+void D3D11GraphicsDeviceStateManager::SetDefaultFrontAndBackRendering()
+{
+	if( locked )
+		return;
+	SetRasterizerState( sprite_rasterizer_state );
+	SetDepthStencilState( default_depth_stencil_state );
+}
+
 void D3D11GraphicsDeviceStateManager::SetSpriteRendering( const BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type )
 {
 	if( locked )

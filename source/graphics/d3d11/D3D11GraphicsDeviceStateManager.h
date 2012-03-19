@@ -13,6 +13,7 @@ public:
 	
 	virtual void SetDefaultFrontFaceRendering();
 	virtual void SetDefaultBackFaceRendering();
+	virtual void SetDefaultFrontAndBackRendering();
 	virtual void SetParticleRendering();
 	virtual void SetSpriteRendering( const BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type = BlendType::NONE );
 	virtual void EnableAlphaBlending();
