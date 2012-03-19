@@ -84,7 +84,7 @@ D3D11Texture D3D11Texture::Clone( const unsigned w, const unsigned int h )
 	pGraphicsDevice->SetViewport( w, h );
 	pGraphicsDevice->GetStateManager().SetSpriteRendering();
 #if RENDERER == RENDERER_D3D11
-	Sprite( *this, GeoFloat2( -1, -1), GeoFloat2( 2, 2 ) ).Render();
+	Sprite( *this, GeoFloat2( 0, 0), GeoFloat2( 2, 2 ) ).Render();
 #endif
 	pGraphicsDevice->GetStateManager().SetDefaultFrontFaceRendering();
 	pGraphicsDevice->SetDefaultRenderTarget();

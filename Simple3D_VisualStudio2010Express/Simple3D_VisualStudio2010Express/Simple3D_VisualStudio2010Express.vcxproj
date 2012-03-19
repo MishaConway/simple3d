@@ -123,6 +123,7 @@
     <ClCompile Include="..\..\source\scenegraph\SpinningCylinderGrid.cpp" />
     <ClCompile Include="..\..\source\scenegraph\Sprite.cpp" />
     <ClCompile Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\templates\TicTacToeScene.cpp" />
     <ClCompile Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.cpp" />
     <ClCompile Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.cpp" />
     <ClCompile Include="..\..\source\scenegraph\TestScenes\SpriteScene.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="..\..\source\graphics\opengl\soil\stbi_DDS_aug_c.h" />
     <ClInclude Include="..\..\source\graphics\opengl\soil\stb_image_aug.h" />
     <ClInclude Include="..\..\source\interfaces\IInitializable.h" />
+    <ClInclude Include="..\..\source\interfaces\IStringable.h" />
     <ClInclude Include="..\..\source\interfaces\IValidatable.h" />
     <ClInclude Include="..\..\source\scenegraph\Camera.h" />
     <ClInclude Include="..\..\source\scenegraph\Nebula.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="..\..\source\scenegraph\SpinningCylinderGrid.h" />
     <ClInclude Include="..\..\source\scenegraph\Sprite.h" />
     <ClInclude Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.h" />
+    <ClInclude Include="..\..\source\scenegraph\templates\TicTacToeScene.h" />
     <ClInclude Include="..\..\source\scenegraph\TestScenes\RedEmptyScene.h" />
     <ClInclude Include="..\..\source\scenegraph\TestScenes\SimpleSceneUsingBasicShaderTechnique.h" />
     <ClInclude Include="..\..\source\scenegraph\TestScenes\SpriteScene.h" />

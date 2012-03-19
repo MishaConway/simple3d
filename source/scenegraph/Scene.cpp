@@ -119,6 +119,7 @@ void Scene::PreRender()
         
         SetupRenderTarget( render_target );
 		GeoVector reflection_plane( 0, 1, 0, -scene_objects[i]->GetWorldspaceCentroid().y);
+		//reflection_plane.w = 0;
 		ConfigureCameraShaderValues();
 		Effect::GetCurrentEffect().SetFloatArray( "clip_plane",  reflection_plane );
 		Effect::GetCurrentEffect().SetMatrix( "ViewTransform", camera.GetReflectedViewTransform( reflection_plane ) );

@@ -31,15 +31,21 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     
     
     tile_tex = Texture( 32, 32, tile_tex_color );
-    o_tex = Texture::FromText("O", o_text_color, tile_tex_color);
-    x_tex = Texture::FromText("X", x_text_color, tile_tex_color);
-    temp_o_tex = Texture::FromText("O", temp_x_text_color, tile_tex_color);
-    temp_x_tex = Texture::FromText("X", temp_o_text_color, tile_tex_color);
+   // o_tex = Texture::FromText("O", o_text_color, tile_tex_color);
+  //  x_tex = Texture::FromText("X", x_text_color, tile_tex_color);
+//    temp_o_tex = Texture::FromText("O", temp_x_text_color, tile_tex_color);
+ //   temp_x_tex = Texture::FromText("X", temp_o_text_color, tile_tex_color);
     
     Texture glow_circle = Texture( 128, 128 );
 	const GeoFloat2 glow_circle_center( (float)glow_circle.GetWidth() / 2.0f, (float)glow_circle.GetHeight() / 2.0f );
 	const float glow_circle_radius = glow_circle_center.x * 0.7f;
-    glow_circle.SetData( ^(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){ 
+    
+	#ifdef _WIN32
+	glow_circle.SetData( [this, &glow_circle_center, &glow_circle_radius](const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){
+	#endif
+	#if defined(__APPLE__) || defined(__APPLE_CC__)  
+	glow_circle.SetData( ^(const unsigned int x, const unsigned int y, float* pRed, float* pGreen, float* pBlue, float* pAlpha){ 
+	#endif
         if((x-glow_circle_center.x)*(x-glow_circle_center.x)+(y-glow_circle_center.y)*(y-glow_circle_center.y) > glow_circle_radius *glow_circle_radius )
         {
             *pRed = *pGreen = *pBlue = *pAlpha =  0.0f;
@@ -57,7 +63,7 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     
     Sprite* star = new Sprite( Texture( "/assets/space_backgrounds/spiral_galaxy.jpg" ) );
     star->SetSize( GeoFloat2(0.8f, 0.8f) );
-    star->SetPosition(GeoFloat2(-.4, .5));
+    star->SetPosition(GeoFloat2(-.4f, .5f));
     star->SetBlendType(BlendType::ADDITIVE);
     //stars.push_back(star);
     
@@ -68,7 +74,7 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
             const float x = (2.0f*((float)rand()/RAND_MAX)) - 1;
             const float y = (1.5f*((float)rand()/RAND_MAX)) - 0.5f;
             
-            Color c( 150 + (float)rand()/(float)RAND_MAX * 105.0f, 255, 150 + (float)rand()/(float)RAND_MAX * 105.0f, 100 );
+            Color c( 150 + (unsigned char)((float)rand()/(float)RAND_MAX * 105.0f), 255, 150 + (unsigned char)((float)rand()/(float)RAND_MAX * 105.0f), 100 );
             
             Sprite* star = new Sprite( glow_circle );
             star->SetSize( GeoFloat2(size, size) );
@@ -190,7 +196,7 @@ void TicTacToeScene::HandleMouseMove( const unsigned int x, const unsigned int y
         return;
     
     //compute the rotation axis and amount of rotation and rotate each tile in worldspace
-    GeoVector swipe_direction = GeoVector( (int)x - last_mousedown_x, (int)y - last_mousedown_y );    
+    GeoVector swipe_direction = GeoVector( (float)((int)x - last_mousedown_x), (float)((int)y - last_mousedown_y) );    
     GeoVector rotation_axis = swipe_direction.InvertXY().Normalize();
     for( unsigned int i = 0; i < tiles.size(); i++ )
         tiles[i]->RotateInWorldspace( rotation_axis, swipe_direction.Length()*3 );
@@ -246,7 +252,7 @@ void TicTacToeScene::PickTiles( const unsigned int x, const unsigned int y )
         for( unsigned int j = 0; j < screenspace_vertices.size(); j+= 3 )
         {
             GeoTriangle screenspace_triangle( screenspace_vertices[j], screenspace_vertices[j+1], screenspace_vertices[j+2]);
-            selected = selected || screenspace_triangle.PointInsideXYTriangle( GeoFloat2(x, y) );
+            selected = selected || screenspace_triangle.PointInsideXYTriangle( GeoFloat2((float)x, (float)y) );
         }
         
         if( selected )

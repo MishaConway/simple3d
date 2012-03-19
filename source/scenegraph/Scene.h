@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Nebula.h"
 #include <map>
+#include "../system/FileIO.h"
 
 class Scene
 {

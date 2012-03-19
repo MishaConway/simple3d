@@ -9,18 +9,19 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	
 	float offset = -1.5f;
     default_height = 1.4f + offset;
-	default_focus_height = 1.19 + offset;
+	default_focus_height = 1.19f + offset;
 	distance_from_spinning_cylinder_grid = 4.2f;
 	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, default_height, distance_from_spinning_cylinder_grid ), GeoVector( 0, default_focus_height, 0 ) );
 	
 	spinning_cylinder_grid = new SpinningCylinderGrid( 2.25f, 1.3f, 4, 1.6f );
-	std::vector<std::string> video_files = Directory::GetFiles( Directory::GetWorkingDirectory() + "assets/video_thumbnails", true );
+	std::vector<std::string> video_files = Directory::GetFiles( GetRootAssetsPath() + std::string("video_thumbnails"), true );
     for( unsigned int i = 0; i < video_files.size(); i++ )
         printf( "got video file of : %s\n", video_files[i].c_str() );
     
 
 	for( unsigned int i = 0; i < video_files.size(); i++ )
-        spinning_cylinder_grid->AddTile( GridTile( "cool", Texture( video_files[i] ) ) );
+		if( "db" != video_files[i].substr(video_files[i].find_last_of(".")+1) )
+			spinning_cylinder_grid->AddTile( GridTile( "cool", Texture( video_files[i] ) ) );
 	
 	pCircle = new RenderableObject( Texture(GetRootAssetsPath() + "ui/kinectgrid.png"), GeometryFactory().GenerateUnitXZCircle().Scale(2.2f, 1, 2.2f ) );
 	//pCircle->SetTexture( Texture(GetRootAssetsPath() + "17730-1920x1200.jpg") );
@@ -30,6 +31,8 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	pCircle->SetPlanarReflector( true );
 	pCircle->GetTexture().SetTiling( 4.5f );
 	pCircle->SetRotationalVelocity( GeoFloat3( 0, 1, 0 ), 3 );
+
+	pCircle->SetBlendType( BlendType::ALPHA );
 
 	Texture glow_circle = Texture( 128, 128 );
 	const GeoFloat2 glow_circle_center( (float)glow_circle.GetWidth() / 2.0f, (float)glow_circle.GetHeight() / 2.0f );
@@ -45,13 +48,13 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 		{
 			*pRed = *pGreen = *pBlue = *pAlpha =  0.0f;
 			*pBlue = 0.6f;
-			*pAlpha = 0.0f;    
+			*pAlpha = 0.6f;    
 		}
 		else
 		{
 			*pRed = *pGreen = *pBlue = *pAlpha = 1;
 			*pGreen = 0;
-			*pAlpha = 1;
+			*pAlpha = 1.0f;
 		}
 	});
 
@@ -61,6 +64,7 @@ SpinningCylinderGridScene::SpinningCylinderGridScene( HWND hWnd, const unsigned 
 	Texture cylinder_bottom = Texture(GetRootAssetsPath()+ "17730-1920x1200.jpg");
 
 	pCylinder = new RenderableObject( glow_circle, GeometryFactory().GenerateUnitCylinder().Scale(2.12f, 0.1f, 2.12f ) );
+	pCylinder->SetBlendType( BlendType::ALPHA );
 
 /*	
     pCylinder = new RenderableObject( Texture(glow_circle, cylinder_top, cylinder_bottom), GeometryFactory().GenerateUnitCappedCylinder().Scale(2.12f, 0.1f, 2.12f ) );

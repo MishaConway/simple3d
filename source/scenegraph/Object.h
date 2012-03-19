@@ -3,6 +3,10 @@
 #include "../graphics/inc.h"
 #include "../geo/GeoQuaternion.h"
 
+#ifdef _WIN32
+#define copysign _copysign
+#endif
+
 class Object
 {
 public:

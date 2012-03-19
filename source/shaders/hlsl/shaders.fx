@@ -24,6 +24,8 @@ float4x4 ViewTransform;
 float4x4 ProjectionTransform;
 float4x4 WorldInverseTranspose;
 
+float4 color;
+
 int clipping_enabled = 0;
 float4 clip_plane = float4( 0, 1, 0, 1.0f );
 
@@ -96,9 +98,9 @@ void TransformPosition( in float3 objectspace_position, out float4 worldspace_po
 	viewspace_position				= mul(worldspace_position, ViewTransform);
 	homogenous_screenspace_position = mul(viewspace_position, ProjectionTransform);	
 	worldposition_to_eye_position	= normalize(eye_position - worldspace_position.xyz);
-	if( clipping_enabled )
-		clip = dot( worldspace_position, clip_plane);
-	else
+	//if( clipping_enabled )
+	//	clip = dot( worldspace_position, clip_plane);
+	//else
 		clip = 1.0f;
 }
 
@@ -172,7 +174,7 @@ float4 PostProcessHorizontalBlurPS( VertexShaderOutput input ) : SV_Target
 	[unroll]
 	for (int i = -4; i <= 4; i++) 
 	{
-       color += GetColorSample( input.color_uv + float3( texel_size*i, 0, 0), input.color_index ) * BlurWeights[j];
+       color += 1.2 * GetColorSample( input.color_uv + float3( texel_size*i, 0, 0), input.color_index ) * BlurWeights[j];
 	   j++;
    }
 	return float4(color.rgb, 1 );
@@ -186,7 +188,7 @@ float4 PostProcessVerticalBlurPS( VertexShaderOutput input ) : SV_Target
 	[unroll]
 	for (int i = -4; i <= 4; i++) 
 	{
-       color += GetColorSample( input.color_uv + float3( 0, texel_size*i, 0 ), input.color_index  )* BlurWeights[j];
+       color += 1.2 * GetColorSample( input.color_uv + float3( 0, texel_size*i, 0 ), input.color_index  )* BlurWeights[j];
 	   j++;
    }
 	return float4(color.rgb, 1 );
@@ -226,14 +228,14 @@ float4 LinePS( VertexShaderOutput input ) : SV_Target
 
 VertexShaderOutput  SpriteVS( VertexShaderInput input )
 {
-	return CreateVertexShaderOut( InvertY(mul(float4(input.position,1.0), WorldTransform)), input.normal, input.normal, InvertY(input.color_uv), 1 );      
+	return CreateVertexShaderOut( mul(float4(input.position,1.0), WorldTransform), input.normal, input.normal, input.color_uv, 1 );      
 }
 
 float4 PlanarReflectionPS( VertexShaderOutput input ) : SV_Target
 {
 	float2 projcoord=(input.project.xy / input.project.z);
 	float4 color_sample = GetColorSample( input.color_uv, input.color_index  );
-	float4 reflection_sample = reflection.Sample(MeshTextureSampler, projcoord); 
+	float4 reflection_sample = reflection.Sample(MeshTextureSampler, projcoord ); 
 	return float4( color_sample.rgb * reflection_sample.rgb, 1 );
 }
 	 

@@ -14,6 +14,7 @@ D3D11RenderTarget::D3D11RenderTarget()
 D3D11RenderTarget::D3D11RenderTarget( const unsigned int width, const unsigned int height )
 {
 	tex = D3D11Texture( width, height, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT ); 
+	//tex.SetTiling( 1, -1 );
 	
 	// Create the render target view.
 	D3D11_RENDER_TARGET_VIEW_DESC render_target_view_desc;
@@ -101,7 +102,7 @@ bool D3D11RenderTarget::Blur( D3D11RenderTarget pRenderTargetWritten, const std:
 	Effect::GetCurrentEffect().SetFloatArray( "BlurWeights", ComputeGaussianKernel( 9, 400.5f  ) );
 	pGraphicsDevice->SetRenderTarget( pRenderTargetWritten );
 #if RENDERER == RENDERER_D3D11
-	Sprite( GetTexture(), GeoFloat2( -1, -1), GeoFloat2( 2, 2 ), BlendType::NONE, blur_technique ).Render();
+	Sprite( GetTexture(), GeoFloat2( 0, 0), GeoFloat2( 2, 2 ), BlendType::NONE, blur_technique ).Render();
 #endif
 	return true;
 }

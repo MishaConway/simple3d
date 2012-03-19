@@ -237,6 +237,9 @@
     <ClCompile Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.cpp">
       <Filter>Source Files\scenegraph\templates</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\templates\TicTacToeScene.cpp">
+      <Filter>Source Files\scenegraph\templates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\geo\GeoFloat.h">
@@ -456,6 +459,12 @@
       <Filter>Source Files\system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\scenegraph\templates\SpinningCylinderGridScene.h">
+      <Filter>Source Files\scenegraph\templates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\interfaces\IStringable.h">
+      <Filter>Source Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\templates\TicTacToeScene.h">
       <Filter>Source Files\scenegraph\templates</Filter>
     </ClInclude>
   </ItemGroup>
