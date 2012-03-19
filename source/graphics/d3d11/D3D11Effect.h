@@ -35,7 +35,7 @@ public:
  bool SetFloat( const std::string& variable_name, float flt );
  bool SetFloatArray( const std::string& variable_name, XMFLOAT3& float_array );
  bool SetFloatArray( const std::string& variable_name, XMFLOAT4& float_array );
- bool SetFloatArray( const std::string& variable_name, GeoVector& float_array );
+ virtual bool SetFloatArray( const std::string& variable_name, GeoVector float_array );
  bool SetFloatArray( const std::string& variable_name, std::vector<float>& float_array );
  bool SetMatrix( const std::string& variable_name, XMMATRIX& matrix );
  bool SetMatrix( const std::string& variable_name, XMFLOAT4X4& matrix );

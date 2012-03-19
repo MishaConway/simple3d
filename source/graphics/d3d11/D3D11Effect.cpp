@@ -124,7 +124,7 @@ bool D3D11Effect::SetFloatArray( const std::string& variable_name, XMFLOAT4& flo
 	 pEffectVariable->AsVector()->SetFloatVector( (float*) &float_array );});	
 }
 
-bool D3D11Effect::SetFloatArray( const std::string& variable_name, GeoVector& float_array )
+bool D3D11Effect::SetFloatArray( const std::string& variable_name, GeoVector float_array )
 {
 	return SetEffectVariable( variable_name, [&float_array](ID3DX11EffectVariable* pEffectVariable){ 
 	 pEffectVariable->AsVector()->SetFloatVector( (float*) &float_array );});	

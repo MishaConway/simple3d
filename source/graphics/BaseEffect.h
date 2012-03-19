@@ -2,6 +2,7 @@
 
 #include "../geo/GeoVector.h"
 #include "../geo/GeoMatrix.h"
+#include "Color.h"
 #include <string>
 #include <vector>
 #include "../std/functional.h"
@@ -23,4 +24,6 @@ class BaseEffect : public IValidatable
 {
 public:
 	BaseEffect();
+	virtual bool SetFloatArray( const std::string& variable_name, GeoVector float_array ) = 0;
+	virtual bool SetColor( const std::string& variable_name, Color color );
 };
