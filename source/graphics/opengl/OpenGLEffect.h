@@ -31,7 +31,7 @@ public:
     bool SetFloatArray( const std::string& variable_name, XMFLOAT3& float_array );
     bool SetFloatArray( const std::string& variable_name, XMFLOAT4& float_array );
     #endif
-    bool SetFloatArray( const std::string& variable_name, GeoVector float_array );
+    virtual bool SetFloatArray( const std::string& variable_name, GeoVector float_array );
     bool SetFloatArray( const std::string& variable_name, std::vector<float> float_array );
     #ifdef __XNAMATH_H__
     bool SetMatrix( const std::string& variable_name, XMMATRIX& matrix );
@@ -40,7 +40,7 @@ public:
     bool SetMatrix( const std::string& variable_name, GeoMatrix matrix );
     bool SetTexture( const std::string& variable_name, OpenGLTexture texture );
     
-    bool SetColor( const std::string& variable_name, Color color );
+    
     
 private:
      std::string EvaluateIncludeDirectives( std::string root_dir, std::string source );
