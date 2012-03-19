@@ -309,7 +309,7 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, v
  bool OpenGLShaderProgram::SetFloatArray( const std::string& variable_name, std::vector<float>& float_array )
  {
 #ifdef _WIN32		 
-	 return SetEffectVariable( variable_name, [&float_array](const GLint uniform_location){
+	 return SetEffectVariable( variable_name, [&float_array, &variable_name](const GLint uniform_location){
 #endif
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
      return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
