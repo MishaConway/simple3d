@@ -24,6 +24,7 @@ public:
 	D3D11Texture( D3D11Texture a, D3D11Texture b );
 	D3D11Texture( D3D11Texture a, D3D11Texture b, D3D11Texture c );
 	D3D11Texture( std::vector<D3D11Texture> textures );
+	static D3D11Texture FromText( const std::string& text, const Color& text_color, const Color& background_color );
 	D3D11Texture Clone( const unsigned width, const unsigned int height );
 	bool IsTextureArray();
 	virtual bool IsFloatTexture();

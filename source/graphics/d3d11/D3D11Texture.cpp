@@ -52,6 +52,11 @@ D3D11Texture::D3D11Texture( std::vector<D3D11Texture> textures )
 	PrepareTextureArray( textures );	
 }
 
+D3D11Texture D3D11Texture::FromText( const std::string& text, const Color& text_color, const Color& background_color )
+{
+	return D3D11Texture();
+}
+
 
 void D3D11Texture::PrepareTextureArray( std::vector<D3D11Texture> textures )
 {
