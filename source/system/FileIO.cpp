@@ -24,8 +24,8 @@
 #endif
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
-char** (^Directory::get_files_in_directory_block)(const char* path) = 0; 
-const char* (^File::read_all_text_block)(const char* path) = 0; 
+std::vector<std::string> (^Directory::get_files_in_directory_block)(const char* path) = 0; 
+std::string (^File::read_all_text_block)(const char* path) = 0; 
 #endif
 
 
@@ -106,14 +106,7 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 		cleaned_path += "/";
     
 	#if defined(__APPLE__) || defined(__APPLE_CC__)
-    char** pFiles = get_files_in_directory_block( cleaned_path.c_str() );
-    while( *pFiles )
-    {
-        std::string file = std::string( *pFiles++ );
-        if( return_absolute_paths )
-            file = cleaned_path + file;
-        files.push_back( file );
-    }
+    files = get_files_in_directory_block( cleaned_path.c_str() );
     #else
     DIR* directory = opendir( path.c_str() );
 	if( directory == 0 )
@@ -140,7 +133,7 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 }
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
-void Directory::SetGetFilesInDirectoryBlock( char** (^_get_files_in_directory_block)(const char* path) )
+void Directory::SetGetFilesInDirectoryBlock( std::vector<std::string> (^_get_files_in_directory_block)(const char* path) )
 {
     get_files_in_directory_block = _get_files_in_directory_block;
 }
@@ -164,7 +157,7 @@ bool File::Exists( const std::string& path )
 }
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
-void File::SetReadAllTextBlock( const char* (^_read_all_text_block)(const char* path) )
+void File::SetReadAllTextBlock( std::string (^_read_all_text_block)(const char* path) )
 {
     read_all_text_block = _read_all_text_block;    
 }
@@ -174,7 +167,7 @@ std::string File::ReadAllText( const std::string& path )
 {
 #if defined(__APPLE__) || defined(__APPLE_CC__)
     if( read_all_text_block )
-        return std::string( read_all_text_block(path.c_str()) );
+        return read_all_text_block(path.c_str());
 #endif
     std::ifstream t(path.c_str());
 	std::stringstream buffer;

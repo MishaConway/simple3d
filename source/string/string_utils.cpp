@@ -5,7 +5,7 @@
 #endif
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
-char** (^get_regex_matches_block)(const char* str, const char* pattern ); 
+std::vector<std::string> (^get_regex_matches_block)(const char* str, const char* pattern ); 
 #endif
 
  std::string ImplodeVector( const std::vector< std::string>& vecstr, const std::string& separator )
@@ -131,21 +131,14 @@ std::vector<std::string> GetRegexMatches( std::string str, std::string _pattern 
     #endif
     
     #if defined(__APPLE__) || defined(__APPLE_CC__)
-    char** pMatches = get_regex_matches_block( str.c_str(), _pattern.c_str() );
-    while( *pMatches )
-    {
-       // std::string s = std::string(*pMatches );
-      //  printf( "it is %s\n", s.c_str() );
-        regex_matches.push_back( std::string(*pMatches++) );
-    }
+    regex_matches = get_regex_matches_block( str.c_str(), _pattern.c_str() );
     #endif
-    
     
     return regex_matches;
 }
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
-void SetGetRegexMatchesBlock( char** (^_get_regex_matches_block)(const char* str, const char* pattern )  )
+void SetGetRegexMatchesBlock( std::vector<std::string> (^_get_regex_matches_block)(const char* str, const char* pattern )  )
 {
     get_regex_matches_block = _get_regex_matches_block;
 }

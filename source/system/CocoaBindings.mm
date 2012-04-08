@@ -52,24 +52,16 @@ static unsigned char* RawDataFromUIImage( UIImage* image, unsigned int* pOutWidt
 
 void SetCocoaBindings()
 {
-    Directory::SetGetFilesInDirectoryBlock(^char** (const char* path ){
+    Directory::SetGetFilesInDirectoryBlock(^std::vector<std::string> (const char* path ){
         NSArray* array  = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingString:[NSString stringWithUTF8String:path]] error:nil];
         
-       // NSLog( @"size of dir contents is %d\n", [array count] );
-       // for( NSString* f in array )
-       //     NSLog( @"file is: %@\n", f );
-        
-        
-        char** pFiles = new char* [[array count]+1];
-        char** pStartFiles = pFiles;
+        std::vector<std::string> files;
         for( unsigned int i = 0; i < [array count]; i++ )
-            *pFiles++ = (char*) [[array objectAtIndex:i] UTF8String];
-        *pFiles = 0;
-        
-        return pStartFiles; 
+            files.push_back( std::string( (char*) [[array objectAtIndex:i] UTF8String] ) );
+        return files; 
     });
     
-    File::SetReadAllTextBlock( ^const char*( const char* path){
+    File::SetReadAllTextBlock( ^std::string ( const char* path){
         NSString* filename = [[[NSString stringWithUTF8String: path] componentsSeparatedByString:@"/"] lastObject];
         
         NSArray* split = [filename componentsSeparatedByString:@"."];
@@ -78,14 +70,14 @@ void SetCocoaBindings()
         
         NSString* file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension ];   
         
-        return [[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]; 
+        return std::string([[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]); 
     });
     
     
    
     
     
-    SetGetRegexMatchesBlock( ^char** (const char* _str, const char* _pattern){
+    SetGetRegexMatchesBlock( ^std::vector<std::string> (const char* _str, const char* _pattern){
         NSString* str = [NSString stringWithUTF8String:_str];
         NSString* pattern = [NSString stringWithUTF8String:_pattern];
         
@@ -103,13 +95,13 @@ void SetCocoaBindings()
             [array addObject:match_text]; 
         }
         
-        char** pMatches = new char* [[array count]+1];
-        char** pStartMatches = pMatches;
-        for( unsigned int i = 0; i < [array count]; i++ )
-            *pMatches++ = (char*) [[array objectAtIndex:i] UTF8String];
-        *pMatches = 0;
+        //char** pMatches = new char* [[array count]+1];
+        //char** pStartMatches = pMatches;
         
-        return pStartMatches;            
+        std::vector<std::string> out_matches;        
+        for( unsigned int i = 0; i < [array count]; i++ )
+            out_matches.push_back( std::string([[array objectAtIndex:i] UTF8String]) );
+        return out_matches;            
     });
     
     OpenGLTexture::SetOnLoadTextureFileBlock(^unsigned char* (const char* cstr_path, unsigned int *pOutWidth, unsigned int *pOutHeight) {            
@@ -228,6 +220,11 @@ void SetCocoaBindings()
         
         // Write image to PNG
         [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
+        
+        
+        CGImageRelease( imageRef );
+        CGDataProviderRelease( provider );
+        CGColorSpaceRelease( colorSpaceRef );
     });
 }
 

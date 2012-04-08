@@ -14,5 +14,5 @@ std::string CharToString( const char ch );
 std::vector<std::string> GetRegexMatches( std::string str, std::string pattern );
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
-void SetGetRegexMatchesBlock( char** (^get_regex_matches_block)(const char* str, const char* pattern ) );
+void SetGetRegexMatchesBlock( std::vector<std::string> (^get_regex_matches_block)(const char* str, const char* pattern ) );
 #endif
