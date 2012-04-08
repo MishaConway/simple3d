@@ -104,13 +104,12 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     //configure distances used to build board
     const unsigned int num_tiles_per_row = 3;
     const unsigned int num_tiles_per_col = 3;
-    const float separation = 0.93f;
     const float slice_size = 1.5f;
     const float slice_width = slice_size;
     const float slice_height = slice_size;
     const float tile_width = slice_width / (float)num_tiles_per_row;
     const float tile_height = slice_height / (float)num_tiles_per_col;
-    const float tile_spacing = 0.03f;
+
        
     //construct all tile renderable objects
     for( int z = 0; z < 3; z++ )
