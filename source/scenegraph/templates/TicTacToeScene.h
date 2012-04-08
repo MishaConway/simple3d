@@ -34,6 +34,7 @@ public:
     TicTacToeTile GetSelectedMove();
     void SubmitSelectedMove();
 protected:
+    void ResetTilePositions();
     void PickTiles( const unsigned int x, const unsigned int y );
     void SortSceneObjects();
     RenderableObject* GetTile( const unsigned int x, const unsigned int y, const unsigned z );

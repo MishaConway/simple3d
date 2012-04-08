@@ -118,23 +118,42 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     for( int y = 0; y < 3; y++ )
     {
         RenderableObject* tile = new RenderableObject( tile_tex, GeometryFactory().GenerateXYUnitSquare().Scale(tile_width, tile_height, 1 ));
-        tile->Translate( -slice_width / 2.0f + tile_width * x + x * tile_spacing, -slice_height / 2.0f + tile_height * y + y * tile_spacing,  separation - z * separation );
         tile->SetBlendType(BlendType::ALPHA);
         tile->SetTwoSided(true);
         tile->SetUserData( "X", IntToString(x) );
         tile->SetUserData( "Y", IntToString(y) );
         tile->SetUserData( "Z", IntToString(z) );
-        
         scene_objects.push_back(tile);
         tiles.push_back(tile);
     }
+    ResetTilePositions();
     
     //construct UI objects
 	background = new Sprite( Texture( GetRootAssetsPath() + "space_backgrounds/1.jpg" ), GeoFloat2(0,0), GeoFloat2( 2, 2 ) );
     
     //sprites.push_back(background);
-        
-    //finally we want to start the scene with all objects sorted from most distant to closest to camera
+}
+                        
+void TicTacToeScene::ResetTilePositions()
+{
+    //configure distances used to build board
+    const unsigned int num_tiles_per_row = 3;
+    const unsigned int num_tiles_per_col = 3;
+    const float separation = 0.93f;
+    const float slice_size = 1.5f;
+    const float slice_width = slice_size;
+    const float slice_height = slice_size;
+    const float tile_width = slice_width / (float)num_tiles_per_row;
+    const float tile_height = slice_height / (float)num_tiles_per_col;
+    const float tile_spacing = 0.03f;
+    
+    for( int z = 0; z < 3; z++ )
+        for( int x = 0; x < 3; x++ )
+            for( int y = 0; y < 3; y++ )
+            {
+                GetTile(x,y,z)->SetIdentity();
+                GetTile(x,y,z)->Translate( -slice_width / 2.0f + tile_width * x + x * tile_spacing, -slice_height / 2.0f + tile_height * y + y * tile_spacing,  separation - z * separation );
+            }
     SortSceneObjects();
 }
                         
@@ -314,6 +333,7 @@ void TicTacToeScene::ClearMoves()
     has_selected_move = false;
     for( unsigned int i = 0; i < tiles.size(); i++ )
         tiles[i]->SetUserData("value", "" );
+    ResetTilePositions();
 }
 
 void TicTacToeScene::PlayMove( TicTacToeTile move )
