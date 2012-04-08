@@ -231,18 +231,20 @@ void TicTacToeScene::HandleMouseMove( const unsigned int x, const unsigned int y
     last_mousedown_x = x;
     last_mousedown_y = y;  
 }
+                        
+struct RenderableObjectDistanceNode
+{
+    RenderableObject* renderable_object;
+    float distance_from_cam;
+    bool operator < (const RenderableObjectDistanceNode& r) const
+    {
+        return (distance_from_cam < r.distance_from_cam);
+    }
+};
 
 void TicTacToeScene::SortSceneObjects()
 {
-    struct RenderableObjectDistanceNode
-    {
-        RenderableObject* renderable_object;
-        float distance_from_cam;
-        bool operator < (const RenderableObjectDistanceNode& r) const
-        {
-            return (distance_from_cam < r.distance_from_cam);
-        }
-    };
+    
     
     std::map< RenderableObject*, float > objects_with_distance_from_cam;
     std::vector<RenderableObjectDistanceNode> renderable_object_distance_nodes;
