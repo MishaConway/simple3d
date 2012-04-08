@@ -18,8 +18,8 @@
 
 static unsigned char* RawDataFromUIImage( UIImage* image, unsigned int* pOutWidth, unsigned int* pOutHeight )
 {
-    if (image == nil)
-        NSLog(@"Do real error checking here");
+    //if (image == nil)
+    //    NSLog(@"Do real error checking here");
     
     GLuint original_width = CGImageGetWidth(image.CGImage);
     GLuint original_height = CGImageGetHeight(image.CGImage);
@@ -55,9 +55,9 @@ void SetCocoaBindings()
     Directory::SetGetFilesInDirectoryBlock(^char** (const char* path ){
         NSArray* array  = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingString:[NSString stringWithUTF8String:path]] error:nil];
         
-        NSLog( @"size of dir contents is %d\n", [array count] );
-        for( NSString* f in array )
-            NSLog( @"file is: %@\n", f );
+       // NSLog( @"size of dir contents is %d\n", [array count] );
+       // for( NSString* f in array )
+       //     NSLog( @"file is: %@\n", f );
         
         
         char** pFiles = new char* [[array count]+1];
@@ -120,7 +120,7 @@ void SetCocoaBindings()
         {
             if( 0 != [[path_split objectAtIndex:i] caseInsensitiveCompare:@""] )
             {
-                NSLog( @"pathsplit here is %@\n", [path_split objectAtIndex:i] );
+              //  NSLog( @"pathsplit here is %@\n", [path_split objectAtIndex:i] );
                 directory = [directory stringByAppendingString:[path_split objectAtIndex:i]];
                 directory = [directory stringByAppendingString:@"/"];
             }
@@ -132,13 +132,13 @@ void SetCocoaBindings()
         NSString* filename_without_extension = [[split objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString* extension = [[split lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        NSLog( @"directory is %@\n", directory );
-        NSLog( @"extension is %@\n", extension );
-        NSLog( @"filename without is %@\n", filename_without_extension );
+      //  NSLog( @"directory is %@\n", directory );
+      //  NSLog( @"extension is %@\n", extension );
+      //  NSLog( @"filename without is %@\n", filename_without_extension );
         
         NSString* bundle_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension inDirectory:directory];
         
-        NSLog( @"bundle path is %@\n", bundle_path );
+       // NSLog( @"bundle path is %@\n", bundle_path );
         
      /*   NSArray *dirContents  = [[NSFileManager defaultManager]
          directoryContentsAtPath:

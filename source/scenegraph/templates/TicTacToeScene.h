@@ -12,7 +12,7 @@ class TicTacToeScene : public Scene
 {
 public:
 	TicTacToeScene();
-	TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player ); 
+	TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ); 
     
     virtual void RenderScene( const bool reflection = false );
     virtual bool Update( const float elapsed_seconds );
@@ -25,7 +25,7 @@ public:
     void PlayMove( TicTacToeTile move );
     void PlayRandomMove(const char value);
     
-    
+    void SetXorO( const char x_or_o_player );
     
     void EnablePlaying();
     void DisablePlaying();

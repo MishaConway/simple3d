@@ -5,7 +5,7 @@
 #include "../../std/nullptr.h"
 
 TicTacToeScene::TicTacToeScene(){}
-TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const char x_or_o_player  ) : Scene( hWnd, width, height, fovy, near_z, far_z )
+TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ) : Scene( hWnd, width, height, fovy, near_z, far_z )
 {
 	SetBackgroundColor( Color::MidnightBlue());
 
@@ -136,6 +136,11 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
         
     //finally we want to start the scene with all objects sorted from most distant to closest to camera
     SortSceneObjects();
+}
+                        
+void TicTacToeScene::SetXorO( const char x_or_o_player )
+{
+    this->x_or_o_player = x_or_o_player;
 }
 
 void TicTacToeScene::RenderScene( const bool reflection )
