@@ -1,5 +1,4 @@
 #include "OpenGLGraphicsDevice.h"
-#include "../../std/nullptr.h"
 #if defined(__APPLE__) || defined(__APPLE_CC__) 
 #include "../../system/CocoaBindings.h"
 #endif

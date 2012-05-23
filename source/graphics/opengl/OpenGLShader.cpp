@@ -1,7 +1,6 @@
 #include "OpenGLShader.h"
 #include "../../geo/Geometry.h"
 #include <algorithm>
-#include "../../std/nullptr.h"
 #include "../../string/string_utils.h"
 
 std::map<std::string, OpenGLShader> OpenGLShader::shaders;

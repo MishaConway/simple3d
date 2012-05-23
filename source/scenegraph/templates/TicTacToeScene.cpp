@@ -2,12 +2,11 @@
 #include <math.h>
 #include <algorithm>
 #include "../../string/string_utils.h"
-#include "../../std/nullptr.h"
 
 TicTacToeScene::TicTacToeScene(){}
 TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ) : Scene( hWnd, width, height, fovy, near_z, far_z )
 {
-	SetBackgroundColor( Color::MidnightBlue());
+	SetBackgroundColor( Color::Black());
 
     //set x_or_o_player
     this->x_or_o_player = tolower(x_or_o_player);
@@ -130,7 +129,7 @@ TicTacToeScene::TicTacToeScene( HWND hWnd, const unsigned int width, const unsig
     //construct UI objects
 	background = new Sprite( Texture( GetRootAssetsPath() + "space_backgrounds/1.jpg" ), GeoFloat2(0,0), GeoFloat2( 2, 2 ) );
     
-    //sprites.push_back(background);
+   // sprites.push_back(background);
 }
                         
 void TicTacToeScene::ResetTilePositions()

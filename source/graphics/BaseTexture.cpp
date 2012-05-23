@@ -1,5 +1,4 @@
 #include "BaseTexture.h"
-#include "../std/nullptr.h"
 
 BaseTexture::BaseTexture()
 {

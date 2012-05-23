@@ -2,7 +2,6 @@
 #include <algorithm>
 #include "OpenGLGraphicsDevice.h"
 #include "../../scenegraph/Sprite.h"
-#include "../../std/nullptr.h"
 
 OpenGLGraphicsDevice* OpenGLTexture::pGraphicsDevice = nullptr;
 

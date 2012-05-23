@@ -2,7 +2,6 @@
 #include "../geo/GeoFloat.h"
 #include <algorithm>
 #include <math.h>
-#include "../std/nullptr.h"
 
 #ifdef _WIN32
 #define copysign _copysign
