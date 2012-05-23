@@ -5,7 +5,7 @@
 #include "Color.h"
 #include <string>
 #include <vector>
-#include "../std/functional.h"
+#include <functional>
 #include "../interfaces/IValidatable.h"
 
 #ifdef _WIN32

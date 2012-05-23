@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../std/functional.h"
+#include <functional>
 #include "../geo/GeoFloat.h"
 #include "Color.h"
 #include "../interfaces/IValidatable.h"

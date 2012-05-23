@@ -189,7 +189,6 @@
 		C61AC6FE14D8D9B4001BCCE7 /* SpriteVS.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = SpriteVS.vert; sourceTree = "<group>"; };
 		C61AC6FF14D8D9B4001BCCE7 /* techniques.fx */ = {isa = PBXFileReference; lastKnownFileType = text; path = techniques.fx; sourceTree = "<group>"; };
 		C61AC70114D8D9B4001BCCE7 /* shaders.fx */ = {isa = PBXFileReference; lastKnownFileType = text; path = shaders.fx; sourceTree = "<group>"; };
-		C61AC70314D8D9B4001BCCE7 /* functional.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = functional.h; sourceTree = "<group>"; };
 		C61AC70514D8D9B4001BCCE7 /* triple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triple.h; sourceTree = "<group>"; };
 		C61AC70714D8D9B4001BCCE7 /* string_utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = string_utils.cpp; sourceTree = "<group>"; };
 		C61AC70814D8D9B4001BCCE7 /* string_utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = string_utils.h; sourceTree = "<group>"; };
@@ -492,7 +491,6 @@
 		C61AC70214D8D9B4001BCCE7 /* std */ = {
 			isa = PBXGroup;
 			children = (
-				C61AC70314D8D9B4001BCCE7 /* functional.h */,
 				C61AC70514D8D9B4001BCCE7 /* triple.h */,
 			);
 			name = std;

@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include <math.h>
-#include "../std/functional.h"
+#include <functional>
 #include "../std/triple.h"
 
 struct Vertex
