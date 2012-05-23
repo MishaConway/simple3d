@@ -62,19 +62,18 @@ void SetCocoaBindings()
     });
     
     File::SetReadAllTextBlock( ^std::string ( const char* path){
-        NSString* filename = [[[NSString stringWithUTF8String: path] componentsSeparatedByString:@"/"] lastObject];
-        
+        NSString* cocoafied_path = [NSString stringWithUTF8String: path];
+        NSString* filename = [[cocoafied_path componentsSeparatedByString:@"/"] lastObject];
         NSArray* split = [filename componentsSeparatedByString:@"."];
         NSString* filename_without_extension = [[split objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString* extension = [[split objectAtIndex: 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        
-        NSString* file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension ];   
-        
-        return std::string([[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]); 
+        NSString* dir_name = [cocoafied_path stringByDeletingLastPathComponent];
+        NSString* file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension inDirectory:dir_name]; 
+        if( !file_path )
+          file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension];   
+            
+        return std::string([[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]);
     });
-    
-    
-   
     
     
     SetGetRegexMatchesBlock( ^std::vector<std::string> (const char* _str, const char* _pattern){
