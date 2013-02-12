@@ -642,7 +642,7 @@
 		C61AC66A14D8D97F001BCCE7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = C61AC66D14D8D97F001BCCE7 /* Build configuration list for PBXProject "Simple3D_iOS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -763,14 +763,18 @@
 		C61AC66F14D8D97F001BCCE7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 			};
 			name = Debug;
 		};
 		C61AC67014D8D97F001BCCE7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 			};
 			name = Release;
 		};

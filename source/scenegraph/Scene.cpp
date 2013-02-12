@@ -26,9 +26,23 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
 	downsample_render_target = RenderTarget( 256, 256 );
 	downsample_render_target2 = RenderTarget( 256, 256 );
     
-    printf( "after render tagrets ..\n" );
+    printf( "after render tagrets .. and root s\n" );
+    
+    
+    
+    const std::string shader_path = graphics_device.GetRendererType() == "D3D11" ? root_shader_path + "/hlsl/shaders.fx" : root_shader_path + "/glsl/techniques.fx";
+    
+    
+    if( !File::Exists( shader_path ))
+    {
+        printf( "ERROR!!! cannot find shader at %s\n", shader_path.c_str() );
+    }
+    
+    printf( "shader path is %s\n", shader_path.c_str());
 
 	Effect( graphics_device.GetRendererType() == "D3D11" ? root_shader_path + "/hlsl/shaders.fx" : root_shader_path + "/glsl/techniques.fx" );
+    
+    printf( "made it a here...\n");
 
 	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, -0.2f, 3.7f ), GeoVector( 0, -0.14f, 0 ) );
 
