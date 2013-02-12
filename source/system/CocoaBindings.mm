@@ -71,8 +71,11 @@ void SetCocoaBindings()
         NSString* file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension inDirectory:dir_name]; 
         if( !file_path )
           file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension];   
-            
-        return std::string([[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]);
+        
+        std::string file_contents;
+        if( file_path)
+            file_contents = std::string([[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]);
+        return file_contents;
     });
     
     
@@ -174,8 +177,8 @@ void SetCocoaBindings()
         
         UIColor* text_color = [UIColor colorWithRed:((float)r / 255.0f) green:((float)g / 255.0f) blue:((float)b / 255.0f) alpha:((float)a/255.0f)];
         [text_color set];
-        [text drawInRect:textRect withFont:font
-           lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
+       // [text drawInRect:textRect withFont:font
+       //    lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
         
         // Create and return the UIImage object
         CGImageRef cgImage = CGBitmapContextCreateImage(context);
