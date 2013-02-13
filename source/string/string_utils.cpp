@@ -8,6 +8,13 @@
 std::vector<std::string> (^get_regex_matches_block)(const char* str, const char* pattern ); 
 #endif
 
+bool EndsWith(const std::string& a, const std::string& b)
+{
+    if (b.size() > a.size())
+        return false;
+    return std::equal(a.begin() + a.size() - b.size(), a.end(), b.begin());
+}
+
  std::string ImplodeVector( const std::vector< std::string>& vecstr, const std::string& separator )
 {
 	std::string ImplodedString;

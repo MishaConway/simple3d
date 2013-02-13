@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 
+bool EndsWith(const std::string& a, const std::string& b);
 std::string ImplodeVector( const std::vector< std::string>& vecstr, const std::string& separator );
 std::vector< std::string> ExplodeString( const std::string& str, const std::string& charDelimiters, const bool PreserveDelimiters = false );
 std::string Trim( const std::string& trim );
