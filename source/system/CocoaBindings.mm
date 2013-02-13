@@ -49,6 +49,17 @@ static unsigned char* RawDataFromUIImage( UIImage* image, unsigned int* pOutWidt
     return imageData;
 }
 
+NSString* BundlepathFromFilepath( const char* path )
+{
+    NSString* cocoafied_path = [NSString stringWithUTF8String: path];
+    NSString* filename = [[cocoafied_path componentsSeparatedByString:@"/"] lastObject];
+    NSArray* split = [filename componentsSeparatedByString:@"."];
+    NSString* filename_without_extension = [[split objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString* extension = [[split objectAtIndex: 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString* dir_name = [cocoafied_path stringByDeletingLastPathComponent];
+    return [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension inDirectory:dir_name];
+}
+
 
 void SetCocoaBindings()
 {
@@ -61,20 +72,16 @@ void SetCocoaBindings()
         return files; 
     });
     
-    File::SetReadAllTextBlock( ^std::string ( const char* path){
-        NSString* cocoafied_path = [NSString stringWithUTF8String: path];
-        NSString* filename = [[cocoafied_path componentsSeparatedByString:@"/"] lastObject];
-        NSArray* split = [filename componentsSeparatedByString:@"."];
-        NSString* filename_without_extension = [[split objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        NSString* extension = [[split objectAtIndex: 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        NSString* dir_name = [cocoafied_path stringByDeletingLastPathComponent];
-        NSString* file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension inDirectory:dir_name]; 
-        if( !file_path )
-          file_path = [[NSBundle mainBundle] pathForResource:filename_without_extension ofType:extension];   
-        
+    File::SetFileExistsBlock(^bool(const char *path) {
+        NSString* bundle_path = BundlepathFromFilepath( path );
+        return bundle_path ? true : false;
+    });
+    
+    File::SetReadAllTextBlock( ^std::string ( const char* path){        
         std::string file_contents;
-        if( file_path)
-            file_contents = std::string([[NSString stringWithContentsOfFile:file_path encoding:NSUTF8StringEncoding error:nil] UTF8String]);
+        NSString* bundle_path = BundlepathFromFilepath(path);
+        if( bundle_path)
+            file_contents = std::string([[NSString stringWithContentsOfFile:bundle_path encoding:NSUTF8StringEncoding error:nil] UTF8String]);
         return file_contents;
     });
     

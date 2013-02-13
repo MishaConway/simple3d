@@ -25,7 +25,8 @@
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
 std::vector<std::string> (^Directory::get_files_in_directory_block)(const char* path) = 0; 
-std::string (^File::read_all_text_block)(const char* path) = 0; 
+std::string (^File::read_all_text_block)(const char* path) = 0;
+bool (^File::file_exists_block)(const char* path) = 0;
 #endif
 
 
@@ -149,14 +150,22 @@ bool File::Exists( const std::string& path )
 	if ( !(dwResult & FILE_ATTRIBUTE_DIRECTORY) )
 		return true;
 #else
-     struct stat file_description;
-     return stat( path.c_str(), &file_description ) == 0 ? true : false;
+    #if defined(__APPLE__) || defined(__APPLE_CC__)
+    return file_exists_block( path.c_str() );
+    #else
+    struct stat file_description;
+    return stat( path.c_str(), &file_description ) == 0 ? true : false;
+    #endif
 #endif
 
 	return false;
 }
 
 #if defined(__APPLE__) || defined(__APPLE_CC__)
+void File::SetFileExistsBlock( bool (^_file_exists_block)(const char* path) )
+{
+    file_exists_block = _file_exists_block;
+}
 void File::SetReadAllTextBlock( std::string (^_read_all_text_block)(const char* path) )
 {
     read_all_text_block = _read_all_text_block;    
