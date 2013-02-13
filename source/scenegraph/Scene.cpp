@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "../string/string_utils.h"
 #include <algorithm>
 
 std::string Scene::root_shader_path;
@@ -6,45 +7,38 @@ std::string Scene::root_assets_path;
 
 
 Scene::Scene(){}
-Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z )
+Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const std::string& root_shader_path, const std::string& root_assets_path )
 {		
-	printf( "before inii\n" );
     this->width = width;
     this->height = height;
     
+    SetRootShaderPath(root_shader_path);
+    SetRootAssetsPath(root_assets_path);
+
     graphics_device.Initialize( hWnd, width, height, true );
-    printf( "after init..\n" );
 	Object::BindGraphicsDevice( &graphics_device );
         
 	SetBackgroundColor( Color::Black() );
 
-	printf( "before render atrges..\n" );
     render_target = RenderTarget( 512, 512 );
     
 
 
 	downsample_render_target = RenderTarget( 256, 256 );
 	downsample_render_target2 = RenderTarget( 256, 256 );
-    
-    printf( "after render tagrets .. and root s\n" );
-    
-    
-    
-    const std::string shader_path = graphics_device.GetRendererType() == "D3D11" ? root_shader_path + "/hlsl/shaders.fx" : root_shader_path + "/glsl/techniques.fx";
+        
+    std::string shader_path = graphics_device.GetRendererType() == "D3D11" ? GetRootShaderPath() + "/hlsl/shaders.fx" : GetRootShaderPath() + "glsl/techniques.fx";
     
     
     if( !File::Exists( shader_path ))
     {
         printf( "ERROR!!! cannot find shader at %s\n", shader_path.c_str() );
+        throw "could not load shader!";
     }
+ 
+	Effect( shader_path.c_str() );
     
-    printf( "shader path is %s\n", shader_path.c_str());
-
-	Effect( graphics_device.GetRendererType() == "D3D11" ? root_shader_path + "/hlsl/shaders.fx" : root_shader_path + "/glsl/techniques.fx" );
-    
-    printf( "made it a here...\n");
-
-	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, -0.2f, 3.7f ), GeoVector( 0, -0.14f, 0 ) );
+	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, 0, 4 ), GeoVector( 0, 0, 0 ) );
 
 	perform_prerendering = false;
 }
@@ -52,12 +46,22 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
 bool Scene::SetRootShaderPath( const std::string& _root_shader_path )
 {
 	root_shader_path = _root_shader_path;
+    if( !EndsWith( root_shader_path, "/") )
+        root_shader_path += "/";
 	return Directory::Exists( root_shader_path  );
+}
+
+std::string Scene::GetRootShaderPath()
+{
+    return root_shader_path;
 }
 
 bool Scene::SetRootAssetsPath( const std::string& _root_assets_path )
 {
 	root_assets_path = _root_assets_path;
+    if( !EndsWith( root_assets_path, "/") )
+        root_assets_path += "/";
+    
 	RenderableObject::SetRootAssetsPath( root_assets_path );
 	return Directory::Exists( root_assets_path );
 }
@@ -178,7 +182,6 @@ bool Scene::Render()
 
 void Scene::Draw()
 {
-    Object::BindGraphicsDevice( &graphics_device );
     Render();
 	graphics_device.SwapBackBuffer();
 }

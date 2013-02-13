@@ -12,7 +12,7 @@ class TicTacToeScene : public Scene
 {
 public:
 	TicTacToeScene();
-	TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z ); 
+	TicTacToeScene( HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const std::string& root_shader_path, const std::string& root_assets_path );
     
     virtual void RenderScene( const bool reflection = false );
     virtual bool Update( const float elapsed_seconds );
