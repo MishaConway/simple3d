@@ -9,3 +9,4 @@ technique Sprite{ SpriteVS, BasicPS }
 technique SolidColorSprite{ SpriteVS, SolidColorPS }
 technique ProgressSprite{ SpriteVS, ProgressSpritePS }
 technique Line{ BasicVS, LinePS }
+technique Phong{ BasicVS, PhongPS }

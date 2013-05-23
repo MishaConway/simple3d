@@ -11,7 +11,10 @@ class Scene
 public:
 	Scene();
 	Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const std::string& root_shader_path, const std::string& root_assets_path );
-	void Draw();
+	
+    void SetWidthAndHeight( const unsigned int width, const unsigned int height );
+    
+    void Draw();
 	void SetBackgroundColor( const Color& background_color );
 	virtual bool Update( const float elapsed_seconds );	
 	virtual void HandleMouseMove( const unsigned int x, const unsigned int y ); 

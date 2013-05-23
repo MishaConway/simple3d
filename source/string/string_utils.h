@@ -1,4 +1,6 @@
 #include <string>
+#include <sstream>
+#include <stdexcept>
 #include <vector>
 
 bool EndsWith(const std::string& a, const std::string& b);
@@ -10,6 +12,20 @@ std::string StringReplace( std::string result, const std::string& replaceWhat, c
 
 std::string IntToString( const int i );
 std::string CharToString( const char ch );
+
+template<typename T>
+T StringToNumber(const std::string& numberAsString)
+{
+    T valor;
+    
+    std::stringstream stream(numberAsString);
+    stream >> valor;
+    if (stream.fail()) {
+        std::runtime_error e(numberAsString);
+        throw e;
+    }
+    return valor;
+}
 
 
 std::vector<std::string> GetRegexMatches( std::string str, std::string pattern );

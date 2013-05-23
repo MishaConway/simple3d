@@ -44,7 +44,8 @@ protected:
 	bool visible;
 	bool planar_reflector;
     bool two_sided;
-    Color color;
+    Color color, specular_color;
+    float specular_power;
 	BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type;
 	std::string technique_name;
 	static std::string enforced_global_technique;

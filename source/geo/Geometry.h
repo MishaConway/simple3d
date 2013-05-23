@@ -101,9 +101,10 @@ public:
 
 	std::pair<std::vector<Vertex>, std::vector<unsigned int>  > GetVerticesAndIndices();
 
+    std::vector<GeoTriangle> triangles;
 private:
 	std::vector<GeoVertex> vertices;
-	std::vector<GeoTriangle> triangles;
+	
 	std::vector<GeoQuad> quads;
 	std::vector<Geometry> geometries;
 	std::vector<unsigned int> indices;

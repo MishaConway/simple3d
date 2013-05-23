@@ -313,11 +313,16 @@ bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, v
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
      return SetEffectVariable( variable_name, ^(const GLint uniform_location){                      
 #endif
-    if( variable_name == "color" )
-        glUniform4fv( uniform_location, 1, &float_array[0] );
-    else
-         glUniform1fv( uniform_location, float_array.size(),  &float_array[0]);});
+         if( 4 == float_array.size() )
+             glUniform4fv( uniform_location, 1, &float_array[0] );
+         else
+         {
+             printf( "setting shader uniform %s with size of %i\n", variable_name.c_str(), float_array.size() );
+             glUniform1fv( uniform_location, float_array.size(),  &float_array[0]);
+         }
+     });
  }
+                              
 
 #ifdef __XNAMATH_H__
  bool OpenGLShaderProgram::SetMatrix( const std::string& variable_name, XMMATRIX& matrix )

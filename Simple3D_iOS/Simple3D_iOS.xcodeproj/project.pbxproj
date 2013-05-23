@@ -64,11 +64,16 @@
 		C61AC73F14D8DAED001BCCE7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C61AC73E14D8DAED001BCCE7 /* AppDelegate.m */; };
 		C61AC74E14D8DBD0001BCCE7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C61AC73014D8DAED001BCCE7 /* Foundation.framework */; };
 		C61AC75414D8DBD0001BCCE7 /* Simple3D_iOS_static.m in Sources */ = {isa = PBXBuildFile; fileRef = C61AC75314D8DBD0001BCCE7 /* Simple3D_iOS_static.m */; };
+		C6379BC817387D8600467175 /* PhongPS.frag in Sources */ = {isa = PBXBuildFile; fileRef = C6379BC717387D8600467175 /* PhongPS.frag */; };
 		C6474C5F15048FFB001331B1 /* TicTacToeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6474C5E15048FFB001331B1 /* TicTacToeScene.cpp */; };
 		C6474C6015049269001331B1 /* TicTacToeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6474C5E15048FFB001331B1 /* TicTacToeScene.cpp */; };
 		C669543614E1B5CD00AC8324 /* CocoaBindings.mm in Sources */ = {isa = PBXBuildFile; fileRef = C669543514E1B5CD00AC8324 /* CocoaBindings.mm */; };
 		C669543914E1B6D100AC8324 /* CocoaBindings.mm in Sources */ = {isa = PBXBuildFile; fileRef = C669543514E1B5CD00AC8324 /* CocoaBindings.mm */; };
+		C67FC475173B1351007AFD6B /* Light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67FC473173B1351007AFD6B /* Light.cpp */; };
 		C6DB312114E9D82C00B86F93 /* SpinningCylinderGridScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F6CB5614E9D72D0040BD18 /* SpinningCylinderGridScene.cpp */; };
+		C6DCD85816CB93EC00041110 /* ChessScene.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DCD85716CB93EC00041110 /* ChessScene.h */; };
+		C6DCD85A16CB942200041110 /* ChessScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6DCD85916CB942200041110 /* ChessScene.cpp */; };
+		C6DCD85B16CB942200041110 /* ChessScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6DCD85916CB942200041110 /* ChessScene.cpp */; };
 		C6F6CB5814E9D72D0040BD18 /* SpinningCylinderGridScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F6CB5614E9D72D0040BD18 /* SpinningCylinderGridScene.cpp */; };
 /* End PBXBuildFile section */
 
@@ -176,10 +181,8 @@
 		C61AC6EF14D8D9B4001BCCE7 /* helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
 		C61AC6F014D8D9B4001BCCE7 /* uniforms.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uniforms.h; sourceTree = "<group>"; };
 		C61AC6F114D8D9B4001BCCE7 /* varying.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = varying.h; sourceTree = "<group>"; };
-		C61AC6F314D8D9B4001BCCE7 /* helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
 		C61AC6F414D8D9B4001BCCE7 /* textures.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = textures.glsl; sourceTree = "<group>"; };
 		C61AC6F614D8D9B4001BCCE7 /* attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = attributes.h; sourceTree = "<group>"; };
-		C61AC6F714D8D9B4001BCCE7 /* helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
 		C61AC6F814D8D9B4001BCCE7 /* LinePS.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = LinePS.frag; sourceTree = "<group>"; };
 		C61AC6F914D8D9B4001BCCE7 /* PlanarReflectionPS.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = PlanarReflectionPS.frag; sourceTree = "<group>"; };
 		C61AC6FA14D8D9B4001BCCE7 /* PostProcessHorizontalBlurPS.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = PostProcessHorizontalBlurPS.frag; sourceTree = "<group>"; };
@@ -209,11 +212,18 @@
 		C61AC75114D8DBD0001BCCE7 /* Simple3D_iOS_static-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Simple3D_iOS_static-Prefix.pch"; sourceTree = "<group>"; };
 		C61AC75214D8DBD0001BCCE7 /* Simple3D_iOS_static.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simple3D_iOS_static.h; sourceTree = "<group>"; };
 		C61AC75314D8DBD0001BCCE7 /* Simple3D_iOS_static.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Simple3D_iOS_static.m; sourceTree = "<group>"; };
+		C6379BC517387C5400467175 /* vertex_shader_helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vertex_shader_helpers.h; sourceTree = "<group>"; };
+		C6379BC617387C5F00467175 /* fragment_shader_helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fragment_shader_helpers.h; sourceTree = "<group>"; };
+		C6379BC717387D8600467175 /* PhongPS.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PhongPS.frag; sourceTree = "<group>"; };
 		C6474C5C15048FDE001331B1 /* TicTacToeScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TicTacToeScene.h; path = templates/TicTacToeScene.h; sourceTree = "<group>"; };
 		C6474C5E15048FFB001331B1 /* TicTacToeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TicTacToeScene.cpp; path = templates/TicTacToeScene.cpp; sourceTree = "<group>"; };
 		C669543414E1B5CD00AC8324 /* CocoaBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaBindings.h; sourceTree = "<group>"; };
 		C669543514E1B5CD00AC8324 /* CocoaBindings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CocoaBindings.mm; sourceTree = "<group>"; };
+		C67FC473173B1351007AFD6B /* Light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Light.cpp; sourceTree = "<group>"; };
+		C67FC474173B1351007AFD6B /* Light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
 		C6D1E13D15056AA0009B143E /* IStringable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IStringable.h; sourceTree = "<group>"; };
+		C6DCD85716CB93EC00041110 /* ChessScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChessScene.h; path = templates/ChessScene.h; sourceTree = "<group>"; };
+		C6DCD85916CB942200041110 /* ChessScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChessScene.cpp; path = templates/ChessScene.cpp; sourceTree = "<group>"; };
 		C6F6CB5614E9D72D0040BD18 /* SpinningCylinderGridScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpinningCylinderGridScene.cpp; path = templates/SpinningCylinderGridScene.cpp; sourceTree = "<group>"; };
 		C6F6CB5714E9D72D0040BD18 /* SpinningCylinderGridScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpinningCylinderGridScene.h; path = templates/SpinningCylinderGridScene.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -394,6 +404,8 @@
 				C61AC6DE14D8D9B4001BCCE7 /* Sprite.cpp */,
 				C61AC6DF14D8D9B4001BCCE7 /* Sprite.h */,
 				C61AC6E014D8D9B4001BCCE7 /* TestScenes */,
+				C67FC473173B1351007AFD6B /* Light.cpp */,
+				C67FC474173B1351007AFD6B /* Light.h */,
 			);
 			name = scenegraph;
 			path = ../source/scenegraph;
@@ -438,6 +450,7 @@
 				C61AC6FD14D8D9B4001BCCE7 /* SolidColorPS.frag */,
 				C61AC6FE14D8D9B4001BCCE7 /* SpriteVS.vert */,
 				C61AC6FF14D8D9B4001BCCE7 /* techniques.fx */,
+				C6379BC717387D8600467175 /* PhongPS.frag */,
 			);
 			path = glsl;
 			sourceTree = "<group>";
@@ -465,7 +478,7 @@
 		C61AC6F214D8D9B4001BCCE7 /* fragment_shader_includes */ = {
 			isa = PBXGroup;
 			children = (
-				C61AC6F314D8D9B4001BCCE7 /* helpers.h */,
+				C6379BC617387C5F00467175 /* fragment_shader_helpers.h */,
 				C61AC6F414D8D9B4001BCCE7 /* textures.glsl */,
 			);
 			path = fragment_shader_includes;
@@ -474,8 +487,8 @@
 		C61AC6F514D8D9B4001BCCE7 /* vertex_shader_includes */ = {
 			isa = PBXGroup;
 			children = (
+				C6379BC517387C5400467175 /* vertex_shader_helpers.h */,
 				C61AC6F614D8D9B4001BCCE7 /* attributes.h */,
-				C61AC6F714D8D9B4001BCCE7 /* helpers.h */,
 			);
 			path = vertex_shader_includes;
 			sourceTree = "<group>";
@@ -585,6 +598,8 @@
 				C6F6CB5714E9D72D0040BD18 /* SpinningCylinderGridScene.h */,
 				C6474C5C15048FDE001331B1 /* TicTacToeScene.h */,
 				C6474C5E15048FFB001331B1 /* TicTacToeScene.cpp */,
+				C6DCD85716CB93EC00041110 /* ChessScene.h */,
+				C6DCD85916CB942200041110 /* ChessScene.cpp */,
 			);
 			name = templates;
 			sourceTree = "<group>";
@@ -596,6 +611,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6DCD85816CB93EC00041110 /* ChessScene.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -683,6 +699,9 @@
 				C669543614E1B5CD00AC8324 /* CocoaBindings.mm in Sources */,
 				C6F6CB5814E9D72D0040BD18 /* SpinningCylinderGridScene.cpp in Sources */,
 				C6474C5F15048FFB001331B1 /* TicTacToeScene.cpp in Sources */,
+				C6DCD85A16CB942200041110 /* ChessScene.cpp in Sources */,
+				C6379BC817387D8600467175 /* PhongPS.frag in Sources */,
+				C67FC475173B1351007AFD6B /* Light.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,6 +762,7 @@
 				C60751E814DB2E8200ADA912 /* GeoQuaternion.cpp in Sources */,
 				C60751EA14DB2E8200ADA912 /* GeoVector.cpp in Sources */,
 				C61AC75414D8DBD0001BCCE7 /* Simple3D_iOS_static.m in Sources */,
+				C6DCD85B16CB942200041110 /* ChessScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

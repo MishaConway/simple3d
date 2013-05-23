@@ -7,5 +7,5 @@
 
 void main() 
 {
-	CreateVertexShaderOut( WorldTransform * vec4(in_position,1.0), in_normal, in_normal, in_color_uv, 1.0 ); 
+	CreateVertexShaderOut( WorldTransform * vec4(in_position,1.0), vec4(in_position,1.0), in_normal, in_normal, in_color_uv, 1.0 );
 }

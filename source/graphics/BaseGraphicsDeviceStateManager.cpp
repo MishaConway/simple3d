@@ -33,7 +33,7 @@ void BaseGraphicsDeviceStateManager::UnlockBlendState()
 void BaseGraphicsDeviceStateManager::SetDefaults()
 {
 	SetDefaultFrontFaceRendering();
-	SetDefaultBlendState();
+   	SetDefaultBlendState();
 }
 
 void BaseGraphicsDeviceStateManager::SetBlendType( const BlendType::GRAPHICS_DEVICE_STATE_MANAGER_BLEND_TYPE blend_type )

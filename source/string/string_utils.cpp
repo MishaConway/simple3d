@@ -125,7 +125,6 @@ std::string CharToString( const char ch )
     return out.str();   
 }
 
-
 std::vector<std::string> GetRegexMatches( std::string str, std::string _pattern )
 {
     std::vector<std::string> regex_matches;

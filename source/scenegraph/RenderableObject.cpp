@@ -9,7 +9,9 @@ void RenderableObject::SetDefaultValues()
 	planar_reflector = false;
     two_sided = false;
 	blend_type = BlendType::NONE;
-    color = Color::White();
+    color = Color::Brown();
+    specular_color = Color::White();
+    specular_power = 16;
 }
 
 RenderableObject::RenderableObject()
@@ -95,7 +97,7 @@ std::string RenderableObject::GetTechnique()
 
 std::string RenderableObject::GetDefaultTechnique()
 {
-	return "Basic";
+	return "Phong";
 }
 
 bool RenderableObject::Render()
@@ -109,6 +111,8 @@ bool RenderableObject::Render()
 		e.SetMatrix( "WorldInverseTranspose", GetWorldInverseTranspose() );
 		e.SetInt( "compute_projective_texture_coordinates", planar_reflector );
         e.SetColor( "color", color);
+        e.SetColor( "specular_color", specular_color);
+        e.SetFloat("specular_power", specular_power);
 		pGraphicsDevice->SetVertexBuffer( GetVertexBuffer() );
 		pGraphicsDevice->GetStateManager().SetDefaults();
         if( two_sided )

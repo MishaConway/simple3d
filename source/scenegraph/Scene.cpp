@@ -38,9 +38,17 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
  
 	Effect( shader_path.c_str() );
     
-	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, 0, 4 ), GeoVector( 0, 0, 0 ) );
+	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, 0, 3 ), GeoVector( 0, 0, 0 ) );
 
 	perform_prerendering = false;
+}
+
+void Scene::SetWidthAndHeight( const unsigned int width, const unsigned int height )
+{
+    this->width = width;
+    this->height = height;
+    graphics_device.SetViewport(width, height);
+    camera.SetWidthHeight(width, height);
 }
 
 bool Scene::SetRootShaderPath( const std::string& _root_shader_path )
@@ -171,7 +179,9 @@ void Scene::SetDefaults()
 
 bool Scene::Render()
 {
-	PreRender();
+	Effect::GetCurrentEffect().SetFloatArray( "light_source",  GeoVector( -2, 0, 5, 1 ) );
+    
+    PreRender();
 	SetDefaults();
 	RenderScene();
 	if( perform_prerendering )

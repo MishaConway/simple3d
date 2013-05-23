@@ -15,14 +15,15 @@ void TransformPosition( in vec3 objectspace_position, out vec4 worldspace_positi
 
 void TransformNormal( in vec3 objectspace_normal, out vec3 worldspace_normal )
 {
-	//worldspace_normal = normalize(mul(WorldInverseTranspose, float4(objectspace_normal,0)));
+	worldspace_normal = normalize(WorldInverseTranspose * vec4(objectspace_normal,0)).xyz;
 	//worldspace_normal = normalize(mul(objectspace_normal, WorldTransform));
-	worldspace_normal = normalize( vec4(objectspace_normal,0) * WorldInverseTranspose).xyz;
+	//worldspace_normal = normalize( vec4(objectspace_normal,0) * WorldInverseTranspose).xyz;
 }
 
-void CreateVertexShaderOut( vec4 position, vec3 normal, vec3 worldposition_to_eye_position, vec3 color_uv, float clip )
+void CreateVertexShaderOut( vec4 position, vec4 world_position, vec3 normal, vec3 worldposition_to_eye_position, vec3 color_uv, float clip )
 {
 	gl_Position = position;
+    out_worldspace_position = world_position;
 	out_normal = normal;
 	out_worldposition_to_eye_position = worldposition_to_eye_position;
 	out_color_uv = InvertY(color_uv.xy);
