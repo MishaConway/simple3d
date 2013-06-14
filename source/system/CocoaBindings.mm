@@ -222,15 +222,12 @@ void SetCocoaBindings()
         
         NSString* path = [NSString stringWithUTF8String: cpath];
         
-        // Write a UIImage to JPEG with minimum compression (best quality)
-        // The value 'image' must be a UIImage object
-        // The value '1.0' represents image compression quality as value from 0.0 to 1.0
-     //   [UIImageJPEGRepresentation(image, 1.0) writeToFile:path atomically:YES];
-        
         // Write image to PNG
-        [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
-        
-        
+        NSError* error;
+        BOOL success = [UIImagePNGRepresentation(image) writeToFile:path options:NSDataWritingAtomic error:&error];
+        if( !success )
+            NSLog( @"failed to save image: %@\n", error );
+            
         CGImageRelease( imageRef );
         CGDataProviderRelease( provider );
         CGColorSpaceRelease( colorSpaceRef );
