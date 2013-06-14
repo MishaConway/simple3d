@@ -126,6 +126,9 @@ public:
 	Geometry GenerateUnitCylinder();
 	Geometry GenerateUnitSphere();
 	Geometry GenerateUnitXZCircle();
+    
+    Geometry FromSimpleModel( const std::string& filepath );
+    
 private:
 	bool generate_indices;	
 	bool separate_texture_index_per_side;

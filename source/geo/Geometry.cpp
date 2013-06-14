@@ -1,5 +1,7 @@
 #include "Geometry.h"
 #include <algorithm>
+#include "../system/FileIO.h"
+#include "../string/string_utils.h"
 
 
 Vertex::Vertex()
@@ -855,6 +857,52 @@ Geometry GeometryFactory::GenerateUnitSphere()
 		sphere.triangles.push_back( GeoTriangle( triangle_verts[0], triangle_verts[1], triangle_verts[2] ) );
 	}
 	return sphere;
+}
+                                          
+  
+Geometry GeometryFactory::FromSimpleModel( const std::string& filepath )
+{
+    std::string data = File::ReadAllText( filepath );
+    std::vector< std::string > data_lines = ExplodeString( data, "\n\r" );
+    std::vector< GeoVertex > vertices;
+    for( int i = 0; i < data_lines.size(); i++ )
+    {
+        const std::string line = StripString( data_lines[i], " \n\t\r" );
+        if( line.size() > 0 && '#' != line[0] )
+        {
+            GeoVertex vertex;            
+            //  printf( "line %i is: %s\n", i, line.c_str() );
+            std::vector< std::string > components = ExplodeString( line, "," );
+            for( int j = 0; j < components.size(); j++ )
+            {
+                // printf( "\tcomponent:%s\n", components[j].c_str() );
+                if( "p" == components[j] || "n" == components[j] )
+                {
+                    GeoFloat3 float3;
+                    float3.x = StringToNumber<float>( components[j+1] );
+                    float3.y = StringToNumber<float>( components[j+2] );
+                    float3.z = StringToNumber<float>( components[j+3] );
+                    
+                    if( "p" == components[j] )
+                        vertex.vertex.position = float3;
+                    else if( "n" == components[j] )
+                        vertex.vertex.normal = float3;
+                    
+                }
+            }
+            vertices.push_back(vertex);
+        }
+    }
+    
+    Geometry geometry;
+    for( int tri = 0; tri < vertices.size() / 3; tri++ )
+    {
+        GeoTriangle triangle( vertices[3*tri], vertices[3*tri+1], vertices[3*tri+2]);
+        triangle.ReverseWinding();
+        geometry.triangles.push_back(triangle);
+    }
+                                              
+    return geometry;
 }
 
 
