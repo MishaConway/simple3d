@@ -56,10 +56,11 @@ struct GeoVector : public IStringable
 
 	GeoVector Normalize();
 	GeoVector Cross( const GeoVector& vec );
-	float Dot( const GeoVector& vec );
+	float Dot( const GeoVector& vec ) const;
 	float Length();
 	float LengthSquared();
-	GeoVector Lerp( const GeoVector& vec, const float s ); 
+	GeoVector Lerp( const GeoVector& vec, const float s );
+    static bool IntersectionWithPlane( const GeoVector& p1, const GeoVector& p2, const GeoVector& plane_normal, const GeoVector& point_on_plane, GeoVector* pOutIntersection );
     
     GeoVector InvertXY();
 
@@ -73,6 +74,18 @@ struct GeoVector : public IStringable
 	XMFLOAT3 ToXMFloat3();
 #endif
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

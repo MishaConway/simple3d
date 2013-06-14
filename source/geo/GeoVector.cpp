@@ -227,7 +227,7 @@ GeoVector GeoVector::Cross( const GeoVector& vec )
 	return out;
 }
 	
-float GeoVector::Dot( const GeoVector& vec )
+float GeoVector::Dot( const GeoVector& vec ) const
 {
 	return x * vec.x + y * vec.y + z * vec.z;
 	//the w part screws up the camera
@@ -246,6 +246,19 @@ float GeoVector::LengthSquared()
 GeoVector GeoVector::Lerp( const GeoVector& vec, const float s )
 {
 	return *this + ( vec - *this )*s;	
+}
+
+bool GeoVector::IntersectionWithPlane( const GeoVector& p1, const GeoVector& p2, const GeoVector& plane_normal, const GeoVector& point_on_plane, GeoVector* pOutIntersection )
+{    
+    const float u_denom = plane_normal.Dot( p2 - p1 );
+    if( !u_denom )
+        return false;
+    const float u_numerator = plane_normal.Dot( point_on_plane - p1 );
+    const float u = u_numerator / u_denom;    
+    if( pOutIntersection )
+        *pOutIntersection = p1 + (p2 - p1) * u;
+    
+    return true;
 }
 
 GeoVector GeoVector::InvertXY()
