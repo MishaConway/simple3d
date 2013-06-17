@@ -17,6 +17,12 @@ public:
 	unsigned int GetWidth();
 	unsigned int GetHeight();
     void SetWidthHeight( const unsigned int width, const unsigned int height );
+    
+    void SetEyePosition( const GeoVector& eye_position );
+    void SetFocusPosition( const GeoVector& focus_position );
+    
+    void Rotate( const GeoVector& axis, const float degrees );
+    
 	GeoMatrix GetProjectionTransform();
 	GeoMatrix GetViewTransform();
 	GeoMatrix GetReflectedViewTransform( const GeoVector& reflection_plane );

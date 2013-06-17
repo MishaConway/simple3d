@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include <math.h>
+
 Camera::Camera(){}
 Camera::Camera( const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const GeoVector& eye_position, const GeoVector& focus_position )
 {
@@ -108,6 +110,18 @@ void Camera::SetWidthHeight( const unsigned int width, const unsigned int height
     projection_transform = GeoMatrix::MatrixPerspectiveFovRH( GeoConvertToRadians(fovy),(float)width / (float)height, near_z, far_z );
 }
 
+void Camera::SetEyePosition( const GeoVector& eye_position )
+{
+	current_eye_position = eye_position;
+	view_transform = GeoMatrix::LookAtRH( current_eye_position, current_focus_position, GeoVector( 0, 1, 0 ) );
+}
+
+void Camera::SetFocusPosition( const GeoVector& focus_position )
+{
+	current_focus_position = focus_position;
+	view_transform = GeoMatrix::LookAtRH( current_eye_position, current_focus_position, GeoVector( 0, 1, 0 ) );
+}
+
 GeoMatrix Camera::GetProjectionTransform()
 {
 	return projection_transform;	
@@ -142,6 +156,47 @@ GeoVector Camera::GetEyeDirectionNormalized()
 {
 	return GetEyeDirection().Normalize();
 }
+
+void Camera::Rotate( const GeoVector& axis, const float degrees )
+{
+    GeoMatrix rotation_transform = GeoQuaternion( axis, degrees ).ToMatrix();
+    
+    
+    GeoVector new_eye = rotation_transform * current_eye_position;
+    
+    current_eye_position = new_eye;
+    
+    GeoVector forward = (current_focus_position - current_eye_position).Normalize();
+    GeoVector up;
+    
+    printf( "forward is %f, %f, %f\n", forward.x, forward.y, forward.z );
+    
+    const float EPSILON = 0.25f;
+    
+    if(fabs(forward.x) < EPSILON && fabs(forward.z) < EPSILON)
+    {
+        printf( "calculating special up..");
+        
+        // forward vector is pointing +Y axis
+        if(forward.y > 0)
+            up = GeoVector(0, 0, -1);
+        // forward vector is pointing -Y axis
+        else
+            up = GeoVector(0, 0, 1);
+    }
+    // in general, up vector is straight up
+    else
+    {
+        up = GeoVector(0, 1, 0);
+    }
+    
+ 
+   // view_transform = GeoMatrix::LookAtRH( current_eye_position, current_focus_position, up );
+
+    
+    
+}
+
 
 GeoVector Camera::ProjectIntoScreenspace( const GeoVector& worldspace_vertex )
 {
