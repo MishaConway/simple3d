@@ -37,7 +37,7 @@ protected:
     void SetupRenderTarget( RenderTarget render_target );
 
 	void SetDefaults();
-	void ConfigureCameraShaderValues();
+	void ConfigureCameraShaderValues( const bool update_projection = true );
 
 	void RenderObjects( std::vector< RenderableObject* > objects );
 protected:

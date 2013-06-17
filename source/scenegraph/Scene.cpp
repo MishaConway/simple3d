@@ -20,7 +20,7 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
         
 	SetBackgroundColor( Color::Black() );
 
-    render_target = RenderTarget( 512, 512 );
+    render_target = RenderTarget( 1024, 1024 );
     
 
 
@@ -38,7 +38,7 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
  
 	Effect( shader_path.c_str() );
     
-	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, 0, 3 ), GeoVector( 0, 0, 0 ) );
+	camera = Camera( width, height, fovy, near_z, far_z, GeoVector(0, 7, 14 ), GeoVector( 0, 0, 0 ) );
 
 	perform_prerendering = false;
 }
@@ -86,7 +86,16 @@ void Scene::SetBackgroundColor( const Color& background_color )
 
 void Scene::RenderScene( const bool reflection )
 {	
-	RenderObjects( scene_objects );
+	if( !reflection )
+		graphics_device.GetStateManager().SetDefaultFrontFaceRendering();
+	else
+		graphics_device.GetStateManager().SetDefaultBackFaceRendering();
+	graphics_device.GetStateManager().Lock();
+    
+    
+    RenderObjects( scene_objects );
+    
+    graphics_device.GetStateManager().Unlock();
 }
 
 void Scene::RenderSprites()
@@ -94,14 +103,16 @@ void Scene::RenderSprites()
 	RenderObjects( sprites );
 }
 
-void Scene::ConfigureCameraShaderValues()
+void Scene::ConfigureCameraShaderValues( const bool update_projection )
 {	
-	Effect::GetCurrentEffect().SetMatrix( "ViewTransform", camera.GetViewTransform() );
-	Effect::GetCurrentEffect().SetMatrix( "ProjectionTransform", camera.GetProjectionTransform() );
+	graphics_device.SetViewport( camera.GetWidth(), camera.GetHeight() );
+    Effect::GetCurrentEffect().SetMatrix( "ViewTransform", camera.GetViewTransform() );
+    if( update_projection )
+	  Effect::GetCurrentEffect().SetMatrix( "ProjectionTransform", camera.GetProjectionTransform() );
 	Effect::GetCurrentEffect().SetFloat( "viewport_width", graphics_device.GetViewport().Width );
 	Effect::GetCurrentEffect().SetFloat( "viewport_height", graphics_device.GetViewport().Height );	
 	Effect::GetCurrentEffect().SetFloatArray( "eye_position", camera.GetEyePosition() );	
-	graphics_device.SetViewport( camera.GetWidth(), camera.GetHeight() );
+	
 }
 
 void Scene::SetupRenderTarget( RenderTarget _render_target )
@@ -120,17 +131,17 @@ void Scene::PreRender()
 	ConfigureCameraShaderValues();
 
 	
-    SetupRenderTarget( downsample_render_target );
-    RenderableObject::EnableGlobalTechnique( "GlowFill" );
-    RenderScene();
-    RenderableObject::DisableGlobalTechnique();
+    //SetupRenderTarget( downsample_render_target );
+    //RenderableObject::EnableGlobalTechnique( "GlowFill" );
+    //RenderScene();
+    //RenderableObject::DisableGlobalTechnique();
 		
     graphics_device.SetDefaultRenderTarget();
     //downsample_render_target.GetTexture().SaveToFile( "/Users/misha/Documents/beforedownsample.png", true ); 
 				
-    downsample_render_target.HorizontalBlur( downsample_render_target2 );
-    downsample_render_target2.VerticalBlur( downsample_render_target );
-    downsample_render_target2.GetTexture().SaveToFile( "/Users/misha/Documents/downsampledafterhorizontal.png", true ); 
+    //downsample_render_target.HorizontalBlur( downsample_render_target2 );
+    //downsample_render_target2.VerticalBlur( downsample_render_target );
+    //downsample_render_target2.GetTexture().SaveToFile( "/Users/misha/Documents/downsampledafterhorizontal.png", true );
 	
 
 	// REFLECTION FILL PASSES
@@ -141,24 +152,28 @@ void Scene::PreRender()
 		scene_objects[i]->SetVisible( false );
 		Effect::GetCurrentEffect().SetInt( "clipping_enabled", 1 );
 		
-		//effects["shaders.fx"].UnsetRenderTarget( "PlanarReflection", "reflection" );
         
         SetupRenderTarget( render_target );
-		GeoVector reflection_plane( 0, 1, 0, -scene_objects[i]->GetWorldspaceCentroid().y);
+		GeoVector reflection_plane( 0, 1, 0, scene_objects[i]->GetWorldspaceCentroid().y);
 		//reflection_plane.w = 0;
-		ConfigureCameraShaderValues();
+		ConfigureCameraShaderValues( false ); //this is the thing that is fucking up reflections
+      
+        
+        
+        
+        
 		Effect::GetCurrentEffect().SetFloatArray( "clip_plane",  reflection_plane );
 		Effect::GetCurrentEffect().SetMatrix( "ViewTransform", camera.GetReflectedViewTransform( reflection_plane ) );
 		Effect::GetCurrentEffect().SetTexture( "reflection", render_target.GetTexture() );
 
-		graphics_device.Clear( Color::FromFloats(0.1f, 0.1f, 0.1f ) );
+		graphics_device.Clear( Color::Black() );
 		
 		RenderScene( true );
 		Effect::GetCurrentEffect().SetInt( "clipping_enabled", 0 );
 		scene_objects[i]->SetVisible( object_visible );
 
 		graphics_device.SetDefaultRenderTarget();
-		render_target.GetTexture().SaveToFile( "whoa.bmp", true );
+		render_target.GetTexture().SaveToFile( "/Users/misha.conway/Documents/whoa.bmp", true );
 	}
 
 
@@ -179,7 +194,7 @@ void Scene::SetDefaults()
 
 bool Scene::Render()
 {
-	Effect::GetCurrentEffect().SetFloatArray( "light_source",  GeoVector( -2, 0, 5, 1 ) );
+	Effect::GetCurrentEffect().SetFloatArray( "light_source",  GeoVector( -2, 15, 20, 1 ) );
     
     PreRender();
 	SetDefaults();

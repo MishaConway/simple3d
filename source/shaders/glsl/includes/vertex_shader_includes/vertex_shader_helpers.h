@@ -29,12 +29,16 @@ void CreateVertexShaderOut( vec4 position, vec4 world_position, vec3 normal, vec
 	out_color_uv = InvertY(color_uv.xy);
 	if( 1 == compute_projective_texture_coordinates )
 	{
-		out_project.x = 0.5 * (position.w + position.x);
-		out_project.y = 0.5 * (position.w - position.y);
-		out_project.z = position.w;
+		out_project = position;
+        //out_project = vec4( vec2(position.x*0.5, position.y*-0.5) + vec2(0.5, -0.5), position.zw );
+        
+        //out_project.y *= -1.0;
+        //out_project.x = 0.5 * (position.w + position.x);
+		//out_project.y = 0.5 * (position.w - position.y);
+		//out_project.z = position.w;
 	}
 	else
-		out_project = vec3( 0, 0, 0 );
+		out_project = vec4( 0, 0, 0, 0 );
 	out_clip = clip;
 	//output.color_index = color_uv.z;
 }
