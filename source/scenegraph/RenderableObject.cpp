@@ -19,6 +19,12 @@ RenderableObject::RenderableObject()
 	SetDefaultValues();
 }
 
+RenderableObject::RenderableObject( Geometry geometry )
+{
+    SetDefaultValues();
+	vertex_buffer = VertexBuffer( geometry.GetVertices() );    
+}
+
 RenderableObject::RenderableObject( Texture t, VertexBuffer v) : tex(t), vertex_buffer(v)
 {
 	SetDefaultValues();
@@ -100,7 +106,7 @@ std::string RenderableObject::GetDefaultTechnique()
 	return "Phong";
 }
 
-bool RenderableObject::Render()
+bool RenderableObject::Render()  //consider passing in whether or not front or back faces should be rendered
 {
 	if( visible )
 	{
@@ -183,3 +189,28 @@ GeoVector RenderableObject::GetWorldspaceCentroid()
 		centroid += GeoVector( worldspace_vertices[i].position ) / (float)worldspace_vertices.size();
 	return centroid;
 }
+
+float RenderableObject::GetHeight() 
+{
+    std::vector<Vertex> objectspace_vertices = GetVertexBuffer().GetVertices();
+    if( objectspace_vertices.empty() )
+        return 0;
+    
+    float min_y = objectspace_vertices[0].position.y;
+    float max_y = min_y;
+    
+    
+    for( unsigned int i = 1; i < objectspace_vertices.size(); i++ )
+    {
+            if( objectspace_vertices[i].position.y > max_y )
+                max_y = objectspace_vertices[i].position.y;
+        
+            if( objectspace_vertices[i].position.y < min_y )
+                min_y = objectspace_vertices[i].position.y;
+    }
+    
+    
+    
+    return max_y - min_y;
+}
+

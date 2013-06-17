@@ -9,6 +9,7 @@ class RenderableObject : public Object
 {
 public:
 	RenderableObject();
+    RenderableObject( Geometry geometry );
 	RenderableObject( Texture t, VertexBuffer v);
 	RenderableObject( Texture t, Geometry geometry );
 	virtual bool IsRenderable();
@@ -34,6 +35,8 @@ public:
 	void SetGlowmap( const Texture& tex );
 	std::vector<Vertex> GetWorldspaceVertices();
 	virtual GeoVector GetWorldspaceCentroid();
+    
+    float GetHeight() ;
 
 	static void SetRootAssetsPath( const std::string& root_assets_path );
 protected:
