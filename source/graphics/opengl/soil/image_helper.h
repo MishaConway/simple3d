@@ -6,6 +6,9 @@
     MIT license
 */
 
+#define WINDOWS_STORE_APP 1
+#ifndef WINDOWS_STORE_APP
+
 #ifndef HEADER_IMAGE_HELPER
 #define HEADER_IMAGE_HELPER
 
@@ -113,3 +116,5 @@ int
 #endif
 
 #endif /* HEADER_IMAGE_HELPER	*/
+
+#endif

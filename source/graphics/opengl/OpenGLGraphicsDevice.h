@@ -1,6 +1,7 @@
 #pragma once
 
 #include "include_opengl.h"
+#include "../window_type.h"
 #include <string>
 #include "../BaseGraphicsDevice.h"
 #include "OpenGLGraphicsDeviceStateManager.h"
@@ -11,9 +12,7 @@
 #include "OpenGLRenderTarget.h"
 #include "OpenGLTextRenderer.h"
 
-#ifndef _WIN32
-typedef int HWND;
-#endif
+
 
 class OpenGLGraphicsDevice : public BaseGraphicsDevice
 {
@@ -21,7 +20,7 @@ public:
 	OpenGLGraphicsDevice();
 	std::string GetRendererType();
 
-	bool Initialize( HWND hWnd, const unsigned int width, const unsigned int height, const bool debug );
+	bool Initialize( WINDOW_TYPE hWnd, const unsigned int width, const unsigned int height, const bool debug );
 
 	bool Draw( const unsigned int num_vertices );
 

@@ -7,7 +7,7 @@ std::string Scene::root_assets_path;
 
 
 Scene::Scene(){}
-Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const std::string& root_shader_path, const std::string& root_assets_path )
+Scene::Scene(  WINDOW_TYPE hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const std::string& root_shader_path, const std::string& root_assets_path )
 {		
     this->width = width;
     this->height = height;
@@ -33,7 +33,7 @@ Scene::Scene(  HWND hWnd, const unsigned int width, const unsigned int height, c
     if( !File::Exists( shader_path ))
     {
         printf( "ERROR!!! cannot find shader at %s\n", shader_path.c_str() );
-        throw "could not load shader!";
+      //  throw "could not load shader!";
     }
  
 	Effect( shader_path.c_str() );

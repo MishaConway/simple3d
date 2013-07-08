@@ -22,12 +22,13 @@ D3D11Texture::D3D11Texture( const std::string& image_filename )
 	pDevice = pGraphicsDevice->GetInternals().pDevice;
 	ID3D11Resource* pResource;
 	valid = true;
-	if( FAILED(D3DX11CreateTextureFromFile( pDevice, image_filename.c_str(), 0, 0, &pResource, 0 )) )
+	//if( FAILED(D3DX11CreateTextureFromFile( pDevice, image_filename.c_str(), 0, 0, &pResource, 0 )) )
+	if( true )
 	{
 		printf( "unable to create texture from file..\n" );
 		valid = false;
 	}
-	pResource->QueryInterface( __uuidof( ID3D11Texture2D ), (LPVOID*)&pTex );
+//	pResource->QueryInterface( __uuidof( ID3D11Texture2D ), (LPVOID*)&pTex );
 }
 
 D3D11Texture::D3D11Texture( D3D11Texture a, D3D11Texture b )
@@ -269,7 +270,7 @@ bool D3D11Texture::SaveToFile( const std::string& filename, const bool save_only
 	
 	std::string extension = filename.substr(filename.find_last_of(".")+1);
 	std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-	D3DX11_IMAGE_FILE_FORMAT file_format;
+/*	D3DX11_IMAGE_FILE_FORMAT file_format;
 	if( "bmp" == extension )
 		file_format = D3DX11_IFF_BMP;
 	else if( "jpg" == extension )
@@ -286,8 +287,10 @@ bool D3D11Texture::SaveToFile( const std::string& filename, const bool save_only
 		file_format = D3DX11_IFF_WMP;
 	else
 		return false;
+		*/
 	
-	if( FAILED( D3DX11SaveTextureToFile( pDeviceContext, pTex, file_format, filename.c_str() ) ) ) 
+	//if( FAILED( D3DX11SaveTextureToFile( pDeviceContext, pTex, file_format, filename.c_str() ) ) )
+	if( true )
 	{
 		printf( "could not save texture to file..\n" );
 		return false;

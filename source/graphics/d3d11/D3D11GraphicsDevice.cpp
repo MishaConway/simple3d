@@ -25,7 +25,7 @@ std::string D3D11GraphicsDevice::GetRendererType()
 	return "D3D11";
 }
 
-bool D3D11GraphicsDevice::Initialize( HWND hWnd, const unsigned int width, const unsigned int height, const bool debug )
+bool D3D11GraphicsDevice::Initialize( DX_WINDOW_TYPE hWnd, const unsigned int width, const unsigned int height, const bool debug )
 {	
 	if( initialized )
 		return true;
@@ -37,7 +37,7 @@ bool D3D11GraphicsDevice::Initialize( HWND hWnd, const unsigned int width, const
 		
 	unsigned int device_creation_flags = 0;
 	if( debug )
-		device_creation_flags = D3D11_CREATE_DEVICE_DEBUG;
+		device_creation_flags = D3D11_CREATE_DEVICE_DEBUG | D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
 	DXGI_SAMPLE_DESC multisample_settings;
 	multisample_settings.Count = 1;
@@ -45,8 +45,22 @@ bool D3D11GraphicsDevice::Initialize( HWND hWnd, const unsigned int width, const
 
 	D3D_FEATURE_LEVEL featureLevel;
 
-	DXGI_SWAP_CHAIN_DESC sd;
-    ZeroMemory( &sd, sizeof(sd) );
+	#ifdef WINDOWS_STORE_APP	
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {0};
+	swapChainDesc.Width = static_cast<UINT>(width); // Match the size of the window.
+	swapChainDesc.Height = static_cast<UINT>(height);
+	swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // This is the most common swap chain format.
+	swapChainDesc.Stereo = false;
+	swapChainDesc.SampleDesc.Count = 1; // Don't use multi-sampling.
+	swapChainDesc.SampleDesc.Quality = 0;
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	swapChainDesc.BufferCount = 2; // Use double-buffering to minimize latency.
+	swapChainDesc.Scaling = DXGI_SCALING_NONE;
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // All Windows Store apps must use this SwapEffect.
+	swapChainDesc.Flags = 0;
+	#else
+	DXGI_SWAP_CHAIN_DESC swapChainDesc;
+	ZeroMemory( &sd, sizeof(sd) );
     sd.BufferCount = 1;
     sd.BufferDesc.Width = width;
     sd.BufferDesc.Height = height;
@@ -58,9 +72,13 @@ bool D3D11GraphicsDevice::Initialize( HWND hWnd, const unsigned int width, const
 	sd.SampleDesc = multisample_settings;
     sd.Windowed = TRUE;
 
-	const bool separate_device_and_swap_chain_creation = false;
+	#endif
+
+	const bool separate_device_and_swap_chain_creation = true;
 	if( separate_device_and_swap_chain_creation )
 	{
+		DXGI_ADAPTER_TYPE* pAdapter = nullptr;
+		#ifndef WINDOWS_STORE_APP	
 		if( FAILED( CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)& pDXGIFactory) ) )
 		{
 			printf( "could not create dxgi factory..\n" );
@@ -71,11 +89,43 @@ bool D3D11GraphicsDevice::Initialize( HWND hWnd, const unsigned int width, const
 		{
 			printf( "could not get adapter from factory\n" );
 		}
-	
-		if( FAILED( D3D11CreateDevice( pAdapter, D3D_DRIVER_TYPE_UNKNOWN, 0, device_creation_flags, 0, 0, D3D11_SDK_VERSION, &private_internals.pDevice, &featureLevel, &private_internals.pDeviceContext ) ) )
+		#else
+
+	D3D_FEATURE_LEVEL featureLevels[] = 
+	{
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0,
+		D3D_FEATURE_LEVEL_9_3,
+		D3D_FEATURE_LEVEL_9_2,
+		D3D_FEATURE_LEVEL_9_1
+	};
+
+		ID3D11Device* pBaseDevice;
+		ID3D11DeviceContext* pBaseContext;
+		if( FAILED( D3D11CreateDevice( pAdapter, D3D_DRIVER_TYPE_HARDWARE, nullptr, device_creation_flags, featureLevels, ARRAYSIZE(featureLevels), D3D11_SDK_VERSION, &pBaseDevice, &featureLevel, &pBaseContext ) ) )
 		{
 			printf( "could not create device\n" );
 		}
+
+		pBaseDevice->QueryInterface( __uuidof( D3D_DEVICE_TYPE ), (LPVOID*) &private_internals.pDevice );
+		pBaseContext->QueryInterface( __uuidof( DEVICE_CONTEXT_TYPE ), (LPVOID*) &private_internals.pDeviceContext );
+		
+		IDXGIDevice1* pDXGIDevice1;
+		private_internals.pDevice->QueryInterface( __uuidof( IDXGIDevice1 ), (LPVOID*)&pDXGIDevice1 );
+		
+		
+		if( FAILED(pDXGIDevice1->GetAdapter(&pAdapter) ) )
+			printf( "could not get adapter from device\n" );
+
+		if( FAILED( pAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)&pDXGIFactory ) ) )
+			printf( "could not get dxgi factory from adapter\n" );
+		#endif
+
+	
+	
+		
 
 		unsigned num_quality_levels = 0;
 		for( unsigned int i = 0; i < 32; i ++ )
@@ -88,19 +138,36 @@ bool D3D11GraphicsDevice::Initialize( HWND hWnd, const unsigned int width, const
 			}
 		}
 
+		#ifdef WINDOWS_STORE_APP	
+
+			if( FAILED( pDXGIFactory->CreateSwapChainForCoreWindow(
+				private_internals.pDevice,
+				reinterpret_cast<IUnknown*>(hWnd),
+				&swapChainDesc,
+				nullptr, // Allow on all displays.
+				&pSwapChain
+				) ) )
+				printf( "CreateSwapChainForCoreWindow failed\n" );
+
+		#else
+		
 		sd.SampleDesc = multisample_settings;
 		if( FAILED( pDXGIFactory->CreateSwapChain( private_internals.pDevice, &sd, &pSwapChain ) ) )
 		{
 			printf( "could not create swap chain..\n" );
-		}	
+		}
+		#endif
+
+
 	}
 	else
 	{
-		if( FAILED( D3D11CreateDeviceAndSwapChain( NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, device_creation_flags, 0, 0, D3D11_SDK_VERSION, &sd, &pSwapChain, &private_internals.pDevice, &featureLevel, &private_internals.pDeviceContext ) ) )
+		//this part not supported in windows store app
+/*		if( FAILED( D3D11CreateDeviceAndSwapChain( NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, device_creation_flags, 0, 0, D3D11_SDK_VERSION, &sd, &pSwapChain, &private_internals.pDevice, &featureLevel, &private_internals.pDeviceContext ) ) )
 		{
 			printf( "could not create device and swap chain\n" );
 			return FALSE;
-		}
+		} */
 	}
 
 	 // Create a render target view
@@ -183,7 +250,29 @@ void D3D11GraphicsDevice::Clear( Color color )
 
 bool D3D11GraphicsDevice::SwapBackBuffer()
 {
+	#ifdef WINDOWS_STORE_APP
+	DXGI_PRESENT_PARAMETERS parameters = {0};
+	parameters.DirtyRectsCount = 0;
+	parameters.pDirtyRects = nullptr;
+	parameters.pScrollRect = nullptr;
+	parameters.pScrollOffset = nullptr;
+	
+	// The first argument instructs DXGI to block until VSync, putting the application
+	// to sleep until the next VSync. This ensures we don't waste any cycles rendering
+	// frames that will never be displayed to the screen.
+	HRESULT hr = pSwapChain->Present1(1, 0, &parameters);
+
+	// Discard the contents of the render target.
+	// This is a valid operation only when the existing contents will be entirely
+	// overwritten. If dirty or scroll rects are used, this call should be removed.
+	private_internals.pDeviceContext->DiscardView(pRenderTargetView);
+
+	// Discard the contents of the depth stencil.
+	private_internals.pDeviceContext->DiscardView(pDepthStencilView);
+
+	#else	
 	pSwapChain->Present( 0, 0 );
+	#endif
 	return true;
 }
 

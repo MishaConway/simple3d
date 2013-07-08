@@ -33,8 +33,10 @@ bool (^File::file_exists_block)(const char* path) = 0;
 bool Directory::Exists( const std::string& path )
 {    	
 #if defined(_WINDOWS_)
-	const DWORD dwResult = GetFileAttributesA( path.c_str() );
-	return dwResult != INVALID_FILE_ATTRIBUTES && (dwResult & FILE_ATTRIBUTE_DIRECTORY);
+	//this part not supported in windows store app
+	//const DWORD dwResult = GetFileAttributesA( path.c_str() );
+	//return dwResult != INVALID_FILE_ATTRIBUTES && (dwResult & FILE_ATTRIBUTE_DIRECTORY);
+	return false;
 #else
 	struct stat directoryDescription;
 	if( 0 == stat( path.c_str(), &directoryDescription ) )
@@ -53,10 +55,11 @@ std::string Directory::GetWorkingDirectory()
 
 	char buffer[1024];
 #if defined(_WINDOWS_)
-    int charsWritten = GetCurrentDirectoryA( 1024, (char*)buffer );
+	//this not supported in windows store app
+/*    int charsWritten = GetCurrentDirectoryA( 1024, (char*)buffer );
 	if( charsWritten > 0 )
 		working_directory = std::string( (char*)buffer );
-	working_directory += "\\";
+	working_directory += "\\"; */
 #else
      if( getcwd( (char*) buffer, 1024 ) != 0 )
 		working_directory = std::string( (char*) buffer );
@@ -78,7 +81,8 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 	const std::string regular_expression_path = cleaned_path + "*.*";
 	 
 	WIN32_FIND_DATAA find_file_data;
-	HANDLE hFindFile = FindFirstFileA( regular_expression_path.c_str(), &find_file_data ); 
+	//not supported in windows store app
+/*	HANDLE hFindFile = FindFirstFileA( regular_expression_path.c_str(), &find_file_data ); 
 	if( hFindFile && !(find_file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) )
 	{
 		currentFile = std::string( find_file_data.cFileName );
@@ -100,7 +104,7 @@ std::vector<std::string> Directory::GetFiles( const std::string& path, const boo
 					currentFile = cleaned_path + currentFile;
 				files.push_back( currentFile );
 			}
-		}
+		} */
 #else
     std::replace( cleaned_path.begin(), cleaned_path.end(), '\\', '/');
     if( '/' != cleaned_path[cleaned_path.size()-1] )
@@ -143,12 +147,14 @@ void Directory::SetGetFilesInDirectoryBlock( std::vector<std::string> (^_get_fil
 bool File::Exists( const std::string& path )
 {
 #if defined(_WINDOWS_)
-	DWORD dwResult = GetFileAttributesA( path.c_str() );
+	//not supported in windows store app
+	return false;
+/*	DWORD dwResult = GetFileAttributesA( path.c_str() );
 	if ( dwResult == INVALID_FILE_ATTRIBUTES )
 		return false;
 	else
 	if ( !(dwResult & FILE_ATTRIBUTE_DIRECTORY) )
-		return true;
+		return true;*/
 #else
     #if defined(__APPLE__) || defined(__APPLE_CC__)
     return file_exists_block( path.c_str() );

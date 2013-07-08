@@ -7,6 +7,9 @@
 	public domain
 */
 
+#define WINDOWS_STORE_APP 1
+#ifndef WINDOWS_STORE_APP
+
 #ifndef HEADER_IMAGE_DXT
 #define HEADER_IMAGE_DXT
 
@@ -121,3 +124,5 @@ DDS_header ;
 #define DDSCAPS2_VOLUME	0x00200000
 
 #endif /* HEADER_IMAGE_DXT	*/
+
+#endif

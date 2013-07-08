@@ -1,10 +1,12 @@
 #pragma once
 #ifdef _WIN32
 
-#include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx11effect.h>
-#include <xnamath.h>
+#include <d3d11_1.h>
+//#include <d3dx11.h>
+#include "includes/d3dx11effect.h"
+//#include <xnamath.h>
+#include <DirectXMath.h>
+using namespace DirectX;
 #include <string>
 #include <map>
 #include <vector>

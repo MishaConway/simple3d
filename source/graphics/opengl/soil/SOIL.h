@@ -36,6 +36,8 @@
 	* Dan Venkitachalam - for finding some non-compliant DDS files, and patching some explicit casts
 	* everybody at gamedev.net
 **/
+#define WINDOWS_STORE_APP 1
+#ifndef WINDOWS_STORE_APP
 
 #ifndef HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY
 #define HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY
@@ -431,3 +433,5 @@ const char*
 #endif
 
 #endif /* HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY	*/
+
+#endif

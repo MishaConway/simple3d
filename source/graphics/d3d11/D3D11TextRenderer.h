@@ -1,9 +1,11 @@
 #pragma once
 #ifdef _WIN32
 
-#include "FW1FontWrapper.h"
+#include "includes/FW1FontWrapper.h"
 #include <D3DCompiler.h>
-#include <xnamath.h>
+//#include <xnamath.h>
+#include <DirectXMath.h>
+using namespace DirectX;
 #include <string>
 #include <map>
 #include "../BaseGraphicsDevice.h"
@@ -21,7 +23,7 @@ private:
 	ID3D11DeviceContext* pDeviceContext;
 	std::wstring font_name;
 	unsigned int font_size;
-	static std::map< std::string, IFW1FontWrapper* > font_wrappers;
-	static IFW1Factory* pFW1Factory;
+	//static std::map< std::string, IFW1FontWrapper* > font_wrappers;
+	//static IFW1Factory* pFW1Factory;
 };
 #endif

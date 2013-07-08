@@ -6,7 +6,8 @@ D3D11ShaderResource::D3D11ShaderResource(){created = false;}
 D3D11ShaderResource::D3D11ShaderResource( ID3D11Device* pDevice, const std::string& filepath )
 {
 	created = true;
-	valid = SUCCEEDED( D3DX11CreateShaderResourceViewFromFile( pDevice, filepath.c_str(), NULL, NULL, &pShaderResourceView, NULL ) );
+	//valid = SUCCEEDED( D3DX11CreateShaderResourceViewFromFile( pDevice, filepath.c_str(), NULL, NULL, &pShaderResourceView, NULL ) );
+	valid = false;
 }
 
 D3D11ShaderResource::D3D11ShaderResource( ID3D11Device* pDevice, ID3D11Resource* pResource )

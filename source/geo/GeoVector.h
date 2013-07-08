@@ -2,8 +2,10 @@
 
 #ifdef _WIN32
 #define NOMINMAX
-#include <d3d11.h>
-#include <xnamath.h>
+#include <d3d11_1.h>
+#include <DirectXMath.h>
+using namespace DirectX;
+//#include <xnamath.h>
 #endif
 
 #include "GeoFloat.h"

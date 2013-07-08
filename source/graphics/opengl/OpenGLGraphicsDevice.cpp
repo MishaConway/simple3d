@@ -13,7 +13,7 @@ std::string OpenGLGraphicsDevice::GetRendererType()
 	return "OpenGL";
 }
 
-bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, const unsigned int height, const bool debug )
+bool OpenGLGraphicsDevice::Initialize( WINDOW_TYPE hWnd, const unsigned int width, const unsigned int height, const bool debug )
 {	  
 	if( initialized )
 		return true;
@@ -24,7 +24,8 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
     
 
 #ifdef _WIN32
-	hdc = GetDC(hWnd); // Get the device context for our window  
+	// this section not supported in windows store app
+	/*hdc = GetDC(hWnd); // Get the device context for our window  
   
 	PIXELFORMATDESCRIPTOR pfd; // Create a new PIXELFORMATDESCRIPTOR (PFD)  
 	memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR)); // Clear our  PFD  
@@ -44,7 +45,7 @@ bool OpenGLGraphicsDevice::Initialize( HWND hWnd, const unsigned int width, cons
 
 	
 	HGLRC tempContext = wglCreateContext(hdc);
-	wglMakeCurrent(hdc, tempContext);
+	wglMakeCurrent(hdc, tempContext); */
 
 	if( GLEW_OK != glewInit() )
 		return false;
@@ -114,7 +115,7 @@ void OpenGLGraphicsDevice::Clear( Color c )
 bool OpenGLGraphicsDevice::SwapBackBuffer()
 {
 #ifdef _WIN32	
-	SwapBuffers(hdc);
+	//SwapBuffers(hdc); not supported in windows store app
 #endif
 	return true;
 }

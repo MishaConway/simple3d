@@ -63,6 +63,9 @@
              on 'test' only check type, not whether we support this variant
 */
 
+#define WINDOWS_STORE_APP 1
+#ifndef WINDOWS_STORE_APP
+
 #ifndef HEADER_STB_IMAGE_AUGMENTED
 #define HEADER_STB_IMAGE_AUGMENTED
 
@@ -352,3 +355,5 @@ extern void stbi_install_YCbCr_to_RGB(stbi_YCbCr_to_RGB_run func);
 //
 ////   end header file   /////////////////////////////////////////////////////
 #endif // STBI_INCLUDE_STB_IMAGE_H
+
+#endif

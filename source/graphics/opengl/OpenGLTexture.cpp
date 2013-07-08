@@ -42,12 +42,14 @@ OpenGLTexture::OpenGLTexture( const std::string& image_filename )
     });
     delete [] data;
 #else    
+	#ifndef WINDOWS_STORE_APP
 	texture_id = SOIL_load_OGL_texture( image_filename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,  SOIL_FLAG_MIPMAPS );
 	if( !texture_id )
 	{
 		printf( "soil failed to load %s\n", image_filename.c_str() );
 		printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
 	}
+	#endif
 #endif
 	glEnable(GL_TEXTURE_2D);
 
@@ -418,12 +420,14 @@ bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_onl
     delete [] buffer;
 #else    
 	int file_format;
+	#ifndef WINDOWS_STORE_APP
 	if( "bmp" == extension )
 		file_format = SOIL_SAVE_TYPE_BMP;
 	else if( "dds" == extension )
 		file_format = SOIL_SAVE_TYPE_DDS;
 	else
 		return false;
+	#endif
 
 	GLint is_compressed = GL_FALSE;
 	GLint compressed_size = 0;
@@ -441,8 +445,10 @@ bool OpenGLTexture::SaveToFile( const std::string& filename, const bool save_onl
 		unsigned char* pixels = new unsigned char[ width*height*bpp ];
 		glGetTexImage( GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
 	
+		#ifndef WINDOWS_STORE_APP
 		if( !SOIL_save_image( filename.c_str(), file_format, width, height, 4, pixels ) )
 			printf( "SOIL_save_image failed!\n" );
+		#endif
 		delete [] pixels;
 	}
 #endif

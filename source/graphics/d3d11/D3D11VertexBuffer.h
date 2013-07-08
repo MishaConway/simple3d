@@ -3,8 +3,8 @@
 #pragma once
 #include "D3D11Buffer.h"
 #include <vector>
-#include <d3d11.h>
-#include <d3dx11.h>
+#include <d3d11_1.h>
+//#include <d3dx11.h>
 #include "D3D11VertexFormats.h"
 #include "../../geo/Geometry.h"
 #include "../BaseVertexBuffer.h"

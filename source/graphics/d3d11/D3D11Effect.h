@@ -3,9 +3,9 @@
 
 #define NOMINMAX
 #include <Windows.h>
-#include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx11effect.h>
+#include <d3d11_1.h>
+//#include <d3dx11.h>
+#include "includes/d3dx11effect.h"
 #include <D3DCompiler.h>
 #include "D3D11VertexBuffer.h"
 #include "D3D11VertexFormats.h"
@@ -14,7 +14,9 @@
 #include "../BaseEffect.h"
 #include "../../geo/GeoVector.h"
 #include "../../geo/GeoMatrix.h"
-#include <xnamath.h>
+//#include <xnamath.h>
+#include <DirectXMath.h>
+using namespace DirectX;
 #include <string>
 #include <vector>
 #include <functional>

@@ -16,15 +16,18 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <WindowsAppContainer>true</WindowsAppContainer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -36,13 +39,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <TargetName>simple3d_debug</TargetName>
+    <OutDir>$(ProjectDir)debug</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(DXSDK_DIR)Include;..\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProgramFiles)\Windows Kits\8.0\Include\um;$(ProgramFiles)\Windows Kits\8.0\Include\shared;..\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32;_VARIADIC_MAX=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -108,13 +120,14 @@
     <ClCompile Include="..\..\source\graphics\opengl\OpenGLTextRenderer.cpp" />
     <ClCompile Include="..\..\source\graphics\opengl\OpenGLTexture.cpp" />
     <ClCompile Include="..\..\source\graphics\opengl\OpenGLVertexBuffer.cpp" />
-    <ClCompile Include="..\..\source\graphics\opengl\soil\image_DXT.c" />
-    <ClCompile Include="..\..\source\graphics\opengl\soil\image_helper.c" />
-    <ClCompile Include="..\..\source\graphics\opengl\soil\SOIL.c" />
-    <ClCompile Include="..\..\source\graphics\opengl\soil\stb_image_aug.c" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_DXT.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_helper.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\SOIL.cpp" />
+    <ClCompile Include="..\..\source\graphics\opengl\soil\stb_image_aug.cpp" />
     <ClCompile Include="..\..\source\interfaces\Initializable.cpp" />
     <ClCompile Include="..\..\source\interfaces\IValidatable.cpp" />
     <ClCompile Include="..\..\source\scenegraph\Camera.cpp" />
+    <ClCompile Include="..\..\source\scenegraph\Light.cpp" />
     <ClCompile Include="..\..\source\scenegraph\Nebula.cpp" />
     <ClCompile Include="..\..\source\scenegraph\Object.cpp" />
     <ClCompile Include="..\..\source\scenegraph\Quad.cpp" />
@@ -154,6 +167,10 @@
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11Texture.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexBuffer.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexFormats.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dx11dbg.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dx11effect.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dxGlobal.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\FW1FontWrapper.h" />
     <ClInclude Include="..\..\source\graphics\inc.h" />
     <ClInclude Include="..\..\source\graphics\opengl\glew\glew.h" />
     <ClInclude Include="..\..\source\graphics\opengl\glew\glxew.h" />
@@ -176,10 +193,12 @@
     <ClInclude Include="..\..\source\graphics\opengl\soil\stbi_DDS_aug.h" />
     <ClInclude Include="..\..\source\graphics\opengl\soil\stbi_DDS_aug_c.h" />
     <ClInclude Include="..\..\source\graphics\opengl\soil\stb_image_aug.h" />
+    <ClInclude Include="..\..\source\graphics\window_type.h" />
     <ClInclude Include="..\..\source\interfaces\IInitializable.h" />
     <ClInclude Include="..\..\source\interfaces\IStringable.h" />
     <ClInclude Include="..\..\source\interfaces\IValidatable.h" />
     <ClInclude Include="..\..\source\scenegraph\Camera.h" />
+    <ClInclude Include="..\..\source\scenegraph\Light.h" />
     <ClInclude Include="..\..\source\scenegraph\Nebula.h" />
     <ClInclude Include="..\..\source\scenegraph\Object.h" />
     <ClInclude Include="..\..\source\scenegraph\Quad.h" />

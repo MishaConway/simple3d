@@ -11,7 +11,7 @@ std::string GeoQuaternion::ToString()
 {
     char buffer[512];
     GeoVector axis = GetAxis();
-    sprintf( buffer, "GeoQuaternion: Axis:(%f, %f, %f) Angle:%f degrees\n", axis.x, axis.y, axis.z, GetAngle() );
+//    sprintf( buffer, "GeoQuaternion: Axis:(%f, %f, %f) Angle:%f degrees\n", axis.x, axis.y, axis.z, GetAngle() );
     return std::string( buffer );
 }
 
@@ -59,5 +59,5 @@ GeoVector GeoQuaternion::GetAxis()
 
 float     GeoQuaternion::GetAngle()
 {
-    return GeoConvertToDegrees( acos(w) * 2.0f );
+    return GeoConvertToDegrees( (float)acos(w) * 2.0f );
 }

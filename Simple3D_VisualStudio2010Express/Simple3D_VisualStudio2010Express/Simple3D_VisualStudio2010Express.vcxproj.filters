@@ -73,6 +73,9 @@
     <Filter Include="Source Files\scenegraph\templates">
       <UniqueIdentifier>{df963544-caa9-4b53-9a4c-aa1d1c02c6be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\d3d11\includes">
+      <UniqueIdentifier>{7aca2c61-48d0-4c0c-b204-827d2188d5e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\geo\GeoFloat.cpp">
@@ -177,18 +180,6 @@
     <ClCompile Include="..\..\source\graphics\opengl\OpenGLVertexBuffer.cpp">
       <Filter>Source Files\graphics\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\graphics\opengl\soil\image_DXT.c">
-      <Filter>Source Files\graphics\opengl\soil</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\graphics\opengl\soil\image_helper.c">
-      <Filter>Source Files\graphics\opengl\soil</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\graphics\opengl\soil\SOIL.c">
-      <Filter>Source Files\graphics\opengl\soil</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\graphics\opengl\soil\stb_image_aug.c">
-      <Filter>Source Files\graphics\opengl\soil</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\interfaces\Initializable.cpp">
       <Filter>Source Files\interfaces</Filter>
     </ClCompile>
@@ -239,6 +230,21 @@
     </ClCompile>
     <ClCompile Include="..\..\source\scenegraph\templates\TicTacToeScene.cpp">
       <Filter>Source Files\scenegraph\templates</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenegraph\Light.cpp">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_DXT.cpp">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\image_helper.cpp">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\SOIL.cpp">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\opengl\soil\stb_image_aug.cpp">
+      <Filter>Source Files\graphics\opengl\soil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -466,6 +472,24 @@
     </ClInclude>
     <ClInclude Include="..\..\source\scenegraph\templates\TicTacToeScene.h">
       <Filter>Source Files\scenegraph\templates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\scenegraph\Light.h">
+      <Filter>Source Files\scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dx11dbg.h">
+      <Filter>Source Files\graphics\d3d11\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dx11effect.h">
+      <Filter>Source Files\graphics\d3d11\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dxGlobal.h">
+      <Filter>Source Files\graphics\d3d11\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\includes\FW1FontWrapper.h">
+      <Filter>Source Files\graphics\d3d11\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\window_type.h">
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

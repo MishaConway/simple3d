@@ -2,9 +2,17 @@
 #ifdef _WIN32
 #define NOMINMAX
 #include <Windows.h>
-#include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx11effect.h>
+
+
+#include <wrl/client.h>
+#include <ppl.h>
+#include <ppltasks.h>
+#include <agile.h>
+using namespace Windows::UI::Core;
+#include <d3d11_1.h>
+
+#include "includes\d3dx11effect.h"
+//#include <d3dx11effect.h>
 #include <D3DCompiler.h>
 #include "../BaseGraphicsDevice.h"
 #include "D3D11GraphicsDeviceStateManager.h"
@@ -16,9 +24,31 @@
 #include "D3D11Texture.h"
 #include "D3D11RenderTarget.h"
 #include "D3D11Effect.h"
-#include <xnamath.h>
+//#include <xnamath.h>
+#include <DirectXMath.h>
+using namespace DirectX;
 #include <string>
 #include <functional>
+
+#define WINDOWS_STORE_APP 1
+
+#ifdef WINDOWS_STORE_APP
+typedef CoreWindow^ DX_WINDOW_TYPE;
+typedef DXGI_SWAP_CHAIN_DESC1 SWAP_CHAIN_TYPE;
+typedef ID3D11Device1	D3D_DEVICE_TYPE;
+typedef ID3D11DeviceContext1 DEVICE_CONTEXT_TYPE;
+typedef IDXGIFactory2 DXGI_FACTORY_TYPE;
+typedef IDXGIAdapter DXGI_ADAPTER_TYPE;
+typedef IDXGISwapChain1 DXGI_SWAP_CHAIN_TYPE;
+#else
+#define DX_WINDOW_TYPE HWND
+#define SWAP_CHAIN_TYPE DXGI_SWAP_CHAIN_DESC
+typedef ID3D11Device	DEVICE_TYPE;
+typedef ID3D11DeviceContext DEVICE_CONTEXT_TYPE;
+typedef IDXGIFactory1 DXGI_FACTORY_TYPE;
+typedef IDXGIAdapter1 DXGI_ADAPTER_TYPE;
+typedef IDXGISwapChain DXGI_SWAP_CHAIN_TYPE;
+#endif
 
 class D3D11GraphicsDevicePrivateInternals
 {
@@ -31,8 +61,8 @@ public:
 	D3D11GraphicsDevicePrivateInternals();
 private:	
 
-	ID3D11Device* pDevice;
-	ID3D11DeviceContext* pDeviceContext;
+	D3D_DEVICE_TYPE* pDevice;
+	DEVICE_CONTEXT_TYPE* pDeviceContext;
 };
 
 
@@ -43,7 +73,8 @@ public:
 	std::string GetRendererType();
 	D3D11GraphicsDevicePrivateInternals GetInternals();
 
-	bool Initialize( HWND hWnd, const unsigned int width, const unsigned int height, const bool debug );
+	bool Initialize( DX_WINDOW_TYPE hWnd, const unsigned int width, const unsigned int height, const bool debug );
+	
 
 	bool Draw( const unsigned int num_vertices );
 
@@ -68,9 +99,9 @@ private:
 	bool    SetVertexBuffer( ID3D11Buffer* pVertexBuffer, const D3D11_PRIMITIVE_TOPOLOGY p  );
 
 private:
- IDXGIFactory1* pDXGIFactory;
+ DXGI_FACTORY_TYPE* pDXGIFactory;
  D3D11GraphicsDevicePrivateInternals private_internals;
- IDXGISwapChain* pSwapChain;
+ DXGI_SWAP_CHAIN_TYPE* pSwapChain;
  ID3D11Texture2D *pBackBuffer;
  ID3D11Texture2D *pDepthStencilBuffer;
  ID3D11DepthStencilView* pDepthStencilView;

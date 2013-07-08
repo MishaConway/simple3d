@@ -248,7 +248,7 @@ GLint OpenGLShaderProgram::GetUniformLocation( const std::string& variable_name 
 }
 
 #ifdef _WIN32	
-bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, portable_function<void(const GLint uniform_location)> f )
+bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, std::function<void(const GLint uniform_location)> f )
 #endif
 #if defined(__APPLE__) || defined(__APPLE_CC__)  
 bool OpenGLShaderProgram::SetEffectVariable( const std::string& variable_name, void(^f)(const GLint uniform_location) )

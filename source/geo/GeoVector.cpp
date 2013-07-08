@@ -5,7 +5,7 @@
 std::string GeoVector::ToString()
 {
     char buffer[512];
-    sprintf( buffer, "GeoVector:%f, %f, %f, %f\n", x, y, z, w );
+//    sprintf( buffer, "GeoVector:%f, %f, %f, %f\n", x, y, z, w );
     return std::string(buffer);
 }
 

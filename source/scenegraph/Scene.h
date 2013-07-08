@@ -4,13 +4,14 @@
 #include "Sprite.h"
 #include "Nebula.h"
 #include <map>
+#include "../graphics/window_type.h"
 #include "../system/FileIO.h"
 
 class Scene
 {
 public:
 	Scene();
-	Scene(  HWND hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const std::string& root_shader_path, const std::string& root_assets_path );
+	Scene(  WINDOW_TYPE hWnd, const unsigned int width, const unsigned int height, const float fovy, const float near_z, const float far_z, const std::string& root_shader_path, const std::string& root_assets_path );
 	
     void SetWidthAndHeight( const unsigned int width, const unsigned int height );
     
