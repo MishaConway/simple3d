@@ -7,6 +7,19 @@
 #include "../graphics/window_type.h"
 #include "../system/FileIO.h"
 
+
+struct SceneConstantBuffer
+{
+	GeoMatrix projection_transform;
+	GeoMatrix view_transform;
+	GeoFloat4 eye_position;
+	float viewport_width;
+	float viewport_height;
+	int clipping_enabled;
+	GeoFloat4 clip_plane;
+	float padding;
+};
+
 class Scene
 {
 public:
@@ -57,6 +70,8 @@ protected:
 	bool perform_prerendering;
 
 	Color background_color;
+
+	ConstantBuffer<SceneConstantBuffer> scene_constant_buffer;
 private:
 	static std::string root_shader_path, root_assets_path;
 };

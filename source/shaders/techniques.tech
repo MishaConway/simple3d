@@ -1,0 +1,12 @@
+technique Basic{ BasicVS, BasicPS }
+technique SolidColor{ BasicVS, SolidColorPS }
+technique GlowFill{ BasicVS, GlowFillPS }
+technique PostProcessHorizontalBlur{ SpriteVS, PostProcessHorizontalBlurPS }
+technique PostProcessVerticalBlur{ SpriteVS, PostProcessVerticalBlurPS }
+technique AdditiveParticle{ BasicVS, AdditiveParticlePS }
+technique PlanarReflection{ BasicVS, PlanarReflectionPS }
+technique Sprite{ SpriteVS, BasicPS }
+technique SolidColorSprite{ SpriteVS, SolidColorPS }
+technique ProgressSprite{ SpriteVS, ProgressSpritePS }
+technique Line{ BasicVS, LinePS }
+technique Phong{ BasicVS, PhongPS }

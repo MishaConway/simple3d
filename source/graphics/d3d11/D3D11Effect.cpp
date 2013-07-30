@@ -16,9 +16,18 @@ D3D11Effect D3D11Effect::GetCurrentEffect()
 }
 
 D3D11Effect::D3D11Effect(){valid=false;}
-D3D11Effect::D3D11Effect( const std::string& effect_path )
+D3D11Effect::D3D11Effect( const std::string& effect_path ) : BaseEffect( effect_path )
 {
+	
+	
+	
 	valid = false;
+
+	std::vector< std::pair< std::string, std::string > > techniques = ParseTechniqueFile( effect_path );
+
+	printf( "went here...\n" );
+
+
 	
 	/*
 	this->pDeviceContext = pGraphicsDevice->GetInternals().pDeviceContext;

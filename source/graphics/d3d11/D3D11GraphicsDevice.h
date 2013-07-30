@@ -24,6 +24,7 @@ using namespace Windows::UI::Core;
 #include "D3D11Texture.h"
 #include "D3D11RenderTarget.h"
 #include "D3D11Effect.h"
+#include "D3D11ConstantBuffer.h"
 //#include <xnamath.h>
 #include <DirectXMath.h>
 using namespace DirectX;
@@ -57,6 +58,8 @@ friend class D3D11Texture;
 friend class D3D11Effect;
 friend class D3D11Buffer;
 friend class D3D11RenderTarget;
+friend class D3D11VertexShader;
+friend class D3D11PixelShader;
 public:
 	D3D11GraphicsDevicePrivateInternals();
 private:	

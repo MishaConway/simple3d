@@ -14,6 +14,7 @@ typedef D3D11DynamicVertexBuffer DynamicVertexBuffer;
 typedef D3D11Effect Effect;
 typedef D3D11RenderTarget RenderTarget;
 typedef D3D11Texture Texture;
+#define ConstantBuffer D3D11ConstantBuffer
 #endif
 
 #if RENDERER == RENDERER_OPENGL

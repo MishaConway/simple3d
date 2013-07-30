@@ -76,6 +76,15 @@
     <Filter Include="Source Files\graphics\d3d11\includes">
       <UniqueIdentifier>{7aca2c61-48d0-4c0c-b204-827d2188d5e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shaders\hlsl\includes">
+      <UniqueIdentifier>{e73cb7ec-d86b-4803-8e50-ce4e42c14431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\hlsl\includes\vertex_shader_includes">
+      <UniqueIdentifier>{151bbdd6-340a-4499-a89a-3e45acb5e2f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders\hlsl\includes\cross_shader_includes">
+      <UniqueIdentifier>{a41ac5db-b8a2-44b9-b65b-a025524fe3d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\geo\GeoFloat.cpp">
@@ -245,6 +254,15 @@
     </ClCompile>
     <ClCompile Include="..\..\source\graphics\opengl\soil\stb_image_aug.cpp">
       <Filter>Source Files\graphics\opengl\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\BaseShader.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Shader.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11ConstantBuffer.cpp">
+      <Filter>Source Files\graphics\d3d11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,6 +509,27 @@
     <ClInclude Include="..\..\source\graphics\window_type.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\cross_shader_includes\helpers.h">
+      <Filter>Source Files\shaders\hlsl\includes\cross_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\cross_shader_includes\uniforms.h">
+      <Filter>Source Files\shaders\hlsl\includes\cross_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\vertex_shader_includes\vertex_shader_helpers.h">
+      <Filter>Source Files\shaders\hlsl\includes\vertex_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseShader.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Shader.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11ConstantBuffer.h">
+      <Filter>Source Files\graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\BaseConstantBuffer.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\source\shaders\hlsl\shaders.fx">
@@ -535,5 +574,13 @@
     <None Include="..\..\source\system\CocoaBindings.mm">
       <Filter>Source Files\system</Filter>
     </None>
+    <None Include="..\..\source\shaders\techniques.tech">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\source\shaders\hlsl\BasicVS.hlsl">
+      <Filter>Source Files\shaders\hlsl</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

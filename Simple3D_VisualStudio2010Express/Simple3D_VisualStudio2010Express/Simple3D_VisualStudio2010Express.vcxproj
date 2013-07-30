@@ -95,15 +95,18 @@
     <ClCompile Include="..\..\source\graphics\BaseGraphicsDevice.cpp" />
     <ClCompile Include="..\..\source\graphics\BaseGraphicsDeviceStateManager.cpp" />
     <ClCompile Include="..\..\source\graphics\BaseRenderTarget.cpp" />
+    <ClCompile Include="..\..\source\graphics\BaseShader.cpp" />
     <ClCompile Include="..\..\source\graphics\BaseTexture.cpp" />
     <ClCompile Include="..\..\source\graphics\BaseVertexBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\Color.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11Buffer.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11ConstantBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11DynamicVertexBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11Effect.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11GraphicsDevice.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11GraphicsDeviceStateManager.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11RenderTarget.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\D3D11Shader.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11ShaderResource.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11TextRenderer.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11Texture.cpp" />
@@ -149,19 +152,23 @@
     <ClInclude Include="..\..\source\geo\Geometry.h" />
     <ClInclude Include="..\..\source\geo\GeoQuaternion.h" />
     <ClInclude Include="..\..\source\geo\GeoVector.h" />
+    <ClInclude Include="..\..\source\graphics\BaseConstantBuffer.h" />
     <ClInclude Include="..\..\source\graphics\BaseEffect.h" />
     <ClInclude Include="..\..\source\graphics\BaseGraphicsDevice.h" />
     <ClInclude Include="..\..\source\graphics\BaseGraphicsDeviceStateManager.h" />
     <ClInclude Include="..\..\source\graphics\BaseRenderTarget.h" />
+    <ClInclude Include="..\..\source\graphics\BaseShader.h" />
     <ClInclude Include="..\..\source\graphics\BaseTexture.h" />
     <ClInclude Include="..\..\source\graphics\BaseVertexBuffer.h" />
     <ClInclude Include="..\..\source\graphics\Color.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11Buffer.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11ConstantBuffer.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11DynamicVertexBuffer.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11Effect.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11GraphicsDevice.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11GraphicsDeviceStateManager.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11RenderTarget.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\D3D11Shader.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11ShaderResource.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11TextRenderer.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11Texture.h" />
@@ -218,6 +225,9 @@
     <ClInclude Include="..\..\source\shaders\glsl\includes\fragment_shader_includes\textures.h" />
     <ClInclude Include="..\..\source\shaders\glsl\includes\vertex_shader_includes\attributes.h" />
     <ClInclude Include="..\..\source\shaders\glsl\includes\vertex_shader_includes\vertex_shader_helpers.h" />
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\cross_shader_includes\helpers.h" />
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\cross_shader_includes\uniforms.h" />
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\vertex_shader_includes\vertex_shader_helpers.h" />
     <ClInclude Include="..\..\source\std\functional.h" />
     <ClInclude Include="..\..\source\std\nullptr.h" />
     <ClInclude Include="..\..\source\std\triple.h" />
@@ -240,7 +250,11 @@
     <None Include="..\..\source\shaders\glsl\SpriteVS.vert" />
     <None Include="..\..\source\shaders\glsl\techniques.fx" />
     <None Include="..\..\source\shaders\hlsl\shaders.fx" />
+    <None Include="..\..\source\shaders\techniques.tech" />
     <None Include="..\..\source\system\CocoaBindings.mm" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\source\shaders\hlsl\BasicVS.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

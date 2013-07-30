@@ -109,8 +109,10 @@ bool D3D11GraphicsDevice::Initialize( DX_WINDOW_TYPE hWnd, const unsigned int wi
 			printf( "could not create device\n" );
 		}
 
-		pBaseDevice->QueryInterface( __uuidof( D3D_DEVICE_TYPE ), (LPVOID*) &private_internals.pDevice );
-		pBaseContext->QueryInterface( __uuidof( DEVICE_CONTEXT_TYPE ), (LPVOID*) &private_internals.pDeviceContext );
+		if( FAILED( pBaseDevice->QueryInterface( __uuidof( D3D_DEVICE_TYPE ), (LPVOID*) &private_internals.pDevice ) ) ) 
+			printf( "could not get query device\n" );
+		if( FAILED( pBaseContext->QueryInterface( __uuidof( DEVICE_CONTEXT_TYPE ), (LPVOID*) &private_internals.pDeviceContext ) ) )
+			printf( "could not query device context\n" );
 		
 		IDXGIDevice1* pDXGIDevice1;
 		private_internals.pDevice->QueryInterface( __uuidof( IDXGIDevice1 ), (LPVOID*)&pDXGIDevice1 );
@@ -218,6 +220,13 @@ bool D3D11GraphicsDevice::Initialize( DX_WINDOW_TYPE hWnd, const unsigned int wi
 	graphics_device_state_manager = D3D11GraphicsDeviceStateManager( private_internals.pDevice, private_internals.pDeviceContext );
 
 	initialized = true;
+
+	OutputDebugStringA( "finishined initting d3d device...\n" );
+
+	char buffer[1024];
+	sprintf_s( buffer, "width and height are %f, %f\n", GetViewport().Width, GetViewport().Height );
+	OutputDebugStringA( buffer );
+
 	return true;
 }
 

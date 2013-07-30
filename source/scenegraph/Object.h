@@ -7,6 +7,7 @@
 #define copysign _copysign
 #endif
 
+
 class Object
 {
 public:

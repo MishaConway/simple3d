@@ -27,7 +27,7 @@ Scene::Scene(  WINDOW_TYPE hWnd, const unsigned int width, const unsigned int he
 	downsample_render_target = RenderTarget( 256, 256 );
 	downsample_render_target2 = RenderTarget( 256, 256 );
         
-    std::string shader_path = graphics_device.GetRendererType() == "D3D11" ? GetRootShaderPath() + "/hlsl/shaders.fx" : GetRootShaderPath() + "glsl/techniques.fx";
+    std::string shader_path = GetRootShaderPath() + "techniques2.tech";
     
     
     if( !File::Exists( shader_path ))
@@ -55,7 +55,7 @@ bool Scene::SetRootShaderPath( const std::string& _root_shader_path )
 {
 	root_shader_path = _root_shader_path;
     if( !EndsWith( root_shader_path, "/") )
-        root_shader_path += "/";
+        root_shader_path += "\\";
 	return Directory::Exists( root_shader_path  );
 }
 
@@ -68,7 +68,7 @@ bool Scene::SetRootAssetsPath( const std::string& _root_assets_path )
 {
 	root_assets_path = _root_assets_path;
     if( !EndsWith( root_assets_path, "/") )
-        root_assets_path += "/";
+        root_assets_path += "\\";
     
 	RenderableObject::SetRootAssetsPath( root_assets_path );
 	return Directory::Exists( root_assets_path );
@@ -113,6 +113,17 @@ void Scene::ConfigureCameraShaderValues( const bool update_projection )
 	Effect::GetCurrentEffect().SetFloat( "viewport_height", graphics_device.GetViewport().Height );	
 	Effect::GetCurrentEffect().SetFloatArray( "eye_position", camera.GetEyePosition() );	
 	
+	scene_constant_buffer.data.view_transform = camera.GetViewTransform();
+	scene_constant_buffer.data.projection_transform = camera.GetProjectionTransform();
+	scene_constant_buffer.data.viewport_width = graphics_device.GetViewport().Width;
+	scene_constant_buffer.data.viewport_height = graphics_device.GetViewport().Height;
+	scene_constant_buffer.data.eye_position = camera.GetEyePosition().ToGeoFloat4();
+
+	char buffer[1024];
+	sprintf_s( buffer, "width and height from scene are %f, %f\n", graphics_device.GetViewport().Width, graphics_device.GetViewport().Height );
+	OutputDebugStringA( buffer );
+
+	scene_constant_buffer.Update();
 }
 
 void Scene::SetupRenderTarget( RenderTarget _render_target )
@@ -151,6 +162,8 @@ void Scene::PreRender()
 		const bool object_visible = scene_objects[i]->IsVisible();
 		scene_objects[i]->SetVisible( false );
 		Effect::GetCurrentEffect().SetInt( "clipping_enabled", 1 );
+
+		scene_constant_buffer.data.clipping_enabled = 1;
 		
         
         SetupRenderTarget( render_target );
@@ -166,10 +179,18 @@ void Scene::PreRender()
 		Effect::GetCurrentEffect().SetMatrix( "ViewTransform", camera.GetReflectedViewTransform( reflection_plane ) );
 		Effect::GetCurrentEffect().SetTexture( "reflection", render_target.GetTexture() );
 
+		scene_constant_buffer.data.clip_plane = reflection_plane.ToGeoFloat4();
+		scene_constant_buffer.data.view_transform = camera.GetReflectedViewTransform( reflection_plane );
+		scene_constant_buffer.Update();
+
+
 		graphics_device.Clear( Color::Black() );
 		
 		RenderScene( true );
 		Effect::GetCurrentEffect().SetInt( "clipping_enabled", 0 );
+		scene_constant_buffer.data.clipping_enabled = 0;
+		scene_constant_buffer.Update();
+
 		scene_objects[i]->SetVisible( object_visible );
 
 		graphics_device.SetDefaultRenderTarget();

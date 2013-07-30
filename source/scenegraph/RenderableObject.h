@@ -5,6 +5,14 @@
 #include <string>
 #include <map>
 
+struct RenderableObjectConstantBuffer
+{
+	GeoMatrix world_transform;
+	GeoMatrix world_transform_inverse;
+	GeoFloat4 color;
+	GeoFloat4 padding;
+};
+
 class RenderableObject : public Object
 {
 public:
@@ -53,4 +61,6 @@ protected:
 	std::string technique_name;
 	static std::string enforced_global_technique;
 	static std::string root_assets_path;
+
+	ConstantBuffer<RenderableObjectConstantBuffer> constant_buffer;
 };

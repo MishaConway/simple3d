@@ -7,6 +7,9 @@
 #include <vector>
 #include <functional>
 #include "../interfaces/IValidatable.h"
+#ifdef _WIN32
+#include <regex>
+#endif
 
 #ifdef _WIN32
 #define BEGIN_RENDER_TECHNIQUE(a, technique) a.RenderTechnique(technique,[this](){
@@ -24,6 +27,9 @@ class BaseEffect : public IValidatable
 {
 public:
 	BaseEffect();
+	BaseEffect( const std::string& effect_path );
 	virtual bool SetFloatArray( const std::string& variable_name, GeoVector float_array ) = 0;
 	virtual bool SetColor( const std::string& variable_name, Color color );
+protected:
+     std::vector< std::pair< std::string, std::string > > ParseTechniqueFile( const std::string& technique_file );
 };

@@ -13,8 +13,18 @@ D3D11Buffer::D3D11Buffer()
 
 D3D11Buffer::D3D11Buffer( void* pData, const unsigned int data_size, const unsigned int bind_flags, D3D11_USAGE usage = D3D11_USAGE_DEFAULT )
 {
+		char buffer[1024];
+	sprintf_s( buffer, "width and height are %f, %f\n", D3D11Buffer::pGraphicsDevice->GetViewport().Width, D3D11Buffer::pGraphicsDevice->GetViewport().Height );
+	OutputDebugStringA( buffer );
+	
 	this->pDevice = pGraphicsDevice->GetInternals().pDevice;
 	this->pDeviceContext = pGraphicsDevice->GetInternals().pDeviceContext;
+
+
+	
+
+
+
 	
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory( &bd, sizeof(bd) );
@@ -25,11 +35,22 @@ D3D11Buffer::D3D11Buffer( void* pData, const unsigned int data_size, const unsig
 		bd.CPUAccessFlags = 0;
 	else
 		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	//if( D3D11_BIND_CONSTANT_BUFFER == bind_flags )
+	//	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
 	bd.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory( &InitData, sizeof(InitData) );
 	InitData.pSysMem = pData;
+
+	if( pGraphicsDevice && pGraphicsDevice->IsInitialized() )
+		printf( "it is initialized...\n" );
+	else
+		printf( "it is not initialized..\n" );
+
+
 	if( FAILED( pDevice->CreateBuffer( &bd, pData ? &InitData : nullptr, &pBuffer ) ) )
 	{
 		printf( "unable to create buffer!\n" );
