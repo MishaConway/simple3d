@@ -271,6 +271,11 @@ GeoFloat3 GeoVector::ToGeoFloat3()
 	return GeoFloat3( x, y, z );
 }
 
+GeoFloat4 GeoVector::ToGeoFloat4()
+{
+	return GeoFloat4( x, y, z, w );
+}
+
 #ifdef _WIN32	
 XMVECTOR GeoVector::ToXMVec3()
 {
