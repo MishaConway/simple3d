@@ -17,17 +17,22 @@ D3D11Effect D3D11Effect::GetCurrentEffect()
 
 D3D11Effect::D3D11Effect(){valid=false;}
 D3D11Effect::D3D11Effect( const std::string& effect_path ) : BaseEffect( effect_path )
-{
-	
-	
-	
+{	
 	valid = false;
 
-	std::vector< std::pair< std::string, std::string > > techniques = ParseTechniqueFile( effect_path );
+	auto techniques = ParseTechniqueFile( effect_path );
+	for( unsigned int i = 0; i < techniques.size(); i++ )
+	{
+		const std::string name = techniques[i].first;
+		const std::string vertex_shader_path = techniques[i].second.first;
+		const std::string pixel_shader_path = techniques[i].second.second;
 
-	printf( "went here...\n" );
+		D3D11VertexShader vertex_shader = D3D11VertexShader( vertex_shader_path, vertex_shader_path );
+		D3D11PixelShader pixel_shader = D3D11PixelShader( pixel_shader_path, pixel_shader_path );
 
-
+		//programs[name] = D3D11ShaderProgram( name, vertex_shader, pixel_shader );
+		programs.insert(std::make_pair(name, D3D11ShaderProgram( name, vertex_shader, pixel_shader )));
+	}
 	
 	/*
 	this->pDeviceContext = pGraphicsDevice->GetInternals().pDeviceContext;

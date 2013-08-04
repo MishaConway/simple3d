@@ -58,6 +58,7 @@ friend class D3D11Texture;
 friend class D3D11Effect;
 friend class D3D11Buffer;
 friend class D3D11RenderTarget;
+friend class D3D11Shader;
 friend class D3D11VertexShader;
 friend class D3D11PixelShader;
 public:

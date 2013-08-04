@@ -33,6 +33,7 @@ bool D3D11GraphicsDevice::Initialize( DX_WINDOW_TYPE hWnd, const unsigned int wi
 	D3D11RenderTarget::pGraphicsDevice = this;
 	D3D11Texture::pGraphicsDevice = this;
 	D3D11Effect::pGraphicsDevice = this;
+	D3D11Shader::pGraphicsDevice = this;
 	D3D11Buffer::pGraphicsDevice = this;
 		
 	unsigned int device_creation_flags = 0;

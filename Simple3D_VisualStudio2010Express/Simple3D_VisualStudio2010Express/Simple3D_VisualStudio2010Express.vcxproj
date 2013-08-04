@@ -250,11 +250,17 @@
     <None Include="..\..\source\shaders\glsl\SpriteVS.vert" />
     <None Include="..\..\source\shaders\glsl\techniques.fx" />
     <None Include="..\..\source\shaders\hlsl\shaders.fx" />
-    <None Include="..\..\source\shaders\techniques.tech" />
+    <None Include="..\..\source\shaders\techniques.tech">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+    </None>
     <None Include="..\..\source\system\CocoaBindings.mm" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\source\shaders\hlsl\BasicVS.hlsl" />
+    <FxCompile Include="..\..\source\shaders\hlsl\BasicVS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

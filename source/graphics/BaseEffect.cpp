@@ -9,12 +9,11 @@ BaseEffect::BaseEffect()
 
 BaseEffect::BaseEffect( const std::string& effect_path )
 {
-printf("went here...\n" );
 }
 
-std::vector< std::pair< std::string, std::string > > BaseEffect::ParseTechniqueFile( const std::string& technique_file )
+std::vector< std::pair< std::string, std::pair< std::string, std::string >> > BaseEffect::ParseTechniqueFile( const std::string& technique_file )
 {
-	std::vector< std::pair< std::string, std::string > > techniques;
+	std::vector< std::pair< std::string, std::pair< std::string, std::string >> >techniques;
 
 	std::vector<std::string> effect_path_parts = ExplodeString( technique_file, "/\\");
 	effect_path_parts.pop_back();
@@ -30,7 +29,10 @@ std::vector< std::pair< std::string, std::string > > BaseEffect::ParseTechniqueF
         const std::string vertex_shader = Trim(shaders[0]);
         const std::string pixel_shader = Trim( shaders[1]);
 
-		techniques.push_back( std::pair< std::string, std::string >( vertex_shader, pixel_shader ) );
+		std::pair< std::string, std::pair< std::string, std::string >> technique;
+		technique.first = technique_name;
+		technique.second = std::pair< std::string, std::string >( vertex_shader, pixel_shader );
+		techniques.push_back( technique );
 	}
 
 	return techniques;

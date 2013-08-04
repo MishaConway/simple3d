@@ -27,7 +27,7 @@ Scene::Scene(  WINDOW_TYPE hWnd, const unsigned int width, const unsigned int he
 	downsample_render_target = RenderTarget( 256, 256 );
 	downsample_render_target2 = RenderTarget( 256, 256 );
         
-    std::string shader_path = GetRootShaderPath() + "techniques2.tech";
+    std::string shader_path = GetRootShaderPath() + "techniques.tech";
     
     
     if( !File::Exists( shader_path ))

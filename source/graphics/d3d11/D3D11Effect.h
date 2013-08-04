@@ -10,6 +10,7 @@
 #include "D3D11VertexBuffer.h"
 #include "D3D11VertexFormats.h"
 #include "D3D11ShaderResource.h"
+#include "D3D11Shader.h"
 #include "D3D11Texture.h"
 #include "../BaseEffect.h"
 #include "../../geo/GeoVector.h"

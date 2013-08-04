@@ -1,17 +1,28 @@
 #include "BaseShader.h"
 
+
 BaseShader::BaseShader()
 {
 
 }
 
-BaseShader BaseShader::FromFile( const std::string filename )
+BaseShader::BaseShader( const std::string& name, const std::string& path )
 {
-	BaseShader c;	
-	return c;
+	valid = false;
+	this->name = name;
 }
 
 std::string BaseShader::GetName()
+{
+	return name;
+}
+
+BaseShaderProgram::BaseShaderProgram()
+{
+
+}
+
+std::string BaseShaderProgram::GetName()
 {
 	return name;
 }

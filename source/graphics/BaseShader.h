@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <map>
 #include "../interfaces/IValidatable.h"
@@ -6,10 +8,20 @@ class BaseShader : public IValidatable
 {
 public:
 	BaseShader();
-	static BaseShader FromFile( const std::string filename );
+	BaseShader( const std::string& name, const std::string& path );
 
 	std::string GetName();
 protected:
 	std::string name;
-	static std::map<std::string, BaseShader*> shaders;
+};
+
+
+class BaseShaderProgram : public IValidatable
+{
+public:
+	BaseShaderProgram();
+	std::string GetName();
+	virtual void Enable() = 0;
+protected:
+	std::string name;
 };

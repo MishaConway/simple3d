@@ -1,4 +1,7 @@
 #include "FileIO.h"
+#include "../string/string_utils.h"
+
+#define WINDOWS_STORE_APP 1
 
 #include <algorithm>
 #include <sstream>
@@ -13,6 +16,15 @@
 #define NOCRYPT
 #include <windows.h>
 #include <shlobj.h>
+
+#include <wrl/client.h>
+#include <ppl.h>
+#include <ppltasks.h>
+#include <agile.h>
+using namespace Windows::UI::Core;
+
+
+
 #else
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -144,17 +156,54 @@ void Directory::SetGetFilesInDirectoryBlock( std::vector<std::string> (^_get_fil
 }
 #endif
 
+
+#ifdef WINDOWS_STORE_APP
+
+std::wstring MetrifyPath( const std::string& path )
+{
+	std::string cleaned_path = StringReplace( path, "/", "\\" );
+
+	if( '\\' == cleaned_path[0] )
+		cleaned_path.erase(0,1);
+	
+	std::wstring wide_path;
+	wide_path.assign( cleaned_path.begin(), cleaned_path.end() );
+		
+	const std::wstring installed_location = std::wstring( Windows::ApplicationModel::Package::Current->InstalledLocation->Path->Data() );
+	
+	return std::wstring(installed_location + L"\\Simple3D_VisualStudio2010Express\\" + wide_path);
+}
+
+
+#endif
+
+
+
+
+
 bool File::Exists( const std::string& path )
 {
 #if defined(_WINDOWS_)
 	//not supported in windows store app
-	return false;
-/*	DWORD dwResult = GetFileAttributesA( path.c_str() );
+	#ifdef WINDOWS_STORE_APP
+	std::wstring wide_path = MetrifyPath( path );
+	FILE* file;
+	_wfopen_s( &file, wide_path.c_str(), L"r" );
+	if( file )
+	{
+		fclose( file );
+		return true;
+	}
+	else
+		return false;
+	#else
+	DWORD dwResult = GetFileAttributesA( path.c_str() );
 	if ( dwResult == INVALID_FILE_ATTRIBUTES )
 		return false;
 	else
 	if ( !(dwResult & FILE_ATTRIBUTE_DIRECTORY) )
-		return true;*/
+		return true;
+	#endif
 #else
     #if defined(__APPLE__) || defined(__APPLE_CC__)
     return file_exists_block( path.c_str() );
@@ -184,10 +233,42 @@ std::string File::ReadAllText( const std::string& path )
     if( read_all_text_block )
         return read_all_text_block(path.c_str());
 #endif
-    std::ifstream t(path.c_str());
+	
+#ifdef WINDOWS_STORE_APP
+	std::wstring wide_path = MetrifyPath( path );
+    std::ifstream t(wide_path.c_str());
+#else
+	std::ifstream t(path.c_str());
+#endif
 	std::stringstream buffer;
 	buffer << t.rdbuf();
 	return buffer.str();
+}
+
+std::vector<unsigned char> File::ReadAllBytes( const std::string& path )
+{
+	#ifdef WINDOWS_STORE_APP
+	std::wstring wide_path = MetrifyPath( path );
+    std::ifstream file(wide_path, std::ifstream::in | std::ifstream::binary );
+
+	#else
+	std::ifstream file(path, std::ios::binary);
+	#endif
+	
+	if( file.is_open() )
+	{
+		// get its size:
+		file.seekg(0, std::ios::end);
+		std::streampos file_size = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		// read the data:
+		std::vector<unsigned char> bytes(file_size);
+		file.read((char*) &bytes[0], file_size);
+		return bytes;
+	}
+
+	return std::vector<unsigned char>();
 }
 
 

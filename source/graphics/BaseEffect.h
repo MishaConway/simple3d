@@ -5,8 +5,10 @@
 #include "Color.h"
 #include <string>
 #include <vector>
+#include <map>
 #include <functional>
 #include "../interfaces/IValidatable.h"
+#include "BaseShader.h"
 #ifdef _WIN32
 #include <regex>
 #endif
@@ -31,5 +33,7 @@ public:
 	virtual bool SetFloatArray( const std::string& variable_name, GeoVector float_array ) = 0;
 	virtual bool SetColor( const std::string& variable_name, Color color );
 protected:
-     std::vector< std::pair< std::string, std::string > > ParseTechniqueFile( const std::string& technique_file );
+     std::vector< std::pair< std::string, std::pair< std::string, std::string >> > ParseTechniqueFile( const std::string& technique_file );
+protected:
+	std::map< std::string, std::reference_wrapper<BaseShaderProgram> > programs;
 };
