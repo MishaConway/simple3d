@@ -35,5 +35,4 @@ public:
 protected:
      std::vector< std::pair< std::string, std::pair< std::string, std::string >> > ParseTechniqueFile( const std::string& technique_file );
 protected:
-	std::map< std::string, std::reference_wrapper<BaseShaderProgram> > programs;
 };

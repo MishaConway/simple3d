@@ -16,6 +16,13 @@ D3D11ShaderResource::D3D11ShaderResource( ID3D11Device* pDevice, ID3D11Resource*
 	valid = SUCCEEDED( pDevice->CreateShaderResourceView( pResource, 0, &pShaderResourceView ) );
 }
 
+D3D11ShaderResource::D3D11ShaderResource( ID3D11ShaderResourceView* pShaderResourceView )
+{
+	created = true;
+	this->pShaderResourceView = pShaderResourceView;
+	valid = true;
+}
+
 ID3D11ShaderResourceView* D3D11ShaderResource::GetResourceView()
 {	
 	return pShaderResourceView;

@@ -90,12 +90,12 @@ void Scene::RenderScene( const bool reflection )
 		graphics_device.GetStateManager().SetDefaultFrontFaceRendering();
 	else
 		graphics_device.GetStateManager().SetDefaultBackFaceRendering();
-	graphics_device.GetStateManager().Lock();
+	//graphics_device.GetStateManager().Lock();
     
     
     RenderObjects( scene_objects );
     
-    graphics_device.GetStateManager().Unlock();
+    //graphics_device.GetStateManager().Unlock();
 }
 
 void Scene::RenderSprites()
@@ -113,16 +113,6 @@ void Scene::ConfigureCameraShaderValues( const bool update_projection )
 	Effect::GetCurrentEffect().SetFloat( "viewport_height", graphics_device.GetViewport().Height );	
 	Effect::GetCurrentEffect().SetFloatArray( "eye_position", camera.GetEyePosition() );	
 	
-	scene_constant_buffer.data.view_transform = camera.GetViewTransform();
-	scene_constant_buffer.data.projection_transform = camera.GetProjectionTransform();
-	scene_constant_buffer.data.viewport_width = graphics_device.GetViewport().Width;
-	scene_constant_buffer.data.viewport_height = graphics_device.GetViewport().Height;
-	scene_constant_buffer.data.eye_position = camera.GetEyePosition().ToGeoFloat4();
-
-	char buffer[1024];
-	sprintf_s( buffer, "width and height from scene are %f, %f\n", graphics_device.GetViewport().Width, graphics_device.GetViewport().Height );
-	OutputDebugStringA( buffer );
-
 	scene_constant_buffer.Update();
 }
 

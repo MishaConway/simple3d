@@ -10,6 +10,7 @@
 class D3D11Buffer : public IValidatable
 {
 friend class D3D11GraphicsDevice;
+friend class D3D11Effect;
 public:
 	D3D11Buffer();
 	D3D11Buffer( void* pData, const unsigned int data_size, const unsigned int bind_flags, D3D11_USAGE usage );

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "D3D11Buffer.h"
 
 template <class T>

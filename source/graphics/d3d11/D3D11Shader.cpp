@@ -1,5 +1,6 @@
 #include "D3D11Shader.h"
 #include "D3D11GraphicsDevice.h"
+#include "D3D11VertexFormats.h"
 #include "../../system/FileIO.h"
 #include <fstream>
 
@@ -30,7 +31,6 @@ D3D11VertexShader::D3D11VertexShader( const std::string& name, const std::string
 	if( vertex_shaders.count( name ) )
 	{
 		*this = vertex_shaders[name];
-		printf( "very cool\n" );
 	}
 	else if( LoadFromFile( path ) )	
 	{		
@@ -51,7 +51,18 @@ bool D3D11VertexShader::LoadFromFile( const std::string& path )
 		if( FAILED( pGraphicsDevice->GetInternals().pDevice->CreateVertexShader( &bytecode[0], bytecode.size(), nullptr, &pVertexShader ) ) )
 			printf( "unable to create vertex shader..\n" );
 		else
+		{
+			if( FAILED(pGraphicsDevice->GetInternals().pDevice->CreateInputLayout(
+				d3d11_vertex_layout,
+				VERTEX_LAYOUT_NUM_ELEMENTS,
+				&bytecode[0],
+				bytecode.size(),
+				&pInputLayout
+				)) )
+				printf( "unable to create input layout..\n" );
+			
 			return true;
+		}
 	}
 	return false;
 }
@@ -59,6 +70,7 @@ bool D3D11VertexShader::LoadFromFile( const std::string& path )
 void D3D11VertexShader::Enable()
 {
 	pGraphicsDevice->GetInternals().pDeviceContext->VSSetShader( pVertexShader, 0, 0 );
+	pGraphicsDevice->GetInternals().pDeviceContext->IASetInputLayout( pInputLayout );
 }
 
 D3D11PixelShader::D3D11PixelShader(){}
@@ -97,10 +109,13 @@ void D3D11PixelShader::Enable()
 	pGraphicsDevice->GetInternals().pDeviceContext->PSSetShader( pPixelShader, 0, 0 );
 }
 
+D3D11ShaderProgram::D3D11ShaderProgram(){}
 D3D11ShaderProgram::D3D11ShaderProgram( const std::string& name, D3D11VertexShader vertex_shader, D3D11PixelShader fragment_shader )
 {
+	this->name = name;
 	this->vertex_shader = vertex_shader;
 	this->pixel_shader = fragment_shader;
+	this->valid = vertex_shader.IsValid() && fragment_shader.IsValid();
 }
 
 void D3D11ShaderProgram::Enable()

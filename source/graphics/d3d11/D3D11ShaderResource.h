@@ -13,6 +13,7 @@ public:
 	D3D11ShaderResource();
 	D3D11ShaderResource( ID3D11Device* pDevice, const std::string& filepath );
 	D3D11ShaderResource( ID3D11Device* pDevice, ID3D11Resource* pResource ); 
+	D3D11ShaderResource( ID3D11ShaderResourceView* pShaderResourceView );
 	bool IsCreated();
 	ID3D11ShaderResourceView* GetResourceView();
 private:

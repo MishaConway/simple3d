@@ -33,6 +33,7 @@ public:
 	virtual bool LoadFromFile( const std::string& filename );
 private:
 	ID3D11VertexShader* pVertexShader;
+	ID3D11InputLayout* pInputLayout;
 	static std::map<std::string, D3D11VertexShader > vertex_shaders;
 };
 
@@ -53,6 +54,7 @@ private:
 class D3D11ShaderProgram : public BaseShaderProgram
 {
 public:
+	D3D11ShaderProgram();
 	D3D11ShaderProgram( const std::string& name, D3D11VertexShader vertex_shader, D3D11PixelShader fragment_shader );
 	virtual void Enable();
 private:

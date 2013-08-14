@@ -1,7 +1,7 @@
 #include "FileIO.h"
 #include "../string/string_utils.h"
 
-#define WINDOWS_STORE_APP 1
+
 
 #include <algorithm>
 #include <sstream>
@@ -22,6 +22,8 @@
 #include <ppltasks.h>
 #include <agile.h>
 using namespace Windows::UI::Core;
+
+
 
 
 
@@ -270,6 +272,20 @@ std::vector<unsigned char> File::ReadAllBytes( const std::string& path )
 
 	return std::vector<unsigned char>();
 }
+
+
+void debug_print( const char * format, ... )
+{
+	char buffer[256];
+	va_list v;
+	va_start(v, format);
+	_vsnprintf_s(buffer, 255, 255, format, v);
+	buffer[255] = '\0';
+	OutputDebugStringA(buffer);
+	printf("cool");
+}
+
+
 
 
 

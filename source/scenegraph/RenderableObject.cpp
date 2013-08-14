@@ -109,13 +109,8 @@ std::string RenderableObject::GetDefaultTechnique()
 bool RenderableObject::Render()  //consider passing in whether or not front or back faces should be rendered
 {
 	if( visible )
-	{
-		constant_buffer.data.world_transform = GetWorldTransform();
-		constant_buffer.data.world_transform_inverse = GetWorldInverseTranspose();
-	//	constant_buffer.Update();
-		
-		
-		Effect e = Effect::GetCurrentEffect();
+	{	
+		Effect& e = Effect::GetCurrentEffect();
 		e.SetTexture( "lala", GetTexture() );
 		e.SetTexture( "glowmap", GetGlowmap() );
 		e.SetMatrix( "WorldTransform", GetWorldTransform() );

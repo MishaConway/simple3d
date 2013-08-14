@@ -4,10 +4,10 @@
 struct VertexShaderInput
 {
     float3 position  : POSITION;
-	float3 color_uv  : TEXCOORD0;
-	float3 normal    : TEXCOORD1;
-	float3 tangent   : TEXCOORD2;
-	float3 bitangent : TEXCOORD3;
+	float3 color_uv  : COLOR_UV;
+	float3 normal    : NORMAL;
+	float3 tangent   : TANGENT;
+	float3 bitangent : BITANGENT;
 };
 
 void TransformPosition( in float3 objectspace_position, out float4 worldspace_position, out float4 viewspace_position, out float4 homogenous_screenspace_position, out float3 worldposition_to_eye_position, out float clip )

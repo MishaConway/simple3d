@@ -79,9 +79,7 @@ bool Sprite::Render()
 {
 	if( visible )
 	{
-		
-
-		Effect e = Effect::GetCurrentEffect();
+		Effect& e = Effect::GetCurrentEffect();
 		e.SetTexture( "lala", GetTexture() );
 		e.SetMatrix( "WorldTransform", GetWorldTransform() );
         e.SetColor( "color", color );

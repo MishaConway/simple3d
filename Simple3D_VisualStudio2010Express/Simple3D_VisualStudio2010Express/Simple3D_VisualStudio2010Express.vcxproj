@@ -100,7 +100,6 @@
     <ClCompile Include="..\..\source\graphics\BaseVertexBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\Color.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11Buffer.cpp" />
-    <ClCompile Include="..\..\source\graphics\d3d11\D3D11ConstantBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11DynamicVertexBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11Effect.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11GraphicsDevice.cpp" />
@@ -112,6 +111,8 @@
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11Texture.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11VertexBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11VertexFormats.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\DDSTextureLoader\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\source\graphics\d3d11\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="..\..\source\graphics\opengl\OpenGLBuffer.cpp" />
     <ClCompile Include="..\..\source\graphics\opengl\OpenGLCapabilities.cpp" />
     <ClCompile Include="..\..\source\graphics\opengl\OpenGLDynamicVertexBuffer.cpp" />
@@ -174,10 +175,12 @@
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11Texture.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexBuffer.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\D3D11VertexFormats.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\DDSTextureLoader\DDSTextureLoader.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dx11dbg.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dx11effect.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\includes\d3dxGlobal.h" />
     <ClInclude Include="..\..\source\graphics\d3d11\includes\FW1FontWrapper.h" />
+    <ClInclude Include="..\..\source\graphics\d3d11\WICTextureLoader\WICTextureLoader.h" />
     <ClInclude Include="..\..\source\graphics\inc.h" />
     <ClInclude Include="..\..\source\graphics\opengl\glew\glew.h" />
     <ClInclude Include="..\..\source\graphics\opengl\glew\glxew.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="..\..\source\shaders\glsl\includes\vertex_shader_includes\vertex_shader_helpers.h" />
     <ClInclude Include="..\..\source\shaders\hlsl\includes\cross_shader_includes\helpers.h" />
     <ClInclude Include="..\..\source\shaders\hlsl\includes\cross_shader_includes\uniforms.h" />
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\pixel_shader_includes\pixel_shader_helpers.h" />
     <ClInclude Include="..\..\source\shaders\hlsl\includes\vertex_shader_includes\vertex_shader_helpers.h" />
     <ClInclude Include="..\..\source\std\functional.h" />
     <ClInclude Include="..\..\source\std\nullptr.h" />
@@ -256,10 +260,20 @@
     <None Include="..\..\source\system\CocoaBindings.mm" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\source\shaders\hlsl\BasicPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\..\source\shaders\hlsl\BasicVS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\..\source\shaders\hlsl\SpriteVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

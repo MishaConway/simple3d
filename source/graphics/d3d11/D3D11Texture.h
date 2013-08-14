@@ -45,6 +45,7 @@ private:
 	unsigned int BitsPerPixel( DXGI_FORMAT fmt );
 private:
 	ID3D11Texture2D* pTex;
+	ID3D11SamplerState* pSamplerState;
 	ID3D11Device* pDevice;
 	ID3D11DeviceContext* pDeviceContext;
 	D3D11_MAPPED_SUBRESOURCE mapped_resource;

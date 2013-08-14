@@ -45,12 +45,6 @@ D3D11Buffer::D3D11Buffer( void* pData, const unsigned int data_size, const unsig
 	ZeroMemory( &InitData, sizeof(InitData) );
 	InitData.pSysMem = pData;
 
-	if( pGraphicsDevice && pGraphicsDevice->IsInitialized() )
-		printf( "it is initialized...\n" );
-	else
-		printf( "it is not initialized..\n" );
-
-
 	if( FAILED( pDevice->CreateBuffer( &bd, pData ? &InitData : nullptr, &pBuffer ) ) )
 	{
 		printf( "unable to create buffer!\n" );

@@ -1,8 +1,11 @@
 #pragma once
 
+#define WINDOWS_STORE_APP 1
+
 #include <vector>
 #include <string>
 #include <fstream>
+#include <cstdarg>
 
 class Directory
 {
@@ -36,3 +39,20 @@ private:
     static bool (^file_exists_block)(const char* path);
 #endif
 };
+
+#ifdef WINDOWS_STORE_APP
+std::wstring MetrifyPath( const std::string& path );
+#endif
+
+/*
+//void debug_print( const char * format, ... );
+template <typename... Ts>
+void debug_print(int dbg_lvl, char *fmt, Ts... ts)
+{
+	char buffer[10000];
+	sprintf_s( buffer, 10000, fmt, ... );
+	OutputDebugStringA( buffer );
+}
+*/
+
+void debug_print( const char * format, ... );

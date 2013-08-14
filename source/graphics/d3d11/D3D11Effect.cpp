@@ -1,16 +1,18 @@
 #ifdef _WIN32
 #include "D3D11Effect.h"
 #include "D3D11GraphicsDevice.h"
+#include "../../system/FileIO.h"
 
 D3D11Effect D3D11Effect::current_effect;
 D3D11GraphicsDevice* D3D11Effect::pGraphicsDevice = nullptr;
+
 
 void D3D11Effect::Enable()
 {
 	current_effect = *this;
 }
 
-D3D11Effect D3D11Effect::GetCurrentEffect()
+D3D11Effect& D3D11Effect::GetCurrentEffect()
 {
 	return current_effect;
 }
@@ -31,8 +33,20 @@ D3D11Effect::D3D11Effect( const std::string& effect_path ) : BaseEffect( effect_
 		D3D11PixelShader pixel_shader = D3D11PixelShader( pixel_shader_path, pixel_shader_path );
 
 		//programs[name] = D3D11ShaderProgram( name, vertex_shader, pixel_shader );
-		programs.insert(std::make_pair(name, D3D11ShaderProgram( name, vertex_shader, pixel_shader )));
+		programs[name] = D3D11ShaderProgram( name, vertex_shader, pixel_shader );
 	}
+
+		for( auto it = programs.begin(); it != programs.end();  it++ )
+			if( it->second.IsValid() )
+				debug_print( "valid program: %s\n", it->second.GetName().c_str() );
+			else
+				debug_print( "invalid program: %s\n", it->second.GetName().c_str() );
+
+		debug_print( "made it here... lala: %s\n", "haha" );
+		debug_print("cc\n" );
+	valid = true;
+	Enable();
+		
 	
 	/*
 	this->pDeviceContext = pGraphicsDevice->GetInternals().pDeviceContext;
@@ -91,83 +105,103 @@ D3D11Effect::D3D11Effect( const std::string& effect_path ) : BaseEffect( effect_
 	printf( "shader effect built!" );
 }
 
-bool D3D11Effect::SetEffectVariable( const std::string& variable_name, std::function<void(ID3DX11EffectVariable*)> f )
+/*struct SceneConstantBuffer
 {
-	if( !valid )
-		return false;
-	ID3DX11EffectVariable* pEffectVariable = pEffect->GetVariableByName( variable_name.c_str() );
-	if( !pEffectVariable->IsValid() )
-	{
-		printf( "invalid effect variable %s\n", variable_name.c_str() );
-		return false;
-	}
-	f(pEffectVariable);
-	return true;
-}
+	GeoMatrix projection_transform;
+	GeoMatrix view_transform;
+	GeoFloat4 eye_position;
+	float viewport_width;
+	float viewport_height;
+	int clipping_enabled;
+	GeoFloat4 clip_plane;
+	float padding;
+};
+
+struct PerObjectConstantBuffer
+{
+	GeoMatrix world_transform;
+	GeoMatrix world_transform_inverse;
+	GeoFloat4 color;
+	GeoFloat4 padding;
+};
+*/
 
 bool D3D11Effect::SetFloat( const std::string& variable_name, float flt )
 {
-	return false;
-	//return SetEffectVariable( variable_name, [&flt](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsScalar()->SetFloat( flt );});
+	if( "viewport_width" == variable_name )
+		scene_constant_buffer.data.viewport_width = flt;
+	else if( "viewport_height" == variable_name )
+		scene_constant_buffer.data.viewport_height = flt;
+	else
+		return false;
+	return true;
 }
 
  bool D3D11Effect::SetInt( const std::string& variable_name, const int i )
  {
-	return false;
-	 //return SetEffectVariable( variable_name, [&i](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsScalar()->SetInt( i );});	
+	if( "clipping_enabled" == variable_name )
+		scene_constant_buffer.data.clipping_enabled = i;
+	else
+		return false;
+	return true;
  }
 
 bool D3D11Effect::SetFloatArray( const std::string& variable_name, XMFLOAT3& float_array )
 {
-	return false;
-	//XMFLOAT4 f( float_array.x, float_array.y, float_array.z, 0 );
-	//return SetFloatArray( variable_name, f );
-	//return SetEffectVariable( variable_name, [&float_array](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsVector()->SetFloatVector( (float*) &float_array );});	
+	GeoVector v( float_array.x, float_array.y, float_array.z, 0 );
+	return SetFloatArray( variable_name, v );
+}
+
+bool D3D11Effect::SetFloatArray( const std::string& variable_name, XMFLOAT4& float_array )
+{
+	GeoVector v(float_array);
+	return SetFloatArray( variable_name, v );
 }
 
 bool D3D11Effect::SetFloatArray( const std::string& variable_name, std::vector<float>& float_array )
 {
 	return false;
-	//return SetEffectVariable( variable_name, [&float_array](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsScalar()->SetFloatArray( (float*) &float_array[0], 0, float_array.size() );});		
-}
-
-bool D3D11Effect::SetFloatArray( const std::string& variable_name, XMFLOAT4& float_array )
-{
-	return false;
-	//return SetEffectVariable( variable_name, [&float_array](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsVector()->SetFloatVector( (float*) &float_array );});	
+	//memcpy( scene_buffer.data.blah, &float_array[0], sizeof(float)*float_array.size() );
 }
 
 bool D3D11Effect::SetFloatArray( const std::string& variable_name, GeoVector float_array )
 {
-	return false;
-	//return SetEffectVariable( variable_name, [&float_array](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsVector()->SetFloatVector( (float*) &float_array );});	
+	if( "eye_position" == variable_name )
+		scene_constant_buffer.data.eye_position = float_array.ToGeoFloat4();
+	else if( "clip_plane" == variable_name )
+		scene_constant_buffer.data.clip_plane = float_array.ToGeoFloat4();
+	else if( "color" == variable_name )
+		per_object_constant_buffer.data.color = float_array.ToGeoFloat4();
+	else
+		return false;
+	return true;
 }
 
 bool D3D11Effect::SetMatrix( const std::string& variable_name, XMMATRIX& matrix )
 {
-	return false;
-	//return SetEffectVariable( variable_name, [&matrix](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsMatrix()->SetMatrix( (float*) &matrix ); });
+	GeoMatrix m(matrix);
+	return SetMatrix( variable_name, m );
 }
 
 bool D3D11Effect::SetMatrix( const std::string& variable_name, XMFLOAT4X4& matrix )
 {
-	return false;
-	//return SetEffectVariable( variable_name, [&matrix](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsMatrix()->SetMatrix( (float*) &matrix ); });	
+	GeoMatrix m( matrix );
+	return SetMatrix( variable_name, m );
 }
 
  bool D3D11Effect::SetMatrix( const std::string& variable_name, GeoMatrix& matrix )
  {
-	return false;
-	// return SetEffectVariable( variable_name, [&matrix](ID3DX11EffectVariable* pEffectVariable){ 
-	// pEffectVariable->AsMatrix()->SetMatrix( (float*) &matrix ); });	
+	if( "ProjectionTransform" == variable_name )
+		scene_constant_buffer.data.projection_transform = matrix;
+	else if( "ViewTransform" == variable_name )
+		scene_constant_buffer.data.view_transform = matrix;
+	else if( "WorldTransform" == variable_name )
+		per_object_constant_buffer.data.world_transform = matrix;
+	else if( "WorldInverseTranspose" == variable_name )
+		per_object_constant_buffer.data.world_transform_inverse = matrix;
+	else
+		return false; 
+	return true;
  }
 
 bool D3D11Effect::SetTexture( const std::string& variable_name, D3D11Texture& texture )
@@ -179,6 +213,9 @@ bool D3D11Effect::SetTexture( const std::string& variable_name, D3D11Texture& te
 	SetFloat( variable_name + "_width", (float)texture.GetWidth() );
 	SetFloat( variable_name + "_height", (float)texture.GetHeight() );
 	SetInt( "use_lala_array", texture.IsValid() && texture.IsTextureArray() ? 1 : 0 );
+
+	auto x = texture.GetShaderResource().GetResourceView();
+	pGraphicsDevice->GetInternals().pDeviceContext->PSSetShaderResources( 0, 1, &x ); 
 	return false;
 	//return SetEffectVariable( variable_name, [&texture](ID3DX11EffectVariable* pEffectVariable){ 
 		//pEffectVariable->AsShaderResource()->SetResource( texture.IsValid() ? texture.GetShaderResource().GetResourceView() : nullptr ); });	
@@ -188,28 +225,19 @@ bool D3D11Effect::RenderTechnique( const std::string& technique_name, std::funct
 {
 	if( !valid )
 		return false;
-	
-	return false;
-	/*ID3DX11EffectTechnique* pTechnique;
-	pTechnique = pEffect->GetTechniqueByName( technique_name.c_str() );
-	D3DX11_TECHNIQUE_DESC technique_description;
-	if( FAILED(pTechnique->GetDesc( &technique_description ) ) )
-		printf( "could not get technique description\n" );
-	bool success = std::string( technique_description.Name ) == technique_name;
 
-	if( success )
-	{	 
-		for( UINT p = 0; p < technique_description.Passes; ++p )
-		{
-			if( FAILED(pTechnique->GetPassByIndex( p )->Apply(0, pDeviceContext)))
-				printf("applying pass failed!\n" );
-			f();
-		}
-	}
-	else
-	{
-		printf("unable to set technique" );
-	} 
-	return success;*/
+	programs[technique_name].Enable();
+
+	scene_constant_buffer.Update();
+	per_object_constant_buffer.Update();
+
+	pGraphicsDevice->GetInternals().pDeviceContext->VSSetConstantBuffers(0,1, &scene_constant_buffer.buffer.pBuffer);
+	pGraphicsDevice->GetInternals().pDeviceContext->PSSetConstantBuffers(0,1, &scene_constant_buffer.buffer.pBuffer);
+
+	pGraphicsDevice->GetInternals().pDeviceContext->VSSetConstantBuffers(1,1, &per_object_constant_buffer.buffer.pBuffer);
+	pGraphicsDevice->GetInternals().pDeviceContext->PSSetConstantBuffers(1,1, &per_object_constant_buffer.buffer.pBuffer);
+	f();
+	
+	return true;
 }
 #endif

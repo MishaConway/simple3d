@@ -85,6 +85,15 @@
     <Filter Include="Source Files\shaders\hlsl\includes\cross_shader_includes">
       <UniqueIdentifier>{a41ac5db-b8a2-44b9-b65b-a025524fe3d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shaders\hlsl\includes\pixel_shader_includes">
+      <UniqueIdentifier>{d66a097d-5ee9-450e-bf0e-0890b4117b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\DDSTextureLoader">
+      <UniqueIdentifier>{5051b66f-9554-4bcc-9b51-2e25f2415193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\d3d11\WICTextureLoader">
+      <UniqueIdentifier>{9be917c2-9ab4-4522-a981-073d797d6e69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\geo\GeoFloat.cpp">
@@ -261,8 +270,11 @@
     <ClCompile Include="..\..\source\graphics\d3d11\D3D11Shader.cpp">
       <Filter>Source Files\graphics\d3d11</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\graphics\d3d11\D3D11ConstantBuffer.cpp">
-      <Filter>Source Files\graphics\d3d11</Filter>
+    <ClCompile Include="..\..\source\graphics\d3d11\DDSTextureLoader\DDSTextureLoader.cpp">
+      <Filter>Source Files\graphics\DDSTextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\graphics\d3d11\WICTextureLoader\WICTextureLoader.cpp">
+      <Filter>Source Files\graphics\d3d11\WICTextureLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -530,6 +542,15 @@
     <ClInclude Include="..\..\source\graphics\BaseConstantBuffer.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\shaders\hlsl\includes\pixel_shader_includes\pixel_shader_helpers.h">
+      <Filter>Source Files\shaders\hlsl\includes\pixel_shader_includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\DDSTextureLoader\DDSTextureLoader.h">
+      <Filter>Source Files\graphics\DDSTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\graphics\d3d11\WICTextureLoader\WICTextureLoader.h">
+      <Filter>Source Files\graphics\d3d11\WICTextureLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\source\shaders\hlsl\shaders.fx">
@@ -580,6 +601,12 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\source\shaders\hlsl\BasicVS.hlsl">
+      <Filter>Source Files\shaders\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\source\shaders\hlsl\BasicPS.hlsl">
+      <Filter>Source Files\shaders\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\source\shaders\hlsl\SpriteVS.hlsl">
       <Filter>Source Files\shaders\hlsl</Filter>
     </FxCompile>
   </ItemGroup>

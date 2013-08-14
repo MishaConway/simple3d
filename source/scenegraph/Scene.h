@@ -8,18 +8,6 @@
 #include "../system/FileIO.h"
 
 
-struct SceneConstantBuffer
-{
-	GeoMatrix projection_transform;
-	GeoMatrix view_transform;
-	GeoFloat4 eye_position;
-	float viewport_width;
-	float viewport_height;
-	int clipping_enabled;
-	GeoFloat4 clip_plane;
-	float padding;
-};
-
 class Scene
 {
 public:

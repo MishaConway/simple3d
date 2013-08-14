@@ -5,6 +5,9 @@
 #include <algorithm>
 #include "D3D11GraphicsDevice.h"
 #include "../../scenegraph/Sprite.h"
+#include "DDSTextureLoader/DDSTextureLoader.h"
+#include "WICTextureLoader/WICTextureLoader.h"
+#include "../../system/FileIO.h"
 
 std::map<ID3D11Texture2D*, D3D11ShaderResource> D3D11Texture::shader_resources;
 
@@ -22,13 +25,49 @@ D3D11Texture::D3D11Texture( const std::string& image_filename )
 	pDevice = pGraphicsDevice->GetInternals().pDevice;
 	ID3D11Resource* pResource;
 	valid = true;
-	//if( FAILED(D3DX11CreateTextureFromFile( pDevice, image_filename.c_str(), 0, 0, &pResource, 0 )) )
-	if( true )
+
+	const std::wstring wide_path = MetrifyPath( image_filename );
+
+	
+	ID3D11ShaderResourceView* pShaderResourceView;
+
+	if( FAILED( CreateWICTextureFromFile(pDevice, pDeviceContext, wide_path.c_str(), &pResource, &pShaderResourceView, NULL) ) )
+	//if( FAILED( CreateDDSTextureFromFile( pDevice, wide_path.c_str(), &pResource, &pShaderResourceView ) ) )
 	{
 		printf( "unable to create texture from file..\n" );
 		valid = false;
 	}
-//	pResource->QueryInterface( __uuidof( ID3D11Texture2D ), (LPVOID*)&pTex );
+	shader_resource = D3D11ShaderResource( pShaderResourceView );
+
+	//if( FAILED(D3DX11CreateTextureFromFile( pDevice, image_filename.c_str(), 0, 0, &pResource, 0 )) )
+	//if( true )
+	//{
+	//	printf( "unable to create texture from file..\n" );
+	//	valid = false;
+	//}
+	if( valid )
+	{
+	pResource->QueryInterface( __uuidof( ID3D11Texture2D ), (LPVOID*)&pTex );
+
+	D3D11_SAMPLER_DESC samDesc;
+samDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+samDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+samDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+samDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+samDesc.MipLODBias = 0;
+samDesc.MaxAnisotropy = 1;
+samDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+samDesc.BorderColor[ 0 ] = 1.0f;
+samDesc.BorderColor[ 1 ] = 1.0f;
+samDesc.BorderColor[ 2 ] = 1.0f;
+samDesc.BorderColor[ 3 ] = 1.0f;
+samDesc.MinLOD = -3.402823466e+38F; // -FLT_MAX
+samDesc.MaxLOD = 3.402823466e+38F; // FLT_MAX
+	
+	
+pDevice->CreateSamplerState( &samDesc, &pSamplerState );
+}
+
 }
 
 D3D11Texture::D3D11Texture( D3D11Texture a, D3D11Texture b )
